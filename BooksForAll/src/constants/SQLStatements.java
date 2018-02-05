@@ -1,6 +1,6 @@
 package constants;
 
-public class SQLStatements {
+public interface SQLStatements {
 
 	public final String CREATE_USER_TABLE = "CREATE TABLE ebookUser\r\n" + 
 			"    (id  INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,\r\n" + 
@@ -13,11 +13,14 @@ public class SQLStatements {
 			"    shortDescription VARCHAR(50),\r\n" + 
 			"    photo VARCHAR(45)\r\n" + 
 			"    );";
-	public final String CREATE_Manager_TABLE = "CREATE TABLE manager\r\n" + 
-			"	(id INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),\r\n" + 
-			"	 username VARCHAR(10) NOT NULL,\r\n" + 
-			"     password VARCHAR(8) NOT NULL\r\n" + 
-			"	);";
+	
+	
+	public final String CREATE_MANAGER_TABLE = "CREATE TABLE manager" + 
+			"(id INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1)," + 
+			"username VARCHAR(10) NOT NULL," + 
+			"password VARCHAR(8) NOT NULL" + 
+			")";
+	
 	
 	public final String CREATE_EBOOK_TABLE = "CREATE TABLE ebook\r\n" + 
 			"	(id  INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) ,\r\n" + 
@@ -59,4 +62,6 @@ public class SQLStatements {
 			
 	public final String INSERT_MANAGER_STMT = "INSERT INTO MANAGER (username,password) VALUES ('admin','Passw0rd');";
 
+	public final String GET_MANAGER_STMT = " SELECT * FROM MANAGER "; 
+	
 }
