@@ -60,8 +60,8 @@ public interface SQLStatements {
 			" 	 FOREIGN KEY (userId) REFERENCES ebookUser(id)\r\n" + 
 			" 	);";
 			
-	public final String INSERT_MANAGER_STMT = "INSERT INTO MANAGER (username,password) VALUES ('admin','Passw0rd');";
+	public final String INSERT_MANAGER_STMT = "INSERT INTO manager (username,password) VALUES ('admin','Passw0rd')";
 
-	public final String GET_MANAGER_STMT = " SELECT * FROM MANAGER "; 
+	public final String GET_MANAGER_STMT = "SELECT* FROM manager"; 
 	
 }

@@ -43,6 +43,7 @@ public class ManageDB implements ServletContextListener {
      */
     public ManageDB() {
         // TODO Auto-generated constructor stub
+    	System.out.println("listener");
     }
     
     //utility that checks whether the customer tables already exists
@@ -82,6 +83,23 @@ public class ManageDB implements ServletContextListener {
     			//check if exception thrown since table was already created (so we created the database already 
     			//in the past
     			created = tableAlreadyExists(e);
+    			
+    			
+    			// i need it
+//    			Statement stmt = conn.createStatement();
+//    			stmt.executeUpdate(SQLStatements.INSERT_MANAGER_STMT);
+//    			//commit update
+//        		conn.commit();
+//        		stmt.close();    	
+    			
+    			
+    			
+       			PreparedStatement ps = conn.prepareStatement(SQLStatements.GET_MANAGER_STMT);
+    			ResultSet rs = ps.executeQuery();
+    			while (rs.next()) {
+    			System.out.println("username "+rs.getString("username") + rs.getString("password") );
+    			}
+    			System.out.println(created);
     			if (!created){
     				throw e;//re-throw the exception so it will be caught in the
     				//external try..catch and recorded as error in the log
@@ -93,26 +111,26 @@ public class ManageDB implements ServletContextListener {
     			//populate customers table with customer data from json file
     //			Collection<Manager> managers = loadCustomers(cntx.getResourceAsStream(File.separator +
     	//													   Constants.CUSTOMERS_FILE));
-    	
+    	System.out.println("not created");
     			
-    			PreparedStatement pstmt = conn.prepareStatement(SQLStatements.INSERT_MANAGER_STMT);
-    			PreparedStatement ps = conn.prepareStatement(SQLStatements.GET_MANAGER_STMT);
-    			ResultSet rs = ps.executeQuery();
-    			while (rs.next()) {
-    			System.out.println("username "+rs.getString("username") + rs.getString("password") );
-    			}
+    		//	PreparedStatement pstmt = conn.prepareStatement(SQLStatements.INSERT_MANAGER_STMT);
+    		//	PreparedStatement ps = conn.prepareStatement(SQLStatements.GET_MANAGER_STMT);
+    		//	ResultSet rs = ps.executeQuery();
+    		//	while (rs.next()) {
+    		//	System.out.println("username "+rs.getString("username") + rs.getString("password") );
+    		//	}
     			
     			
     			//	for (Manager manager : managers){
     			//	pstmt.setString(1,manager.getUsername());
     			//	pstmt.setString(2,manager.getPassword());
-    				pstmt.executeUpdate();
+    			//	pstmt.executeUpdate();
     		//	}
 
     			//commit update
-    			conn.commit();
+    		//	conn.commit();
     			//close statements
-    			pstmt.close();
+    		//	pstmt.close();
     		}
     		
 
