@@ -75,26 +75,26 @@ public class ManageDB implements ServletContextListener {
     		try{
     			//create Customers table
     			Statement stmt = conn.createStatement();
-    			stmt.executeUpdate(SQLStatements.CREATE_MANAGER_TABLE);
+    			stmt.executeUpdate(SQLStatements.CREATE_Admin_TABLE);
+    			//commit update
+        		conn.commit();		
+    			stmt.executeUpdate(SQLStatements.CREATE_USER_TABLE);
+    			stmt.executeUpdate(SQLStatements.CREATE_EBOOK_TABLE);
+    			stmt.executeUpdate(SQLStatements.CREATE_LIKES_TABLE);
+    			stmt.executeUpdate(SQLStatements.CREATE_REVIEWS_TABLE);
+    			stmt.executeUpdate(SQLStatements.CREATE_PURCHASE_TABLE);
+        		stmt.close();
+        		
+    			Statement stmt1 = conn.createStatement();
+    			stmt1.executeUpdate(SQLStatements.INSERT_Admin_STMT);
     			//commit update
         		conn.commit();
-        		stmt.close();
+        		stmt1.close();  
     		}catch (SQLException e){
     			//check if exception thrown since table was already created (so we created the database already 
     			//in the past
-    			created = tableAlreadyExists(e);
-    			
-    			
-    			// i need it
-//    			Statement stmt = conn.createStatement();
-//    			stmt.executeUpdate(SQLStatements.INSERT_MANAGER_STMT);
-//    			//commit update
-//        		conn.commit();
-//        		stmt.close();    	
-    			
-    			
-    			
-       			PreparedStatement ps = conn.prepareStatement(SQLStatements.GET_MANAGER_STMT);
+    			created = tableAlreadyExists(e);  	
+       			PreparedStatement ps = conn.prepareStatement(SQLStatements.GET_Admin_STMT);
     			ResultSet rs = ps.executeQuery();
     			while (rs.next()) {
     			System.out.println("username "+rs.getString("username") + rs.getString("password") );
@@ -112,13 +112,18 @@ public class ManageDB implements ServletContextListener {
     //			Collection<Manager> managers = loadCustomers(cntx.getResourceAsStream(File.separator +
     	//													   Constants.CUSTOMERS_FILE));
     	System.out.println("not created");
-    			
-    		//	PreparedStatement pstmt = conn.prepareStatement(SQLStatements.INSERT_MANAGER_STMT);
-    		//	PreparedStatement ps = conn.prepareStatement(SQLStatements.GET_MANAGER_STMT);
-    		//	ResultSet rs = ps.executeQuery();
-    		//	while (rs.next()) {
-    		//	System.out.println("username "+rs.getString("username") + rs.getString("password") );
-    		//	}
+    			PreparedStatement pstmt = conn.prepareStatement(SQLStatements.INSERT_Admin_STMT);
+    				pstmt.executeUpdate();
+
+    			//commit update
+    			conn.commit();
+    			//close statements
+    			pstmt.close();
+    			PreparedStatement ps = conn.prepareStatement(SQLStatements.GET_Admin_STMT);
+    			ResultSet rs = ps.executeQuery();
+    			while (rs.next()) {
+    			System.out.println("username "+rs.getString("username") + rs.getString("password") );
+    			}
     			
     			
     			//	for (Manager manager : managers){
@@ -127,10 +132,7 @@ public class ManageDB implements ServletContextListener {
     			//	pstmt.executeUpdate();
     		//	}
 
-    			//commit update
-    		//	conn.commit();
-    			//close statements
-    		//	pstmt.close();
+
     		}
     		
 
@@ -171,27 +173,27 @@ public class ManageDB implements ServletContextListener {
 	 * @return collection of customers
 	 * @throws IOException
 	 */
-	private Collection<Manager> loadCustomers(InputStream is) throws IOException{
-		
-		//wrap input stream with a buffered reader to allow reading the file line by line
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		StringBuilder jsonFileContent = new StringBuilder();
-		//read line by line from file
-		String nextLine = null;
-		while ((nextLine = br.readLine()) != null){
-			jsonFileContent.append(nextLine);
-		}
-
-		Gson gson = new Gson();
-		//this is a require type definition by the Gson utility so Gson will 
-		//understand what kind of object representation should the json file match
-		Type type = new TypeToken<Collection<Manager>>(){}.getType();
-		Collection<Manager> managers = gson.fromJson(jsonFileContent.toString(), type);
-		//close
-		br.close();	
-		return managers;
-
-	}
+//	private Collection<Manager> loadCustomers(InputStream is) throws IOException{
+//		
+//		//wrap input stream with a buffered reader to allow reading the file line by line
+//		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+//		StringBuilder jsonFileContent = new StringBuilder();
+//		//read line by line from file
+//		String nextLine = null;
+//		while ((nextLine = br.readLine()) != null){
+//			jsonFileContent.append(nextLine);
+//		}
+//
+//		Gson gson = new Gson();
+//		//this is a require type definition by the Gson utility so Gson will 
+//		//understand what kind of object representation should the json file match
+//		Type type = new TypeToken<Collection<Manager>>(){}.getType();
+//		Collection<Manager> managers = gson.fromJson(jsonFileContent.toString(), type);
+//		//close
+//		br.close();	
+//		return managers;
+//
+//	}
 	
 	
 	

@@ -34,8 +34,8 @@ import model.Manager;
 @WebServlet(
 		description = "Servlet to provide details about customers", 
 		urlPatterns = { 
-				"/customers", 
-				"/customers/name/*"
+				"/managers", 
+				"/managers/name/*"
 		})
 public class ManagerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -96,7 +96,8 @@ public class ManagerServlet extends HttpServlet {
     			}
 
     		}
-
+        	PrintWriter writer = response.getWriter();
+         	writer.println("my name is Ghada");
     		conn.close();
     		
 //    		Gson gson = new Gson();

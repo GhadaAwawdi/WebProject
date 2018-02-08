@@ -9,9 +9,8 @@
     <param-value>java:comp/env/jdbc/NewDerby</param-value>
   </context-param>
   <context-param>
-    <param-name>
-    DB_NAME</param-name>
-    <param-value>sample</param-value>
+    <param-name>DB_NAME</param-name>
+    <param-value>sample3</param-value>
   </context-param>
   <resource-ref>
     <description>Example Database Open</description>
@@ -25,10 +24,12 @@
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
-  
   <listener>
-        <listener-class>
+    <listener-class>
                  listener.ManageDB
         </listener-class>
-    </listener>
+  </listener>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
 </web-app>
