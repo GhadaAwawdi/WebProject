@@ -63,7 +63,21 @@ td.but{
   
   </style>
 
+<script>
 
+$(document).ready(function(){
+	$(".").click(function(){
+		console.log($(this).attr('id'));
+		$.get("GetAllEbooks",
+		        {
+		          pairId: $(this).attr('id'),
+		        },
+		        function(data,status){
+		        	//if data is -1 something is wrong
+		            $("#"+data).parent().parent().remove();
+		        });
+	});
+</script>
 </head>
 <body>
 
@@ -106,7 +120,6 @@ td.but{
       </thead>
     </table>
   </div>
- 
   <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
@@ -123,9 +136,6 @@ td.but{
       </tbody>
     </table>
   </div>
-	
-	
 </div>
-
 </body>
 </html>
