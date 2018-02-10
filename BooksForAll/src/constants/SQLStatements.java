@@ -2,11 +2,27 @@ package constants;
 
 public interface SQLStatements {
 
+//	public final String CREATE_USER_TABLE = "CREATE TABLE ebookUser" + 
+//			"(id  INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1)," + 
+//			"username VARCHAR(10) NOT NULL UNIQUE," + 
+//			"email VARCHAR(30) NOT NULL," + 
+//			"address VARCHAR(20) NOT NULL," + 
+//			"telephoneNumber VARCHAR(10) NOT NULL," + 
+//			"password VARCHAR(8) NOT NULL," + 
+//			"nickname VARCHAR(20) NOT NULL," + 
+//			"shortDescription VARCHAR(50)," + 
+//			"photo VARCHAR(45)" + 
+//			")";
+	
+	
 	public final String CREATE_USER_TABLE = "CREATE TABLE ebookUser" + 
 			"(id  INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1)," + 
 			"username VARCHAR(10) NOT NULL UNIQUE," + 
 			"email VARCHAR(30) NOT NULL," + 
-			"address VARCHAR(20) NOT NULL," + 
+			"street VARCHAR(20) NOT NULL," + 
+			"apartment INT NOT NULL," + 
+			"city VARCHAR(20) NOT NULL," + 
+			"postalCode VARCHAR(7) NOT NULL," + 
 			"telephoneNumber VARCHAR(10) NOT NULL," + 
 			"password VARCHAR(8) NOT NULL," + 
 			"nickname VARCHAR(20) NOT NULL," + 
@@ -24,75 +40,84 @@ public interface SQLStatements {
 	
 	public final String CREATE_EBOOK_TABLE = "CREATE TABLE ebook" + 
 			"(id  INT PRIMARY KEY NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1)," + 
-			"title VARCHAR(20) NOT NULL," + 
+			"title VARCHAR(20) NOT NULL UNIQUE," + 
 			"image VARCHAR(20)," + 
-			"price INT DOUBLE(3,2) NULL," + 
+			"price INT NOT NULL," + 
 			"shortDescription VARCHAR(50)," + 
-			"likesNum INT NOT NULL," + 
-	//		"review VARCHAR(50) NOT NULL" + 
+			"likesNum INT NOT NULL" + 
 			")";
 	
 	
 	public final String CREATE_LIKES_TABLE = "CREATE TABLE likes" + 
-			"(username VARCHAR(10) NOT NULL," + 
+			"(username VARCHAR(10) NOT NULL UNIQUE," + 
 			"title  VARCHAR(20) NOT NULL," + 
 			"nickname VARCHAR(20) NOT NULL," + 
-			"FOREIGN KEY (bookName) REFERENCES ebook(bookName)" + 
+			"FOREIGN KEY (title) REFERENCES ebook(title)," + 
 			"FOREIGN KEY (username) REFERENCES ebookUser(username)"+
 			")";
 	
 	public final String CREATE_REVIEWS_TABLE = "CREATE TABLE reviews" + 
 			"(title VARCHAR(20) NOT NULL," + 
-			"username VARCHAR(10) NOT NULL," + 
+			"username VARCHAR(10) NOT NULL UNIQUE," + 
 			"nickname VARCHAR(20) NOT NULL," + 
 			"review VARCHAR(50) NOT NULL," + 
 			"approved INT NOT NULL," +
-			"FOREIGN KEY (title) REFERENCES ebook(title)" + 
+			"FOREIGN KEY (title) REFERENCES ebook(title)," + 
 			"FOREIGN KEY (username) REFERENCES ebookUser(username)" +
 			")";
 	
 	public final String CREATE_PURCHASE_TABLE = "CREATE TABLE purchase" + 
-			"(username  VARCHAR(10) NOT NULL," + 
+			"(username  VARCHAR(10) NOT NULL UNIQUE," + 
 			"title  VARCHAR(20) NOT NULL," + 
 			"creditCardNumber VARCHAR(16) NOT NULL," +
 			"expiry DATE NOT NULL," +
 			"cvv VARCHAR(4) NOT NULL," +
 			"fullName VARCHAR(20) NOT NULL," +
 			"creditCardCompany VARCHAR(10) NOT NULL," +
-			"FOREIGN KEY (username) REFERENCES ebookUser(username)" + 
+			"FOREIGN KEY (username) REFERENCES ebookUser(username)," + 
 			"FOREIGN KEY (title) REFERENCES ebook(title)" + 
 			")";
 	
 	public final static String INSERT_Admin_STMT = "INSERT INTO admin (username,password) VALUES ('admin','Passw0rd')";
-	public final static String addNewUser = "INSERT INTO ebookUser (`username`, `email`,`address`,`TelephoneNumber`,`password`,`nickname`,`shortDescription`,`photo`) VALUES (?,?,?,?,?,?,?,?)";
-	public final static String addNewEbook = "INSERT INTO ebook (`title`, `image`,`price`,`shortDescription`,`likesNum`,`review`) VALUES (?,?,?,?,?,?)";
-	public final static String addNewLike = "INSERT INTO likes (`username`, `title`, `nickname`) VALUES (?,?,?)";
-	public final static String addNewReview = "INSERT INTO reviews (`username`, `title`, `nickname`, `review`,`approved`) VALUES (?,?,?,?,?)";
-	public final static String addNewPurchase = "INSERT INTO purchase (`username`, `title`, `creditCardNumber`, `expiry`, `cvv`, `fullName`, `creditCardCompany`) VALUES (?,?,?,?,?,?,?)";
+	public final static String addNewUser = "INSERT INTO ebookUser (username, email,street,apartment,city,postalCode,TelephoneNumber,password,nickname,shortDescription,photo) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	public final static String addNewEbook = "INSERT INTO ebook (title, image,price,shortDescription,likesNum) VALUES (?,?,?,?,?)";
+	public final static String addNewLike = "INSERT INTO likes (username, title, nickname) VALUES (?,?,?)";
+//	public final static String addNewLike = "INSERT INTO likes (username, title) VALUES (?,?)";
+	public final static String addNewReview = "INSERT INTO reviews (username, title, nickname, review,approved) VALUES (?,?,?,?,?)";
+	public final static String addNewPurchase = "INSERT INTO purchase (username, title, creditCardNumber, expiry, cvv, fullName, creditCardCompany) VALUES (?,?,?,?,?,?,?)";
 
 
 	public final String GET_Admin_STMT = "SELECT* FROM admin"; 
 	public final String GET_USERS_STMT = "SELECT* FROM ebookUser";
 	public final String GET_EBOOKS_STMT = "SELECT* FROM ebook";
 	public final String GET_LIKES_STMT = "SELECT* FROM likes";
-	public final String GET_ebookLikes_STMT = "SELECT nickname FROM likes WHERE `bookId`=? ";
-	public final String GET_ebookLikesNum_STMT = "SELECT count(*) FROM likes WHERE `bookId`=? ";
-	public final String GET_ebookApprovedReviews_STMT = "SELECT* FROM reviews WHERE `bookId`=? and `approved`=1";
-	public final String GET_unapprovedReviews_STMT = "SELECT* FROM reviews WHERE `approved`=0";
+	public final String GET_nicknamesOfebookLikes_STMT = "SELECT nickname FROM likes WHERE title=? ";
+//	public final String GET_ebookLikesNum_STMT = "SELECT count(*) FROM likes WHERE title=? ";
+	public final String GET_ebookLikes_STMT = "SELECT* FROM likes WHERE title=? ";
+	public final String GET_ebookApprovedReviews_STMT = "SELECT* FROM reviews WHERE title=? and approved=1";
+	public final String GET_unapprovedReviews_STMT = "SELECT* FROM reviews WHERE approved=0";
 	public final String GET_PURCHASES_STMT = "SELECT* FROM purchase";
-	public final String GET_userPurchases_STMT = "SELECT* FROM purchase WHERE `title`=? ";
-	public final String GET_Ebook_STMT = "SELECT* FROM ebooks WHERE `title`=? ";
+	public final String GET_EBOOKPURCHASES_STMT = "SELECT* FROM purchase WHERE title=?";
+
+	public final String GET_userPurchases_STMT = "SELECT* FROM purchase WHERE username=? ";
+	public final String GET_Ebook_STMT = "SELECT* FROM ebooks WHERE title=? ";
 		
-	public final String getUserByUsernameAndPassword = "SELECT * FROM ebookUser WHERE `username`=? and `password`=? ";
-	public final String getAdminUsernameAndPassword = "SELECT * FROM ebook WHERE `username`=? and `password`=? ";
+	public final String getNicknameByUsername = "SELECT nickname FROM ebookUser WHERE username=? ";
 	
-	public final String selectUserByUsername = "SELECT * FROM ebookUser WHERE `username`=?";
-	public final String selectEbookByName = "Select * From ebook WHERE `title`=? ";
+	public final String getUserByUsernameAndPassword = "SELECT * FROM ebookUser WHERE username=? and password=? ";
+	public final String getAdminUsernameAndPassword = "SELECT * FROM admin WHERE username=? and password=? ";
 	
+	public final String selectUserByUsername = "SELECT * FROM ebookUser WHERE username=?";
+	public final String selectEbookByName = "Select * From ebook WHERE title=? ";
 	
-	public final static String deleteUser = "DELETE FROM ebookUser WHERE `username`=?";
-	public final static String unlikeEbook = "DELETE FROM likes WHERE `username`=? and `title`=?";
-	public final static String updateLikesNum = "UPDATE ebook SET `likesNum`=? WHERE `title`=?";
+	public final static String deleteUser = "DELETE FROM ebookUser WHERE username=?";
+	public final static String unlikeEbook = "DELETE FROM likes WHERE username=? and title=?";
+	public final static String updateLikesNum = "UPDATE ebook SET likesNum=? WHERE title=?";
+	public final String getLikesNumByTitle = "SELECT likesNum FROM ebook WHERE title=? ";
+
 	
-	public final String checkIfPurchased = "SELECT* FROM purchase WHERE `username`=? and `title`?";
+	public final static String approveReview = "UPDATE reviews SET approved=1 WHERE title=? and username=? and nickname=? and review=?";
+
+	
+	public final String checkIfPurchased = "SELECT* FROM purchase WHERE username=? and title=?";
 }

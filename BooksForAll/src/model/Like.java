@@ -2,27 +2,27 @@ package model;
 
 public class Like {
 
-	int userId;
-	int bookId;
+	String username;
+	String title;
 	String nickname;
 	
-	public Like(int userId, int bookId, String nickname) {
+	public Like(String username, String title, String nickname) {
 		super();
-		this.userId = userId;
-		this.bookId = bookId;
+		this.username = username;
+		this.title = title;
 		this.nickname = nickname;
 	}
-	public int getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public int getBookId() {
-		return bookId;
+	public String getTitle() {
+		return title;
 	}
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getNickname() {
 		return nickname;

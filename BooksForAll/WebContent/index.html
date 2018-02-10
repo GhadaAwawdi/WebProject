@@ -87,7 +87,7 @@ background-size: cover;
 	display:block;
 }
 .social-login ul li:nth-child(1) a{
-	background:#3b5998;
+	background:#3b5998;''
 }
 .social-login ul li:nth-child(2) a{
 	background:#e74c3d;
@@ -160,17 +160,35 @@ background-size: cover;
     </ul>
     <div class="tab-content">
         <div id="sectionA" class="tab-pane fade in active">
-        <div class="innter-form">
-            <form class="sa-innate-form" method="post">
-            <label>Username</label>
-            <input type="text" name="username">
+        
+        
+        
+        
+        <div class="login-page">
+		<div class="form">
+		        <div class="innter-form">
+		
+			<h3>Login to your account</h3>
+			<form class="login-form" action="Login" method="post">
+				<label>Username</label>
+				<br>
+            <input name ="uName" type="text" name="username"/>
             <br>
             <label>Password</label>
-            <input type="password" name="password">
+            <input name="uPass" type="password" name="password"/>
+            
             <button type="submit">Sign In</button>
+
             <a href="">Forgot Password?</a>
-            </form>
-            </div>
+
+			</form>
+		</div>
+	</div>
+	</div>
+        
+        
+        
+
             
             <div class="clearfix"></div>
         </div>

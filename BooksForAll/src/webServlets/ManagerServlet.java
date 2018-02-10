@@ -84,7 +84,7 @@ public class ManagerServlet extends HttpServlet {
     			Statement stmt;
     			try {
     				stmt = conn.createStatement();
-    				ResultSet rs = stmt.executeQuery(SQLStatements.GET_MANAGER_STMT);
+    				ResultSet rs = stmt.executeQuery(SQLStatements.GET_Admin_STMT);
     				while (rs.next()){
     					customersResult.add(new Manager(rs.getString(1),rs.getString(2)));
     				}

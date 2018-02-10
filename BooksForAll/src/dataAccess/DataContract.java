@@ -25,7 +25,7 @@ public final class DataContract {
 	public static class EbookTable{
 		public static final String TABLE_NAME = "ebook";
 		public static final String COL_ID = "id";
-		public static final String COL_NAME = "name";
+		public static final String COL_NAME = "title";
 		public static final String COL_IMAGE = "image";
 		public static final String COL_PRICE = "price";
 		public static final String COL_SHORTDESCRIPTION = "shortDescription";
@@ -34,14 +34,15 @@ public final class DataContract {
 	
 	public static class LikesTable{
 		public static final String TABLE_NAME = "likes";
-		public static final String COL_USERID = "userId";
-		public static final String COL_BOOKID = "bookId";
+		public static final String COL_USERNAME = "username";
+		public static final String COL_TITLE = "title";
 		public static final String COL_NICKNAME = "nickname";
 	}
 	
 	public static class ReviewsTable{
 		public static final String TABLE_NAME = "reviews";
-		public static final String COL_BOOKID = "bookId";
+		public static final String COL_USERNAME = "username";
+		public static final String COL_TITLE = "title";
 		public static final String COL_USERID = "userId";
 		public static final String COL_NICKNAME = "nickname";
 		public static final String COL_REVIEW = "review";
@@ -51,7 +52,8 @@ public final class DataContract {
 	public static class PurchaseTable{
 		public static final String TABLE_NAME = "purchase";
 		public static final String COL_USERID = "userId";
-		public static final String COL_BOOKID = "bookId";
+		public static final String COL_USERNAME = "username";
+		public static final String COL_TITLE = "title";
 		public static final String COL_CREDITCARDNUMBER = "creditCardNumber";
 		public static final String COL_EXPIRY = "expiry";
 		public static final String COL_CVV = "cvv";

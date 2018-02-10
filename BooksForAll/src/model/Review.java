@@ -2,32 +2,32 @@ package model;
 
 public class Review {
 	
-	int userId;
-	int bookId;
+	String username;
+	String title;
 	int approved;
 	String nickname;
 	String review;
 	
-	public Review(int userId, int bookId, int approved, String nickname, String review) {
+	public Review(String username, String title, int approved, String nickname, String review) {
 		super();
-		this.userId = userId;
-		this.bookId = bookId;
+		this.username = username;
+		this.title = title;
 		this.approved = approved;
 		this.nickname = nickname;
 		this.review = review;
 	}
 	
-	public int getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public int getBookId() {
-		return bookId;
+	public String getTitle() {
+		return title;
 	}
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public int getApproved() {
 		return approved;
