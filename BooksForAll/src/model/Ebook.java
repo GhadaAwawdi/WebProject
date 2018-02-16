@@ -1,25 +1,33 @@
 package model;
 
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
+
 public class Ebook {
 
 	int id;
-	int price;
+	double price;
 	int likesNum;
+	String location;
 	String name;
 	String image;
 	String shortDescription;
-	public Ebook( String name, int price, int likesNum, String image, String shortDescription) {
+	public Ebook(int id, String name, double price, String image, String shortDescription,String location, int likesNum) throws NamingException, SQLException {
 		super();
+		System.out.println("in constructor");
+		this.id = id;
 		this.price = price;
-		this.likesNum = likesNum;
+		this.likesNum=likesNum;
 		this.name = name;
 		this.image = image;
 		this.shortDescription = shortDescription;
+		this.location = location;
 	}
 	public int getId() {
 		return id;
 	}
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
 	public int getLikesNum() {
@@ -37,10 +45,10 @@ public class Ebook {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
-	public void setLikesNum(int likesNum) {
+	public void setLikesNum(int likesNum) throws NamingException, SQLException {
 		this.likesNum = likesNum;
 	}
 	public void setName(String name) {
@@ -48,6 +56,12 @@ public class Ebook {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	public void setShortDescription(String shortDescription) {
 		this.shortDescription = shortDescription;

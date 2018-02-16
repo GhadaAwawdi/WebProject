@@ -1,5 +1,6 @@
 package webServlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -11,7 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import dataAccess.DataAccess;
+import model.EbookUser;
+import model.Like;
 
 /**
  * Servlet implementation class UnlikeEbook
@@ -34,14 +39,22 @@ public class UnlikeEbook extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String title = request.getParameter("title");
+		
+		BufferedReader reader = request.getReader();
+		String likeJSON = reader.readLine();
+
+		Gson gson = new Gson();
+		Like like = gson.fromJson(likeJSON, Like.class);
 		boolean res = false;
 		DataAccess da = null;
-		if (username != null && title != null) {
+		if (like.getUsername() != null) {
 			try {
 				da = new DataAccess();
-				res = da.unlikeEbook(title, username);
+				res = da.unlikeEbook(like.getId(), like.getUsername());
+	        	da.closeConnection();
+
 				if(res==true)
-					da.decreaseNumOfEbookLikes(title);
+					da.decreaseNumOfEbookLikes(like.getId());
 			} catch (NamingException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

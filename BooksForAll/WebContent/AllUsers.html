@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- This viewport controls page dimensions on different devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="lib/angular.min.js"></script>
+
+<script type="text/ng-template" id="myTemplate.html">
+  
+</script>	
+<script>
+		var app = angular.module('UserApp', []);
+		app.controller('usersCtrl', function($scope, $http) {
+			$http.get('GetAllEbookUsers').then(function(response) {
+				$scope.users = response.data;
+				$scope.statuscode = response.status;
+			});
+	});
+	</script>
+	
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="Home.html">Books For All</a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li><a href="Home.html">Home</a></li>
+					<li><a href="Ebooks.html">E-Books</a></li>
+					<li><a href="#">My E-Books</a></li>
+					<li class="active"><a href="#">All Users</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+
+	<div class="container" data-ng-app="UserApp"
+		data-ng-controller="usersCtrl">
+		<table class="table table-striped">
+			<thead>
+				<tr>				
+					<th>username</th>
+					<th>email</th>
+					<th>street</th>
+					<th>apartment</th>
+					<th>city</th>
+					<th>postal code</th>
+					<th>Telephone Number</th>
+					<th>password</th>
+					<th>nickname </th>
+					<th>short Description </th>
+					<th>photo </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="x in users">
+					<td>{{x.username}}</td>
+					<td>{{x.email}}</td>
+					<td>{{x.street}}</td>
+					<td>{{x.apartment}}</td>
+					<td>{{x.city}}</td>
+					<td>{{x.postalCode}}</td>
+					<td>{{x.telephoneNumber}}</td>
+					<td>{{x.password}}</td>
+					<td>{{x.nickname}}</td>
+					<td>{{x.shortDescription}}</td>
+    				<td>no photo</td>
+    				
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

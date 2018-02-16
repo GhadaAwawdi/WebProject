@@ -1,5 +1,6 @@
 package webServlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -11,7 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import dataAccess.DataAccess;
+import model.Like;
 
 /**
  * Servlet implementation class AddNewEbookLike
@@ -27,23 +31,46 @@ public class AddNewEbookLike extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("do get method");
 
+		doPost(request,response);
+	}
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String username = request.getParameter("username");
-		String title = request.getParameter("title");
+			throws ServletException, IOException {	
+		System.out.println("add new ebook like");
+		
+		BufferedReader reader = request.getReader();
+		String newLike = reader.readLine();
+		
+		
+		Gson gson = new Gson();
+		Like like = gson.fromJson(newLike, Like.class);
+		System.out.println("json   "+newLike );
+		System.out.println( like.getId() + like.getUsername());
+
 		boolean res = false;
 		DataAccess da = null;
-		if (username != null && title != null) {
+		String nickname = null;
+		if (newLike!= null) {
 			try {
 				da = new DataAccess();
-				res = da.likeEbook(title, username);
-				if(res==true)
-					da.increaseNumOfEbookLikes(title);
+				 nickname = da.getNicknameByUsername(like.getUsername());
+				res = da.likeEbook(like.getId(), like.getUsername());
+				if(res==true){
+					da.increaseNumOfEbookLikes(like.getId());
+					}
+	        	da.closeConnection();
 			} catch (NamingException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

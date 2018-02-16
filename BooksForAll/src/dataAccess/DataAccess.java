@@ -1,14 +1,23 @@
 package dataAccess;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.naming.NamingException;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import constants.SQLStatements;
 import utils.DBUtils;
@@ -20,18 +29,22 @@ import model.Review;
 
 public class DataAccess implements DataInterface {
 
-	private Connection c;
+	public static Connection conn;
 
 	public DataAccess() throws NamingException, SQLException {
-
 		Logger logger = Logger.getLogger(DataAccess.class.getName());
 		logger.log(Level.INFO, "DataAccess c'tor: attempting connection...");
-		c = DBUtils.getConnection();
-		if (c == null) {
+		DBUtils.getConnection();
+		if (DBUtils.conn == null) {
 			logger.log(Level.SEVERE, "Connection Failed");
 		} else {
 			logger.log(Level.INFO, "Connection Established");
 		}
+	}
+
+	@Override
+	public void closeConnection() throws SQLException {
+		DBUtils.closeConnection();
 	}
 
 	@Override
@@ -40,12 +53,12 @@ public class DataAccess implements DataInterface {
 		System.out.println("ebookUserLogin function");
 
 		Logger logger = Logger.getLogger(DataAccess.class.getName());
-		if (c == null) {
+		if (DBUtils.conn == null) {
 			logger.log(Level.SEVERE, "Connection Failed");
 			return null;
 		}
 
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.getUserByUsernameAndPassword);
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getUserByUsernameAndPassword);
 		stmt.setString(1, username);
 		stmt.setString(2, password);
 
@@ -53,10 +66,13 @@ public class DataAccess implements DataInterface {
 		EbookUser user = null;
 
 		if (rs.next()) {
-			logger.log(Level.INFO, "User type Mentee");
+			logger.log(Level.INFO, "User type ebook user");
 			user = new EbookUser(rs.getString(DataContract.EbookUserTable.COL_USERNAME),
 					rs.getString(DataContract.EbookUserTable.EMAIL),
-					rs.getString(DataContract.EbookUserTable.COL_ADDRESS),
+					rs.getString(DataContract.EbookUserTable.COL_STREET),
+					rs.getInt(DataContract.EbookUserTable.COL_APARTMENT),
+					rs.getString(DataContract.EbookUserTable.COL_CITY),
+					rs.getString(DataContract.EbookUserTable.COL_POSTALCODE),
 					rs.getString(DataContract.EbookUserTable.COL_TELEPHONENUMBER),
 					rs.getString(DataContract.EbookUserTable.COL_PASSWORD),
 					rs.getString(DataContract.EbookUserTable.COL_NICKNAME),
@@ -76,12 +92,12 @@ public class DataAccess implements DataInterface {
 	public Manager managerLogin(String username, String password) throws SQLException {
 		System.out.println("manager Login function");
 		Logger logger = Logger.getLogger(DataAccess.class.getName());
-		if (c == null) {
+		if (DBUtils.conn == null) {
 			logger.log(Level.SEVERE, "Connection Failed");
 			return null;
 		}
 
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.getAdminUsernameAndPassword);
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getAdminUsernameAndPassword);
 		stmt.setString(1, username);
 		stmt.setString(2, password);
 
@@ -103,130 +119,42 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public int addEbookUser(EbookUser user) throws SQLException {
-		// PreparedStatement stmt =
-		// c.prepareStatement(SQLStatements.selectUserByUsername);
-		// stmt.setString(1, user.getUsername());
-		// ResultSet rs = stmt.executeQuery();
-		// if (rs.next()) // user exists
-		// {
-		// System.out.println("rs.next(): " + rs.getString(3));
-		// System.out.println("BAD, USER ALREADY EXISTS");
-		// return -1;
-		// }
-		// PreparedStatement stmt2 =
-		// c.prepareStatement(SQLStatements.addNewUser);
-		// stmt2.setString(1, user.getUsername());
-		// stmt2.setString(2, user.getEmail());
-		// stmt2.setString(3, user.getAddress());
-		// stmt2.setString(4, user.getTelephoneNumber());
-		// stmt2.setString(5, user.getPassword());
-		// stmt2.setString(6, user.getNickname());
-		// stmt2.setString(7, user.getShortDescription());
-		// stmt2.setString(8, user.getPhoto());
-		// stmt2.executeUpdate();
-		//
-		// stmt = c.prepareStatement(SQLStatements.selectUserByEmail);
-		// stmt.setString(1, user.getEmail());
-		// rs = stmt.executeQuery();
-		// int id = 0;
-		// if (rs.next()) // user exists
-		// {
-		// id = rs.getInt(1);
-		// } else {
-		// return -1;
-		// }
-		//
-		// if (user.getType() == userType.TSOFEN || user.getType() ==
-		// userType.ADMIN)
-		// return id;
-		//
-		// if (user.getType() == userType.MENTOR) {
-		// System.out.println("MENTOR DATABASE");
-		// PreparedStatement stm3 =
-		// c.prepareStatement(SQLStatements.insertMentor);
-		// stm3.setInt(1, id);
-		// stm3.setString(2, ((Mentor) user).getExperience());
-		// stm3.setString(3, ((Mentor) user).getRole());
-		// stm3.setInt(4, ((Mentor) user).getCompany());
-		// stm3.setString(5, ((Mentor) user).getVolunteering());
-		// stm3.setString(6, ((Mentor) user).getWorkHistory());
-		//
-		// stm3.executeUpdate();
-		// return id;
-		// }
-		//
-		// if (user.getType() == userType.MENTEE) {
-		// PreparedStatement stm4 =
-		// c.prepareStatement(SQLStatements.insertMentee);
-		// stm4.setInt(1, id);
-		// stm4.setFloat(2, ((Mentee) user).getRemainingSemesters());
-		// stm4.setString(3, ((Mentee) user).getGraduationStatus());
-		// stm4.setInt(4, ((Mentee) user).getAcademiclnstitution());
-		// stm4.setFloat(5, ((Mentee) user).getAverage());
-		// stm4.setString(6, ((Mentee) user).getAcademicDicipline());
-		// stm4.setString(7, ((Mentee) user).getAcademicDicipline2());
-		// stm4.setInt(8, ((Mentee) user).getSignedEULA() ? 1 : 0);
-		// stm4.setString(9, ((Mentee) user).getResume());
-		// stm4.setString(10, ((Mentee) user).getGradeSheet());
-		// stm4.executeUpdate();
-		// return id;
-		// }
-		return -1;
-	}
-
-	@Override
-	public boolean addEbook(Ebook ebook) throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.selectEbookByName);
-		stm.setString(1, ebook.getName());
-		ResultSet rs = stm.executeQuery();
-		if (rs.next()) // parkingLot exists
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.selectUserByUsername);
+		stmt.setString(1, user.getUsername());
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) // user exists
 		{
-			System.out.println("rs.next(): " + rs.getString(2));
-			System.out.println("BAD, Ebook ALREADY EXISTS");
-			return false;
+			System.out.println("rs.next(): " + rs.getString(3));
+			System.out.println("BAD, USER ALREADY EXISTS");
+			return -1;
 		}
+		PreparedStatement stmt2 = DBUtils.conn.prepareStatement(SQLStatements.addNewUser);
+		stmt2.setString(1, user.getUsername());
+		stmt2.setString(2, user.getEmail());
+		stmt2.setString(3, user.getStreet());
+		stmt2.setInt(4, user.getApartment());
+		stmt2.setString(5, user.getCity());
+		stmt2.setString(6, user.getPostalCode());
+		stmt2.setString(4, user.getTelephoneNumber());
+		stmt2.setString(5, user.getPassword());
+		stmt2.setString(6, user.getNickname());
+		stmt2.setString(7, user.getShortDescription());
+		stmt2.setString(8, user.getPhoto());
+		stmt2.executeUpdate();
 
-		else {
-			PreparedStatement stmt1 = c.prepareStatement(SQLStatements.addNewEbook);
-			stmt1.setString(1, ebook.getName());
-			stmt1.setInt(2, ebook.getPrice());
-			stmt1.setInt(3, ebook.getLikesNum());
-			stmt1.setString(4, ebook.getImage());
-			stmt1.setString(5, ebook.getShortDescription());
-			stmt1.executeUpdate();
-			System.out.println("added to database");
-		}
-		return true;
+		return 1;
 	}
-
-	// @Override
-	// public boolean unlikeEbook(String nameOfEbook) throws SQLException {
-	// PreparedStatement stm = c.prepareStatement(SQLStatements.GET_Ebook_STMT);
-	// stm.setString(1, nameOfEbook);
-	// ResultSet rs = stm.executeQuery();
-	// if (!rs.next()) {
-	// System.out.println("Parking lot does not exist,try a different parking
-	// lot");
-	// return false;
-	// }
-	// PreparedStatement stm1 =
-	// c.prepareStatement(SQLStatements.deleteParkingLot);
-	// stm1.setString(1, nameOfEbook);
-	// stm1.executeUpdate();
-	// System.out.println("Parking lot deleted successfully");
-	// return true;
-	// }
 
 	@Override
 	public boolean removeEbookUser(String username) throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.selectUserByUsername);
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.selectUserByUsername);
 		stm.setString(1, username);
 		ResultSet rs = stm.executeQuery();
 		if (!rs.next()) {
 			System.out.println("user does not exist,try a different user");
 			return false;
 		}
-		PreparedStatement stm1 = c.prepareStatement(SQLStatements.deleteUser);
+		PreparedStatement stm1 = DBUtils.conn.prepareStatement(SQLStatements.deleteUser);
 		stm1.setString(1, username);
 		stm1.executeUpdate();
 		System.out.println("ebook user deleted successfully");
@@ -234,14 +162,14 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean likeEbook(String nameOfEbook, String username) throws SQLException {
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.getNicknameByUsername);
+	public boolean likeEbook(int idOfEbook, String username) throws SQLException {
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getNicknameByUsername);
 		stmt.setString(1, username);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
-			PreparedStatement stmt1 = c.prepareStatement(SQLStatements.addNewLike);
+			PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.addNewLike);
 			stmt1.setString(1, username);
-			stmt1.setString(2, nameOfEbook);
+			stmt1.setInt(2, idOfEbook);
 			stmt1.setString(3, rs.getString(DataContract.LikesTable.COL_NICKNAME));
 			stmt1.executeUpdate();
 			System.out.println("added to database");
@@ -251,7 +179,7 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean unlikeEbook(String nameOfEbook, String username) throws SQLException {
+	public boolean unlikeEbook(int idOfEbook, String username) throws SQLException {
 		// PreparedStatement stm =
 		// c.prepareStatement(SQLStatements.unlikeEbook);
 		// stm.setString(1, username);
@@ -261,20 +189,20 @@ public class DataAccess implements DataInterface {
 		// //System.out.println("like does not exist,try a different user");
 		// return false;
 		// }
-		PreparedStatement stm1 = c.prepareStatement(SQLStatements.unlikeEbook);
+		PreparedStatement stm1 = DBUtils.conn.prepareStatement(SQLStatements.unlikeEbook);
 		stm1.setString(1, username);
-		stm1.setString(2, nameOfEbook);
+		stm1.setInt(2, idOfEbook);
 		stm1.executeUpdate();
 		System.out.println("unlike done successfully");
 		return true;
 	}
 
 	@Override
-	public int numOfEbookLikes(String nameOfEbook) throws SQLException {
+	public int numOfEbookLikes(int idOfEbook) throws SQLException {
 
 		int count = 0;
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
-		stmt.setString(1, nameOfEbook);
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
+		stmt.setInt(1, idOfEbook);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			count++;
@@ -285,7 +213,8 @@ public class DataAccess implements DataInterface {
 	@Override
 	public ArrayList<String> getUsersThatLikedEbook(String nameOfEbook) throws SQLException {
 
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
+		stm.setString(1, nameOfEbook);
 		ArrayList<String> nicknames = new ArrayList<String>();
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
@@ -296,13 +225,13 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public ArrayList<Purchase> getAllPurchases() throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_PURCHASES_STMT);
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_PURCHASES_STMT);
 		ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 		Purchase p = null;
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			p = new Purchase(rs.getString(DataContract.PurchaseTable.COL_USERNAME),
-					rs.getString(DataContract.PurchaseTable.COL_TITLE),
+					rs.getInt(DataContract.PurchaseTable.COL_EBOOKID),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDNUMBER),
 					rs.getString(DataContract.PurchaseTable.COL_EXPIRY),
 					rs.getString(DataContract.PurchaseTable.COL_CVV),
@@ -312,17 +241,18 @@ public class DataAccess implements DataInterface {
 		}
 		return purchases;
 	}
-////no servlet yet
+
+	//// no servlet yet
 	@Override
 	public ArrayList<Purchase> getAllPurchasesByTitle(String title) throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_EBOOKPURCHASES_STMT);
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_EBOOKPURCHASES_STMT);
 		ArrayList<Purchase> purchases = new ArrayList<Purchase>();
 		Purchase p = null;
 		stm.setString(1, title);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			p = new Purchase(rs.getString(DataContract.PurchaseTable.COL_USERNAME),
-					rs.getString(DataContract.PurchaseTable.COL_TITLE),
+					rs.getInt(DataContract.PurchaseTable.COL_EBOOKID),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDNUMBER),
 					rs.getString(DataContract.PurchaseTable.COL_EXPIRY),
 					rs.getString(DataContract.PurchaseTable.COL_CVV),
@@ -335,7 +265,7 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public ArrayList<Purchase> getUserPurchases(String username) throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_userPurchases_STMT);
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_userPurchases_STMT);
 		stm.setString(1, username);
 		ResultSet rs = stm.executeQuery();
 		ArrayList<Purchase> purchases = new ArrayList<Purchase>();
@@ -343,7 +273,7 @@ public class DataAccess implements DataInterface {
 		// ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			p = new Purchase(rs.getString(DataContract.PurchaseTable.COL_USERNAME),
-					rs.getString(DataContract.PurchaseTable.COL_TITLE),
+					rs.getInt(DataContract.PurchaseTable.COL_EBOOKID),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDNUMBER),
 					rs.getString(DataContract.PurchaseTable.COL_EXPIRY),
 					rs.getString(DataContract.PurchaseTable.COL_CVV),
@@ -355,10 +285,10 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean checkIfEbookPurchased(String username, String title) throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.checkIfPurchased);
+	public boolean checkIfEbookPurchased(String username, int id) throws SQLException {
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.checkIfPurchased);
 		stm.setString(1, username);
-		stm.setString(2, title);
+		stm.setInt(2, id);
 		ResultSet rs = stm.executeQuery();
 		if (rs.next()) {
 			return true;
@@ -368,14 +298,17 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public ArrayList<EbookUser> getAllEbookUsers() throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_USERS_STMT);
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_USERS_STMT);
 		ArrayList<EbookUser> ebookUsers = new ArrayList<EbookUser>();
 		EbookUser user = null;
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			user = new EbookUser(rs.getString(DataContract.EbookUserTable.COL_USERNAME),
 					rs.getString(DataContract.EbookUserTable.EMAIL),
-					rs.getString(DataContract.EbookUserTable.COL_ADDRESS),
+					rs.getString(DataContract.EbookUserTable.COL_STREET),
+					rs.getInt(DataContract.EbookUserTable.COL_APARTMENT),
+					rs.getString(DataContract.EbookUserTable.COL_CITY),
+					rs.getString(DataContract.EbookUserTable.COL_POSTALCODE),
 					rs.getString(DataContract.EbookUserTable.COL_TELEPHONENUMBER),
 					rs.getString(DataContract.EbookUserTable.COL_PASSWORD),
 					rs.getString(DataContract.EbookUserTable.COL_NICKNAME),
@@ -383,19 +316,22 @@ public class DataAccess implements DataInterface {
 					rs.getString(DataContract.EbookUserTable.COL_PHOTO));
 			ebookUsers.add(user);
 		}
+		DBUtils.conn.commit();
+		stm.close();
+		rs.close();
+
 		return ebookUsers;
 	}
 
 	@Override
 	public ArrayList<Review> getAllUnapprovedReviews() throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_unapprovedReviews_STMT);
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_unapprovedReviews_STMT);
 		ArrayList<Review> reviews = new ArrayList<Review>();
 		Review review = null;
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			review = new Review(rs.getString(DataContract.ReviewsTable.COL_USERNAME),
-					rs.getString(DataContract.ReviewsTable.COL_TITLE),
-					rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
+					rs.getInt(DataContract.ReviewsTable.COL_EBOOKID), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
 					rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
 					rs.getString(DataContract.ReviewsTable.COL_REVIEW));
 			reviews.add(review);
@@ -404,17 +340,18 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public ArrayList<Review> getSingleEbookReviews(String nameOfEbook) throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_ebookApprovedReviews_STMT);
-		stm.setString(1, nameOfEbook);
+	public ArrayList<Review> getSingleEbookReviews(int idOfEbook) throws SQLException {
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookApprovedReviews_STMT);
+		stm.setInt(1, idOfEbook);
 		ResultSet rs = stm.executeQuery();
+		DBUtils.conn.commit();
+		System.out.println("is of book " + idOfEbook);
 		ArrayList<Review> reviews = new ArrayList<Review>();
 		Review review = null;
 		// ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			review = new Review(rs.getString(DataContract.ReviewsTable.COL_USERNAME),
-					rs.getString(DataContract.ReviewsTable.COL_TITLE),
-					rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
+					rs.getInt(DataContract.ReviewsTable.COL_EBOOKID), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
 					rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
 					rs.getString(DataContract.ReviewsTable.COL_REVIEW));
 			reviews.add(review);
@@ -425,9 +362,9 @@ public class DataAccess implements DataInterface {
 	@Override
 	public boolean addNewReview(Review review) throws SQLException {
 
-		PreparedStatement stmt1 = c.prepareStatement(SQLStatements.addNewReview);
+		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.addNewReview);
 		stmt1.setString(1, review.getUsername());
-		stmt1.setString(2, review.getTitle());
+		stmt1.setInt(2, review.getId());
 		stmt1.setString(3, review.getNickname());
 		stmt1.setString(4, review.getReview());
 		stmt1.setInt(5, review.getApproved());
@@ -438,7 +375,7 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public String getNicknameByUsername(String username) throws SQLException {
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.getNicknameByUsername);
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getNicknameByUsername);
 		stmt.setString(1, username);
 		ResultSet rs = stmt.executeQuery();
 
@@ -451,28 +388,139 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public ArrayList<Ebook> getAllEbooks() throws SQLException {
-		PreparedStatement stm = c.prepareStatement(SQLStatements.GET_EBOOKS_STMT);
-		ArrayList<Ebook> ebooks = new ArrayList<Ebook>();
-		Ebook ebook = null;
-		ResultSet rs = stm.executeQuery();
-		while (rs.next()) {
-			ebook = new Ebook(rs.getString(DataContract.EbookTable.COL_NAME),
-					rs.getInt(DataContract.EbookTable.COL_PRICE),
-					rs.getInt(DataContract.EbookTable.COL_LIKESNUM),
-					rs.getString(DataContract.EbookTable.COL_IMAGE),
-					rs.getString(DataContract.EbookTable.COL_SHORTDESCRIPTION));
-			ebooks.add(ebook);
+	public Collection<Ebook> getAllEbooks(InputStream is) throws SQLException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		StringBuilder jsonFileContent = new StringBuilder();
+		String nextLine = null;
+		while ((nextLine = br.readLine()) != null) {
+			jsonFileContent.append(nextLine);
 		}
-		return ebooks;
+		Gson gson = new Gson();
+		Type type = new TypeToken<Collection<Ebook>>() {
+		}.getType();
+		Collection<Ebook> tempEbooks = gson.fromJson(jsonFileContent.toString(), type);
+
+		// Collection<Ebook> ebooks =tempEbooks;
+		// Iterator<Ebook> iter = tempEbooks.iterator();
+		// while (iter.hasNext()) {
+		// System.out.println("iteeeer");
+		// Ebook ebook = iter.next();
+		// PreparedStatement stmt =
+		// DBUtils.conn.prepareStatement(SQLStatements.getLikesNumByTitle);
+		// stmt.setInt(1, ebook.getId());
+		// ResultSet rs = stmt.executeQuery();
+		// //
+		// System.out.println(iter.next().getId()+iter.next().getImage()+iter.next().getLocation());
+		// if (rs.next()) {
+		// System.out.println("rs.next");
+		// ebook.setLikesNum(rs.getInt(DataContract.EbookTable.COL_LIKESNUM));
+		// ebooks.add(ebook);
+		// }
+		// iter.remove();
+		//
+		// }
+		// close
+		br.close();
+		return tempEbooks;
 
 	}
 
+//	@Override
+//	public Collection<Integer> getLikesNumOrderedById() throws SQLException {
+//		Collection<Integer> c = new Collection<Integer>() {
+//
+//			@Override
+//			public <T> T[] toArray(T[] a) {
+//				// TODO Auto-generated method stub
+//				return null;
+//			}
+//
+//			@Override
+//			public Object[] toArray() {
+//				// TODO Auto-generated method stub
+//				return null;
+//			}
+//
+//			@Override
+//			public int size() {
+//				// TODO Auto-generated method stub
+//				return 0;
+//			}
+//
+//			@Override
+//			public boolean retainAll(Collection<?> c) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//
+//			@Override
+//			public boolean removeAll(Collection<?> c) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//
+//			@Override
+//			public boolean remove(Object o) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//
+//			@Override
+//			public Iterator<Integer> iterator() {
+//				// TODO Auto-generated method stub
+//				return null;
+//			}
+//
+//			@Override
+//			public boolean isEmpty() {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//
+//			@Override
+//			public boolean containsAll(Collection<?> c) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//
+//			@Override
+//			public boolean contains(Object o) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//
+//			@Override
+//			public void clear() {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public boolean addAll(Collection<? extends Integer> c) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//
+//			@Override
+//			public boolean add(Integer e) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//		};
+//		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getLikesOrderedById);
+//		ResultSet rs = stmt.executeQuery();
+//		while (rs.next()) {
+//			c.add(rs.getInt(DataContract.EbookTable.COL_LIKESNUM));
+//		}
+//		return c;
+//
+//	}
+
 	@Override
 	public boolean addNewPurchase(Purchase p) throws SQLException {
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.addNewPurchase);
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.addNewPurchase);
 		stmt.setString(1, p.getUsername());
-		stmt.setString(2, p.getTitle());
+		stmt.setInt(2, p.getId());
 		stmt.setString(3, p.getCreditCardNumber());
 		stmt.setString(4, p.getExpiry());
 		stmt.setString(5, p.getCvv());
@@ -486,8 +534,8 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public boolean approveReview(Review review) throws SQLException {
-		PreparedStatement stmt1 = c.prepareStatement(SQLStatements.approveReview);
-		stmt1.setString(1, review.getTitle());
+		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.approveReview);
+		stmt1.setInt(1, review.getId());
 		stmt1.setString(2, review.getUsername());
 		stmt1.setString(3, review.getNickname());
 		stmt1.setString(4, review.getReview());
@@ -498,36 +546,36 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean increaseNumOfEbookLikes(String nameOfEbook) throws SQLException {
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.getLikesNumByTitle);
-		stmt.setString(1, nameOfEbook);
+	public boolean increaseNumOfEbookLikes(int idOfEbook) throws SQLException {
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getLikesNumByTitle);
+		stmt.setInt(1, idOfEbook);
 		ResultSet rs = stmt.executeQuery();
 		int likesNum = 0;
 		if (rs.next()) {
 			likesNum = rs.getInt(DataContract.EbookTable.COL_LIKESNUM);
 		}
 		likesNum = likesNum + 1;
-		PreparedStatement stmt1 = c.prepareStatement(SQLStatements.updateLikesNum);
+		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.updateLikesNum);
 		stmt1.setInt(1, likesNum);
-		stmt1.setString(2, nameOfEbook);
+		stmt1.setInt(2, idOfEbook);
 		stmt1.executeUpdate();
 		System.out.println(" num of likes increased");
 		return true;
 	}
 
 	@Override
-	public boolean decreaseNumOfEbookLikes(String nameOfEbook) throws SQLException {
-		PreparedStatement stmt = c.prepareStatement(SQLStatements.getLikesNumByTitle);
-		stmt.setString(1, nameOfEbook);
+	public boolean decreaseNumOfEbookLikes(int idOfEbook) throws SQLException {
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getLikesNumByTitle);
+		stmt.setInt(1, idOfEbook);
 		ResultSet rs = stmt.executeQuery();
 		int likesNum = 0;
 		if (rs.next()) {
 			likesNum = rs.getInt(DataContract.EbookTable.COL_LIKESNUM);
 		}
 		likesNum = likesNum - 1;
-		PreparedStatement stmt1 = c.prepareStatement(SQLStatements.updateLikesNum);
+		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.updateLikesNum);
 		stmt1.setInt(1, likesNum);
-		stmt1.setString(2, nameOfEbook);
+		stmt1.setInt(2, idOfEbook);
 		stmt1.executeUpdate();
 		System.out.println(" num of likes decreased");
 		return true;

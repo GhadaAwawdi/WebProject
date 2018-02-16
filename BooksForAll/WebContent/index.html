@@ -10,7 +10,6 @@
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <style>
 /* form */
-
 body{
 height: 100%;
 margin: 0;
@@ -137,12 +136,30 @@ background-size: cover;
     }
 
 </style>
+
+<script>
+function submitRegistration(){
+	var formData = {};
+	var id=document.getElementById("selectedBook").innerHTML;
+	
+    $("#registrationForm").find("input[name]").each(function (index, node) {
+        formData[node.name] = node.value;
+    });
+
+    formData=JSON.stringify(formData);
+    console.log(formData);
+    $.post("SignUp", formData).done(function (data) {
+        alert(data);
+    });
+}
+</script>
+
 </head>
 <body>
 
 <div class="container">
 	<div class="row">
-		<h2>Fancy Login / Registration form</h2>
+		<h2> Login / Registration </h2>
 	</div>
 </div>
 
@@ -171,9 +188,8 @@ background-size: cover;
 			<h3>Login to your account</h3>
 			<form class="login-form" action="Login" method="post">
 				<label>Username</label>
-				<br>
             <input name ="uName" type="text" name="username"/>
-            <br>
+            
             <label>Password</label>
             <input name="uPass" type="password" name="password"/>
             
@@ -194,7 +210,7 @@ background-size: cover;
         </div>
         <div id="sectionB" class="tab-pane fade">
 			<div class="innter-form">
-            <form class="sa-innate-form" method="post">
+            <form class="sa-innate-form" id="registrationForm">
             <label>Username</label>
             <input type="text" name="username">
             <label>Email</label>
@@ -208,10 +224,10 @@ background-size: cover;
             <label>Nickname</label>
             <input type="text" name="nickname">
             <label>Description</label>
-            <input type="text" name="description">
-            <label>Phote</label>
-            <input type="text" name="photo">
-            <button type="submit">Join now</button>
+            <input type="text" name="shortDescription">
+            <label>Photo</label>
+            <input type="file" accept="image/*" name="photo">
+            <button onclick="submitRegistration()" type="submit">Join now</button>
             <p>By clicking Join now, you agree to hifriends's User Agreement, Privacy Policy, and Cookie Policy.</p>
             </form>
             </div>

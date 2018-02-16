@@ -1,5 +1,6 @@
 package webServlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -11,7 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import dataAccess.DataAccess;
+import model.EbookUser;
+import model.Purchase;
 
 /**
  * Servlet implementation class RemoveEbookUser
@@ -34,13 +39,19 @@ public class RemoveEbookUser extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String username = request.getParameter("username");
+		BufferedReader reader = request.getReader();
+		String userJSON = reader.readLine();
+
+		Gson gson = new Gson();
+		EbookUser user = gson.fromJson(userJSON, EbookUser.class);
 		boolean res = false;
 		DataAccess da = null;
-		if (username != null) {
+		if (user.getUsername() != null) {
 			try {
 				da = new DataAccess();
-				res = da.removeEbookUser(username);
+				res = da.removeEbookUser(user.getUsername());
+	        	da.closeConnection();
+
 			} catch (NamingException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

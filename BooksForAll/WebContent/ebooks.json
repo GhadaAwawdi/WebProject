@@ -1,0 +1,82 @@
+[
+	{
+		"id": "1",
+		"name": "Young Housekeeper",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\1.htm",
+		"image": "ebooks\\1\\images\\cover.jpg",
+		"price": "100",
+		"shortDescription": " kr"
+	},
+	{
+		"id": "2",
+		"name": "The Joy of Life",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\2.htm",
+		"image": "ebooks\\2\\images\\cover.jpg",
+		"price": "100",
+		"shortDescription": ""
+	},
+	{
+		"id": "3",
+		"name": "Inventor of the Telephone",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\3.htm",
+		"image": "ebooks\\3\\images\\cover.jpg",
+		"price": "200",
+		"shortDescription": ""
+	},
+	{
+		"id": "4",
+		"name": "Monsieur Henri",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\4.htm",
+		"image": "ebooks\\4\\images\\cover.jpg",
+		"price": "150",
+		"shortDescription": ""
+	},
+	{
+		"id": "5",
+		"name": "Nietzsche",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\5.htm",
+		"image": "ebooks\\5\\images\\cover.jpg",
+		"price": "400",
+		"shortDescription": ""
+	},
+	{
+		"id": "6",
+		"name": "The Popol Vuh",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\6.htm",
+		"image": "ebooks\\6\\images\\cover.jpg",
+		"price": "250",
+		"shortDescription": ""
+	},
+	{
+		"id": "7",
+		"name": "The Newspaper",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\7.htm",
+		"image": "ebooks\\7\\images\\cover.jpg",
+		"price": "200",
+		"shortDescription": ""
+	},
+	{
+		"id": "8",
+		"name": "The Sugar Creek Gang Digs for Treasure",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\8.htm",
+		"image": "ebooks\\8\\images\\cover.jpg",
+		"price": "200",
+		"shortDescription": ""
+	},
+	{
+		"id": "9",
+		"name": "The Sugar Creek Gang Goes North",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\9.htm",
+		"image": "ebooks\\9\\images\\cover.jpg",
+		"price": "100",
+		"shortDescription": ""
+	},
+	{
+		"id": "10",
+		"name": "The Magical Mimics in Oz",
+		"location": "BooksForAll\\WebContent\\ebooks\\1\\10.htm",
+		"image": "ebooks\\10\\images\\cover.jpg",
+		"price": "120",
+		"shortDescription": ""
+	}
+]

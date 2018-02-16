@@ -1,9 +1,11 @@
 package webServlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -38,27 +40,32 @@ public class GetPurchasedEbooksByUsername extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String username = request.getParameter("username");
-		ArrayList<Purchase> purchases = new ArrayList<Purchase>();
+		BufferedReader reader = request.getReader();
+		String userPurchasesJSON = reader.readLine();
+
+		Gson gson = new Gson();
+		Purchase purchase = gson.fromJson(userPurchasesJSON, Purchase.class);
+		
+		Collection<Purchase> userPurchases = new ArrayList<Purchase>();
 		DataAccess da;
-		if (username != null) {
+		if (purchase.getUsername() != null) {
 			try {
 				da = new DataAccess();
-				purchases = da.getUserPurchases(username);
+				userPurchases = da.getUserPurchases(purchase.getUsername());
+	        	da.closeConnection();
+
 			} catch (SQLException | NamingException e1) {
 				getServletContext().log("Error while closing connection", e1);
 				response.sendError(500);// internal server error
 			}
-			response.addHeader("Content-Type", "application/json");
-			Gson gson = new Gson();
-			PrintWriter writer = response.getWriter();
-
-			for (Purchase purchase : purchases) {
-				String purchaseJsonResult = gson.toJson(purchase.toString());
-				writer.println(purchaseJsonResult);
-				writer.close();
-				System.out.println(purchase.toString());
-			}
+	    	String userPurchasesJsonResult = gson.toJson(userPurchases);
+	  		response.setContentType("application/json");// set content to json
+    	    response.setCharacterEncoding("UTF-8");
+    		PrintWriter writer = response.getWriter();
+           	writer.println(userPurchasesJsonResult);
+           	response.setStatus(200);
+           	writer.flush();
+        	System.out.println(userPurchasesJsonResult);
 		}
 	}
 

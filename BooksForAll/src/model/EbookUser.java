@@ -5,7 +5,10 @@ public class EbookUser {
 	int id;
 	String username;
 	String email;
-	String address;
+	String street;
+	int apartment;
+	String city;
+	String postalCode;
 	String telephoneNumber;
 	String password;
 	String nickname;
@@ -36,12 +39,8 @@ public class EbookUser {
 		this.email = email;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
+	public String getStreet() {
+		return street;
 	}
 
 	public String getTelephoneNumber() {
@@ -84,17 +83,48 @@ public class EbookUser {
 		this.photo = photo;
 	}
 
-	public EbookUser(String username, String email, String address, String telephoneNumber, String password,
+	public EbookUser(String username, String email, String street,int apartment,String city,String postalCode, String telephoneNumber, String password,
 			String nickname, String shortDescription, String photo) {
 		super();
 		this.username = username;
 		this.email = email;
-		this.address = address;
+		this.street = street;
+		this.apartment = apartment;
+		this.city = city;
+		this.postalCode = postalCode;
 		this.telephoneNumber = telephoneNumber;
 		this.password = password;
 		this.nickname = nickname;
 		this.shortDescription = shortDescription;
 		this.photo = photo;
+	}
+
+	public int getApartment() {
+		return apartment;
+	}
+
+	public void setApartment(int apartment) {
+		this.apartment = apartment;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
 	}
 	
 }

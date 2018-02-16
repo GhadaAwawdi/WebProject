@@ -3,18 +3,18 @@ package model;
 public class Purchase {
 
 	String username;
-	String title;
+	int id;
 	String creditCardNumber;
 	String expiry;
 	String cvv;
 	String fullName;
 	String creditCardCompany;
 	
-	public Purchase(String username, String title, String creditCardNumber, String expiry, String cVV, String fullName,
+	public Purchase(String username, int id, String creditCardNumber, String expiry, String cVV, String fullName,
 			String creditCardCompany) {
 		super();
 		this.username = username;
-		this.title = title;
+		this.id = id;
 		this.creditCardNumber = creditCardNumber;
 		this.expiry = expiry;
 		this.cvv = cVV;
@@ -28,11 +28,11 @@ public class Purchase {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getTitle() {
-		return title;
+	public int getId() {
+		return id;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getCreditCardNumber() {
 		return creditCardNumber;

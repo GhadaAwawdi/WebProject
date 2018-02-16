@@ -6,21 +6,21 @@
   </welcome-file-list>
   <context-param>
     <param-name>DB_DATASOURCE</param-name>
-    <param-value>java:comp/env/jdbc/NewDerby</param-value>
+    <param-value>java:comp/env/jdbc/ExampleDatasource</param-value>
   </context-param>
   <context-param>
     <param-name>DB_NAME</param-name>
-    <param-value>sample3</param-value>
+    <param-value>BooksForAll</param-value>
   </context-param>
   <resource-ref>
     <description>Example Database Open</description>
-    <res-ref-name>jdbc/NewDerbyOpen</res-ref-name>
+    <res-ref-name>jdbc/ExampleDatasourceOpen</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
   <resource-ref>
     <description>Example Database Shutdown</description>
-    <res-ref-name>jdbc/NewDerbyShutdown</res-ref-name>
+    <res-ref-name>jdbc/ExampleDatasourceShutdown</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
@@ -29,7 +29,4 @@
                  listener.ManageDB
         </listener-class>
   </listener>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-  </welcome-file-list>
 </web-app>

@@ -2,7 +2,7 @@ package model;
 
 public class Manager {
 
-	private String username, password;//customer "schema"
+	private String username, password;
 
 	public Manager(String username, String password) {
 		super();

@@ -1,5 +1,6 @@
 package webServlets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -10,6 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
 
 import dataAccess.DataAccess;
 import model.Review;
@@ -35,21 +38,25 @@ public class AddEbookReview extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String username = request.getParameter("username");
-		String title = request.getParameter("title");
-		String review = request.getParameter("review");
+		BufferedReader reader = request.getReader();
+		String newReview = reader.readLine();
+
+		Gson gson = new Gson();
+		Review review = gson.fromJson(newReview, Review.class);
 		String nickname = null;
 		boolean res = false;
 		boolean purchased = false;
 		DataAccess da = null;
-		if (username != null && title != null && review != null && review != "") {
+		if (review.getUsername() != null && review.getReview() != null) {
 			try {
 				da = new DataAccess();
-				purchased = da.checkIfEbookPurchased(username, title);
+				purchased = da.checkIfEbookPurchased(review.getUsername(), review.getId());
 				if (purchased == true) {
-					nickname = da.getNicknameByUsername(username);
-					Review r = new Review(username, title, 0, nickname, review);
+					nickname = da.getNicknameByUsername(review.getUsername());
+					Review r = new Review(review.getUsername(), review.getId(), 0, nickname, review.getReview());
 					res = da.addNewReview(r);
+					da.closeConnection();
+
 				}
 			} catch (SQLException | NamingException e) {
 				e.printStackTrace();
