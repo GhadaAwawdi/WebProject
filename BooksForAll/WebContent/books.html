@@ -68,6 +68,11 @@ img:hover {
 				$scope.statuscode = response.status;
 			});
 			
+			$scope.logout = function(){
+				$http.post("Logout").then(function(response){
+					alert(response);
+				});
+			}
 			
 			$scope.BuyEbook =	function (id){
 				document.getElementById("selectedBook").innerHTML = id ;
@@ -171,9 +176,12 @@ function submitPayment(){
 // 	formData=JSON.stringify(formData);
 //  	console.log(formData);
 // }
+
+
 </script>	
 </head>
-<body>
+<body data-ng-app="myApp"
+		data-ng-controller="ebooksCtrl">
 
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -193,15 +201,14 @@ function submitPayment(){
 					<li><a href="#">Page 3</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
 
-	<div class="container" data-ng-app="myApp"
-		data-ng-controller="ebooksCtrl">
+	<div class="container" >
 		<div id="selectedBook" style="color:white;visibility: none;"></div>
 		<table class="table table-striped">
 			<thead>
