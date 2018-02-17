@@ -75,6 +75,7 @@ public class GetAllNicknamesByEbookLikes extends HttpServlet {
 			try {
 				da = new DataAccess();
 				likes = da.getUsersThatLikedEbook(id);
+				//likes.add("nickname2");
 				da.closeConnection();
 
 			} catch (SQLException | NamingException e1) {

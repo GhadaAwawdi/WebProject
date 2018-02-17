@@ -106,6 +106,13 @@ public class ManageDB implements ServletContextListener {
 				stmt1.setString(11, "username2.png");
 				stmt1.executeUpdate();
 				
+				stmt1 = conn.prepareStatement(SQLStatements.addNewLike);
+				stmt1.setString(1, "hadil");
+				stmt1.setInt(2, 1);
+				stmt1.setString(3, "nickname1");
+				stmt1.executeUpdate();
+				
+				
 				stmt1 = conn.prepareStatement(SQLStatements.addNewUser);
 				stmt1.setString(1, "username2");
 				stmt1.setString(2, "email1");

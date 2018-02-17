@@ -59,12 +59,21 @@ public class GetAllReviewsByTitle extends HttpServlet {
 		Collection<Review> reviews = new ArrayList<Review>();
 		Gson gson = new Gson();
 		//Review review = gson.fromJson(sb.toString(), Review.class);
+//		Review r1=new Review("username1", 1,1, "nickname1", "review1");
+//		Review r2=new Review("username2", 1,1, "nickname2", "review2");
+//		Review r3=new Review("username3", 1,1, "nickname3", "review3");
+//		Review r4=new Review("username1", 2,1, "nickname1", "review1111");
+		
 		System.out.println("get reviews;  "+id);
 		DataAccess da;
 		if (Id != null) {
 			try {
 				da = new DataAccess();
 				reviews = da.getSingleEbookReviews(id);
+//				reviews.add(r1);
+//				reviews.add(r2);
+//				reviews.add(r3);
+//				reviews.add(r4);
 				da.closeConnection();
 
 			} catch (SQLException | NamingException e1) {
