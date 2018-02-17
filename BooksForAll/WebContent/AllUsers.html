@@ -81,8 +81,9 @@
 					<td>{{x.password}}</td>
 					<td>{{x.nickname}}</td>
 					<td>{{x.shortDescription}}</td>
-    				<td>no photo</td>
-    				
+    				<td><a data-ng-target="_blank" data-ng-href="{{x.photo}}">
+  					<img data-ng-src="{{x.photo}}" data-ng-alt="Forest" style="width:100px;height:100px">
+					</a></td>
 
 				</tr>
 			</tbody>

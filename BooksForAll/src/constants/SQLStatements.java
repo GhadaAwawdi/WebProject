@@ -70,7 +70,7 @@ public interface SQLStatements {
 	public final static String addNewEbook = "INSERT INTO ebook (likesNum) VALUES (?)";
 	public final static String addNewLike = "INSERT INTO likes (username, id, nickname) VALUES (?,?,?)";
 //	public final static String addNewLike = "INSERT INTO likes (username, title) VALUES (?,?)";
-	public final static String addNewReview = "INSERT INTO reviews (username, id, nickname, review,approved) VALUES (?,?,?,?,?)";
+	public final static String addNewReview = "INSERT INTO reviews (id, username, nickname, review,approved) VALUES (?,?,?,?,?)";
 	public final static String addNewPurchase = "INSERT INTO purchase (username, id, creditCardNumber, expiry, cvv, fullName, creditCardCompany) VALUES (?,?,?,?,?,?,?)";
 
 	public final String GET_Admin_STMT = "SELECT* FROM admin"; 

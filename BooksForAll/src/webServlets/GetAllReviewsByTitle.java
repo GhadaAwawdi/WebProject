@@ -43,7 +43,7 @@ public class GetAllReviewsByTitle extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String sb = request.getParameter("id");
+		
 //		BufferedReader reader = request.getReader();
 	//	String bookId = reader.readLine();
 //		request.setCharacterEncoding("UTF-8");
@@ -54,16 +54,17 @@ public class GetAllReviewsByTitle extends HttpServlet {
 //			sb.append(s);
 //			System.out.println(s);
 //		}
-		
+		String Id = request.getParameter("id");
+		int id=Integer.parseInt(Id);
 		Collection<Review> reviews = new ArrayList<Review>();
 		Gson gson = new Gson();
-		Review review = gson.fromJson(sb.toString(), Review.class);
-		System.out.println(review.getId());
+		//Review review = gson.fromJson(sb.toString(), Review.class);
+		System.out.println("get reviews;  "+id);
 		DataAccess da;
-		if (sb.toString() != null) {
+		if (Id != null) {
 			try {
 				da = new DataAccess();
-				reviews = da.getSingleEbookReviews(review.getId());
+				reviews = da.getSingleEbookReviews(id);
 				da.closeConnection();
 
 			} catch (SQLException | NamingException e1) {

@@ -25,7 +25,7 @@ public interface DataInterface {
 	 * @return number of users that liked the ebook 
 	 * @throws SQLException
 	 */
-	ArrayList<String> getUsersThatLikedEbook(String nameOfEbook) throws SQLException;
+	ArrayList<String> getUsersThatLikedEbook(int ebookId) throws SQLException;
 	ArrayList<Purchase> getAllPurchases() throws SQLException;
 	ArrayList<EbookUser> getAllEbookUsers() throws SQLException;
 	ArrayList<Review> getAllUnapprovedReviews() throws SQLException;

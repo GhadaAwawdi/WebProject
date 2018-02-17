@@ -211,10 +211,10 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public ArrayList<String> getUsersThatLikedEbook(String nameOfEbook) throws SQLException {
+	public ArrayList<String> getUsersThatLikedEbook(int ebookId) throws SQLException {
 
 		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
-		stm.setString(1, nameOfEbook);
+		stm.setInt(1, ebookId);
 		ArrayList<String> nicknames = new ArrayList<String>();
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {

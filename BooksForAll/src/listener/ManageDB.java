@@ -87,12 +87,27 @@ public class ManageDB implements ServletContextListener {
 				stmt1.executeUpdate();
 
 				for(int j=1;j<=10;j++){
-				stmt1 = conn.prepareStatement(SQLStatements.addNewEbook);
-				stmt1.setInt(1, 0);
-				stmt1.executeUpdate();
+					stmt1 = conn.prepareStatement(SQLStatements.addNewEbook);
+					stmt1.setInt(1, 0);
+					stmt1.executeUpdate();
 				}
+				//conn.commit();
 				stmt1 = conn.prepareStatement(SQLStatements.addNewUser);
-				stmt1.setString(1, "username1");
+				stmt1.setString(1, "hadil");
+				stmt1.setString(2, "hadilab8@gmail.com");
+				stmt1.setString(3, "aba hushi");
+				stmt1.setInt(4, 24);
+				stmt1.setString(5, "haifa");
+				stmt1.setString(6, "1234");
+				stmt1.setString(7, "0524442422");
+				stmt1.setString(8, "password");
+				stmt1.setString(9, "hadilabbas");
+				stmt1.setString(10, "student");
+				stmt1.setString(11, "username2.png");
+				stmt1.executeUpdate();
+				
+				stmt1 = conn.prepareStatement(SQLStatements.addNewUser);
+				stmt1.setString(1, "username2");
 				stmt1.setString(2, "email1");
 				stmt1.setString(3, "street1");
 				stmt1.setInt(4, 23);
@@ -102,23 +117,47 @@ public class ManageDB implements ServletContextListener {
 				stmt1.setString(8, "pass1");
 				stmt1.setString(9, "nickname1");
 				stmt1.setString(10, "shortDesc1");
-				stmt1.setString(11, "photo1");
+				stmt1.setString(11, "username1.png");
 				stmt1.executeUpdate();
-
+				
+				
+				stmt1 = conn.prepareStatement(SQLStatements.addNewUser);
+				stmt1.setString(1, "username3");
+				stmt1.setString(2, "email33");
+				stmt1.setString(3, "street23");
+				stmt1.setInt(4, 24);
+				stmt1.setString(5, "city32");
+				stmt1.setString(6, "postCod32");
+				stmt1.setString(7, "telephone32");
+				stmt1.setString(8, "pass23");
+				stmt1.setString(9, "nickname3");
+				stmt1.setString(10, "shortDesc2");
+				stmt1.setString(11, "username3.jpg");
+				stmt1.executeUpdate();
+				
+			
 				stmt1 = conn.prepareStatement(SQLStatements.addNewLike);
 				stmt1.setString(1, "username1");
 				stmt1.setInt(2, 1);
 				stmt1.setString(3, "nickname1");
 				stmt1.executeUpdate();
-
+		
 				stmt1 = conn.prepareStatement(SQLStatements.addNewReview);
-				stmt1.setString(1, "username1");
+				stmt1.setString(1, "username2");
 				stmt1.setInt(2, 2);
-				stmt1.setString(3, "nickname1");
+				stmt1.setString(3, "nickname2");
 				stmt1.setString(4, "review1");
 				stmt1.setInt(5, 0);
 				stmt1.executeUpdate();
-
+				//conn.commit();
+				stmt1 = conn.prepareStatement(SQLStatements.addNewReview);
+				stmt1.setString(1, "username2");
+				stmt1.setInt(2, 2);
+				stmt1.setString(3, "nickname2");
+				stmt1.setString(4, "review133");
+				stmt1.setInt(5, 0);
+				stmt1.executeUpdate();
+			//	conn.commit();
 				@SuppressWarnings("deprecation")
 				Date d = new Date(10, 02, 2018);
 				stmt1 = conn.prepareStatement(SQLStatements.addNewPurchase);
@@ -130,7 +169,7 @@ public class ManageDB implements ServletContextListener {
 				stmt1.setString(6, "fullName1");
 				stmt1.setString(7, "creditComp");
 				stmt1.executeUpdate();
-
+			//	conn.commit();
 				stmt1 = conn.prepareStatement(SQLStatements.addNewPurchase);
 				stmt1.setString(1, "username1");
 				stmt1.setInt(2, 1);

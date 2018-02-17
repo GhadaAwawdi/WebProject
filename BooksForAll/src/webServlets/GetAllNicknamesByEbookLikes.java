@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 import dataAccess.DataAccess;
+import model.Like;
 
 
 /**
@@ -40,28 +41,54 @@ public class GetAllNicknamesByEbookLikes extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String title = request.getParameter("title");
-		Collection<String> nicknames = new ArrayList<String>();
+//		String title = request.getParameter("title");
+//		Collection<String> nicknames = new ArrayList<String>();
+//		DataAccess da;
+//		if (title != null) {
+//			try {
+//				da = new DataAccess();
+//				nicknames = da.getUsersThatLikedEbook(title);
+//	        	da.closeConnection();
+//			} catch (SQLException | NamingException e1) {
+//				getServletContext().log("Error while closing connection", e1);
+//				response.sendError(500);// internal server error
+//			}
+//			response.addHeader("Content-Type", "application/json");
+//			Gson gson = new Gson();
+//	    	String nicknamesJsonResult = gson.toJson(nicknames);
+//	   		response.setContentType("application/json");// set content to json
+//    	    response.setCharacterEncoding("UTF-8");
+//    		PrintWriter writer = response.getWriter();
+//           	writer.println(nicknamesJsonResult);
+//           	response.setStatus(200);
+//           	writer.flush();
+//        	System.out.println(nicknamesJsonResult);
+//		}
+		String Id = request.getParameter("id"); 
+		int id = Integer.parseInt(Id);		
+		Collection<String> likes = new ArrayList<String>();
+		Gson gson = new Gson();
+		//Like like = gson.fromJson(sb.toString(), Like.class);
+		System.out.println(id);
 		DataAccess da;
-		if (title != null) {
+		if (Id != null) {
 			try {
 				da = new DataAccess();
-				nicknames = da.getUsersThatLikedEbook(title);
-	        	da.closeConnection();
+				likes = da.getUsersThatLikedEbook(id);
+				da.closeConnection();
+
 			} catch (SQLException | NamingException e1) {
 				getServletContext().log("Error while closing connection", e1);
 				response.sendError(500);// internal server error
 			}
-			response.addHeader("Content-Type", "application/json");
-			Gson gson = new Gson();
-	    	String nicknamesJsonResult = gson.toJson(nicknames);
-	   		response.setContentType("application/json");// set content to json
-    	    response.setCharacterEncoding("UTF-8");
-    		PrintWriter writer = response.getWriter();
-           	writer.println(nicknamesJsonResult);
-           	response.setStatus(200);
-           	writer.flush();
-        	System.out.println(nicknamesJsonResult);
+			String reviewsJsonResult = gson.toJson(likes);
+			response.setContentType("application/json");// set content to json
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.println(reviewsJsonResult);
+			response.setStatus(200);
+			writer.flush();
+			System.out.println(reviewsJsonResult);
 		}
 	}
 
