@@ -67,7 +67,7 @@ img:hover {
 			});
 			
 			$scope.logout = function(){
-				$http.post("Logout").then(function(response){
+				$http.get('Logout').then(function(response){
 					alert(response);
 				});
 			}
@@ -201,8 +201,7 @@ $(document).ready(function(){
 });
 </script>
 </head>
-<body data-ng-app="myApp"
-		data-ng-controller="ebooksCtrl">
+<body data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
@@ -222,7 +221,7 @@ $(document).ready(function(){
 					<li><a href="#">Page 3</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a href="#" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>

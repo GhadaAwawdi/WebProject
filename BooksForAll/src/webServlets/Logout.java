@@ -30,8 +30,8 @@ public class Logout extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");  
-        PrintWriter out=response.getWriter();  
+    //    response.setContentType("text/html");  
+      //  PrintWriter out=response.getWriter();  
           
      //   request.getRequestDispatcher("link.html").include(request, response);  
           
@@ -39,9 +39,11 @@ public class Logout extends HttpServlet {
         session.invalidate();  
           		Cookie ck=new Cookie("username",null);//deleting cookie object
 		       	response.addCookie(ck);//adding cookie in the response
-        out.print("You are successfully logged out!");  
+		       	response.setStatus(3);
+       // out.print("You are successfully logged out!");  
           
-        out.close();  	}
+       // out.close();  	
+		       	}
 
 
 }
