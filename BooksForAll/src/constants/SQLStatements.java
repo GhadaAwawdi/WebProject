@@ -89,7 +89,8 @@ public interface SQLStatements {
 	public final String GET_Ebook_STMT = "SELECT* FROM ebooks WHERE id=? ";
 		
 	public final String getNicknameByUsername = "SELECT nickname FROM ebookUser WHERE username=? ";
-	
+	public final String selectUserByUserInfo = "SELECT * FROM ebookUser WHERE username=? and password=? and email=? and street=? and apartment=? and city=? and postalCode=? and telephoneNumber=? and nickname=? and shortDescription=? and photo=?";
+
 	public final String getUserByUsernameAndPassword = "SELECT * FROM ebookUser WHERE username=? and password=? ";
 	public final String getAdminUsernameAndPassword = "SELECT * FROM admin WHERE username=? and password=? ";
 	

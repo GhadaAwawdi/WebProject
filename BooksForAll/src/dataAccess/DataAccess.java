@@ -124,10 +124,30 @@ public class DataAccess implements DataInterface {
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) // user exists
 		{
-			System.out.println("rs.next(): " + rs.getString(3));
-			System.out.println("BAD, USER ALREADY EXISTS");
+			System.out.println("BAD, USERname ALREADY EXISTS");
 			return -1;
 		}
+		
+		PreparedStatement stmt3 = DBUtils.conn.prepareStatement(SQLStatements.selectUserByUserInfo);
+		stmt3.setString(1, user.getUsername());
+		stmt3.setString(2, user.getPassword());
+		stmt3.setString(1, user.getEmail());
+		stmt3.setString(1, user.getStreet());
+		stmt3.setInt(1, user.getApartment());
+		stmt3.setString(1, user.getCity());
+		stmt3.setString(1, user.getPostalCode());
+		stmt3.setString(1, user.getTelephoneNumber());
+		stmt3.setString(1, user.getNickname());
+		stmt3.setString(1, user.getShortDescription());
+		stmt3.setString(1, user.getPhoto());
+		rs = stmt3.executeQuery();
+		if (rs.next()) // user exists
+		{
+			System.out.println("BAD, USER ALREADY EXISTS");
+			return 0;
+		}
+		
+		
 		PreparedStatement stmt2 = DBUtils.conn.prepareStatement(SQLStatements.addNewUser);
 		stmt2.setString(1, user.getUsername());
 		stmt2.setString(2, user.getEmail());
@@ -135,11 +155,11 @@ public class DataAccess implements DataInterface {
 		stmt2.setInt(4, user.getApartment());
 		stmt2.setString(5, user.getCity());
 		stmt2.setString(6, user.getPostalCode());
-		stmt2.setString(7, user.getTelephoneNumber());
-		stmt2.setString(8, user.getPassword());
-		stmt2.setString(9, user.getNickname());
-		stmt2.setString(10,user.getShortDescription());
-		stmt2.setString(11, user.getPhoto());
+		stmt2.setString(4, user.getTelephoneNumber());
+		stmt2.setString(5, user.getPassword());
+		stmt2.setString(6, user.getNickname());
+		stmt2.setString(7, user.getShortDescription());
+		stmt2.setString(8, user.getPhoto());
 		stmt2.executeUpdate();
 
 		return 1;
