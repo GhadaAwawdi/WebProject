@@ -1,10 +1,24 @@
-/* form */
+
 body{
-    background:#efefef;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+height: 100%;
+margin: 0;
+max-width:100px;
+max-height:150px;
+background-image: url("img.jpg"); 
+background-attachment: fixed;
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+
 }
+
 .form-body{
     background:#fff;
     padding:20px;
+    right:0;
 }
 .login-form{
     background:rgba(255,255,255,0.8);
@@ -66,7 +80,7 @@ body{
 	display:block;
 }
 .social-login ul li:nth-child(1) a{
-	background:#3b5998;
+	background:#3b5998;''
 }
 .social-login ul li:nth-child(2) a{
 	background:#e74c3d;

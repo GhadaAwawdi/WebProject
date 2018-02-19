@@ -4,55 +4,12 @@
 <meta charset="UTF-8">
 <!-- This viewport controls page dimensions on different devices -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="lib/angular.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="cssEbooks.css">
 
-
-<style>
-
-
-.block-text {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 3px 0 #2c2222;
-    color: #626262;
-    font-size: 14px;
-    margin-top: 0px;
-    padding: 0px 15px 18px;
-    width: 48%;
-}
-.block-text h1 {
- color: #7d4702;
-    font-size: 25px;
-    font-weight: bold;
-    line-height: 21px;
-    text-decoration: none;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.block-text p {
-    color: #585858;
-    font-family: Georgia;
-    font-style: italic;
-    line-height: 20px;
-}
-
-
-
-img {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-    width: 150px;
-}
-
-img:hover {
-    box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-}
-</style>	
 <script>
 		var app = angular.module('myApp', []);
 		app.controller('ebooksCtrl', function($scope, $http) {
@@ -211,14 +168,13 @@ $(document).ready(function(){
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="Home.html">Books For All</a>
+				<a class="navbar-brand" href="homeUser.html">Books For All</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="Home.html">Home</a></li>
-					<li class="active"><a href="#">E-Books</a></li>
-					<li><a href="#">My E-Books</a></li>
-					<li><a href="#">Page 3</a></li>
+					<li><a href="homeUser.html">Home</a></li>
+					<li class="active"><a href="ebooksUser">E-Books</a></li>
+					<li><a href="myEbooks.html">My E-Books</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
