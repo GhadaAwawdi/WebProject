@@ -40,13 +40,17 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		System.out.println("Login");
+		
+		
 		StringBuilder jsonFileContent = new StringBuilder();
 		String line = null;
 		BufferedReader reader = request.getReader();
 		while ((line = reader.readLine()) != null)
 			jsonFileContent.append(line);
-
+		
+		System.out.println(jsonFileContent.toString());
+		
 		Gson gson = new Gson();
 		EbookUser eUser = gson.fromJson(jsonFileContent.toString(), EbookUser.class);
 		Manager manager = gson.fromJson(jsonFileContent.toString(), Manager.class);
@@ -75,18 +79,24 @@ public class Login extends HttpServlet {
 
 		if (ebookUser == null && admin == null) {
 			System.out.println("both admin and user are null");
-			response.setStatus(401);
+			response.setStatus(403);
 
 		} else if (ebookUser != null) {
-			Cookie ck = new Cookie("username", ebookUser.getUsername());												
-			response.addCookie(ck);
+			Cookie ck1 = new Cookie("username", ebookUser.getUsername());
+			Cookie ck2 = new Cookie("type", "user");
+			response.addCookie(ck1);// adding cookie in the response
+			response.addCookie(ck2);
 			HttpSession session = request.getSession();
 			session.setAttribute("username", ebookUser.getUsername());
+			System.out.println("user");
 			response.setStatus(200);
 		} else if (admin != null) {
 			System.out.println("admin is not null");
-			Cookie ck = new Cookie("username", admin.getUsername());
-			response.addCookie(ck);// adding cookie in the response
+			Cookie ck1 = new Cookie("username", admin.getUsername());
+			Cookie ck2 = new Cookie("type", "admin");
+			response.addCookie(ck1);// adding cookie in the response
+
+			response.addCookie(ck2);// adding cookie in the response
 			HttpSession session = request.getSession();
 			session.setAttribute("username", admin.getUsername());
 			response.setStatus(200);

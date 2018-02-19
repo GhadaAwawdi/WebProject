@@ -21,7 +21,7 @@ import model.Purchase;
 /**
  * Servlet implementation class AddNewEbookUser
  */
-@WebServlet("/AddNewEbookUser")
+@WebServlet("/SignUp")
 public class SignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -45,8 +45,9 @@ public class SignUp extends HttpServlet {
 		int res = 0 ;
 		DataAccess da = null;
 		if (user.getUsername()!=null&& user.getEmail()!=null &&
-				user.getStreet()!=null&& user.getCity()!=null&& user.getPostalCode()!=null&& user.getTelephoneNumber()!=null
-				&&user.getPassword()!=null&&user.getNickname()!=null&&user.getShortDescription()!=null&&user.getPhoto()!=null) {
+		user.getStreet()!=null&& user.getCity()!=null&& user.getPostalCode()!=null&& user.getTelephoneNumber()!=null
+				
+		&&user.getPassword()!=null&&user.getNickname()!=null&&user.getShortDescription()!=null&&user.getPhoto()!=null) {
 
 			try {
 				da = new DataAccess();

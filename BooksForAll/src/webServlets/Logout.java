@@ -40,7 +40,10 @@ public class Logout extends HttpServlet {
           		Cookie ck=new Cookie("username",null);//deleting cookie object
 		       	response.addCookie(ck);//adding cookie in the response
 		       	response.setStatus(3);
-       // out.print("You are successfully logged out!");  
+          		Cookie ck1=new Cookie("type",null);//deleting cookie object
+		       	response.addCookie(ck1);//adding cookie in the response
+		       	response.setStatus(3);
+       System.out.println("You are successfully logged out!");  
           
        // out.close();  	
 		       	}

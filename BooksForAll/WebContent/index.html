@@ -143,35 +143,83 @@ background-size: cover;
 
 </style>
 
-<script>
-function submitRegistration(){
-	var regData = {};
-    $("#registrationForm").find("input[name]").each(function (index, node) {
-        regData[node.name] = node.value;
-    });
-    regData=JSON.stringify(regData);
-    console.log(regData);
-    $.post("SignUp", regData).done(function (data) {
-        alert(data);
-    });
-}
-function submitLogin(){
-    var loginData = {};
-    $("#loginForm").find("input[name]").each(function (index, node) {
-        formData[node.name] = node.value;
-    });
 
-    loginData=JSON.stringify(loginData);
-    console.log(loginData);
-    $.post("Login", loginData).done(function (data) {
-        alert(data);
-    });
-}
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('ebooksCtrl', function($scope, $http) {
+	//,$location,$window,$state
+	$scope.submitLogin = function (){
+	    var loginData = {};
+	    $("#loginForm").find("input[name]").each(function (index, node) {
+	    	loginData[node.name] = node.value;
+	    });
+	    loginData=JSON.stringify(loginData);
+	    console.log(loginData);
+		
+		$http.post('Login',loginData).success(function(data,status,headers,config){
+			//alert("success");
+			var allcookies = document.cookie;
+    		cookiearray = allcookies.split(';');   
+   			username = cookiearray[0].split('=')[1];
+   			type = cookiearray[1].split('=')[1];
+   			//console.log(type,username);
+   			if(type=="admin"){
+   				//$location.path('/NewFile.html');
+   				alert("admin");
+   			}
+   			else{
+   				//$location.replace = '/books.html';
+   				alert("user");
+   			}
+		})
+		
+		.error(function(data,status,headers,config){
+			alert("failed");
+			//$window.location.href = '/index.html';
+		});
+	};
+	
+	
+	$scope.submitRegistration = function (){
+	    var loginData = {};
+	    var regData = {};
+	     $("#registrationForm").find("input[name]").each(function (index, node) {
+	         regData[node.name] = node.value;
+	     });
+	     console.log(regData);
+	     regData=JSON.stringify(regData);
+		
+		$http.post('SignUp',regData).success(function(data,status,headers,config){
+			//alert("success");
+// 			var allcookies = document.cookie;
+//     		cookiearray = allcookies.split(';');   
+//    			username = cookiearray[0].split('=')[1];
+//    			type = cookiearray[1].split('=')[1];
+//    			//console.log(type,username);
+//    			if(type=="admin"){
+   				
+//    				//$location.path('/NewFile.html');
+//    			}
+//    			else{
+//    				//$location.replace = '/books.html';
+//    			}
+			alert("success");
+		})
+		.error(function(data,status,headers,config){
+			alert("failed");
+			//$window.location.href = '/index.html';
+		});
+	};
+});
+
+
+
 </script>
 
-</head>
-<body>
 
+</head>
+<body data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <div class="container">
 	<div class="row">
 		<h2> Login / Registration </h2>
@@ -207,9 +255,9 @@ function submitLogin(){
             <label>Password</label>
             <input type="password" name="password"/>
             
-            <button type="submit" onclick="submitLogin()">Sign In</button>
+            <input type="submit" data-ng-click="submitLogin()" value="Sign In"/>
 
-            <a href="">Forgot Password?</a>
+            <a href="#">Forgot Password?</a>
 
 			</form>
 		</div>
@@ -229,8 +277,14 @@ function submitLogin(){
             <input type="text" name="username">
             <label>Email</label>
             <input type="text" name="email">
-            <label>Address</label>
-            <input type="text" name="address">
+            <label>City</label>
+            <input type="text" name="city">
+            <label>Street</label>
+            <input type="text" name="street">
+            <label>Apartment Number</label>
+            <input type="text" name="apartment">
+            <label>Postal Code</label>
+            <input type="text" name="postalCode">
             <label>Telephone Number</label>
             <input type="text" name="telephoneNumber">
             <label>Password</label>
@@ -240,8 +294,9 @@ function submitLogin(){
             <label>Description</label>
             <input type="text" name="shortDescription">
             <label>Photo</label>
-            <input type="file" accept="image/*" name="photo">
-            <button onclick="submitRegistration()" type="submit">Join now</button>
+<!--         <input type="file" accept="image/*" name="photo"> -->
+            <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" />
+            <input data-ng-click="submitRegistration()" type="submit" value="Join now">
             </form>
             </div>
             

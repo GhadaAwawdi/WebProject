@@ -135,11 +135,11 @@ public class DataAccess implements DataInterface {
 		stmt2.setInt(4, user.getApartment());
 		stmt2.setString(5, user.getCity());
 		stmt2.setString(6, user.getPostalCode());
-		stmt2.setString(4, user.getTelephoneNumber());
-		stmt2.setString(5, user.getPassword());
-		stmt2.setString(6, user.getNickname());
-		stmt2.setString(7, user.getShortDescription());
-		stmt2.setString(8, user.getPhoto());
+		stmt2.setString(7, user.getTelephoneNumber());
+		stmt2.setString(8, user.getPassword());
+		stmt2.setString(9, user.getNickname());
+		stmt2.setString(10,user.getShortDescription());
+		stmt2.setString(11, user.getPhoto());
 		stmt2.executeUpdate();
 
 		return 1;
