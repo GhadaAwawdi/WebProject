@@ -10,11 +10,17 @@
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <style>
 /* form */
+
 body{
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
 height: 100%;
 margin: 0;
+max-width:100px;
+max-height:150px;
 background-image: url("img.jpg"); 
-
+background-attachment: fixed;
 background-position: center;
 background-repeat: no-repeat;
 background-size: cover;
@@ -139,16 +145,25 @@ background-size: cover;
 
 <script>
 function submitRegistration(){
-	var formData = {};
-	var id=document.getElementById("selectedBook").innerHTML;
-	
+	var regData = {};
     $("#registrationForm").find("input[name]").each(function (index, node) {
+        regData[node.name] = node.value;
+    });
+    regData=JSON.stringify(regData);
+    console.log(regData);
+    $.post("SignUp", regData).done(function (data) {
+        alert(data);
+    });
+}
+function submitLogin(){
+    var loginData = {};
+    $("#loginForm").find("input[name]").each(function (index, node) {
         formData[node.name] = node.value;
     });
 
-    formData=JSON.stringify(formData);
-    console.log(formData);
-    $.post("SignUp", formData).done(function (data) {
+    loginData=JSON.stringify(loginData);
+    console.log(loginData);
+    $.post("Login", loginData).done(function (data) {
         alert(data);
     });
 }
@@ -186,14 +201,13 @@ function submitRegistration(){
 		        <div class="innter-form">
 		
 			<h3>Login to your account</h3>
-			<form class="login-form" action="Login" method="post">
-				<label>Username</label>
-            <input name ="uName" type="text" name="username"/>
-            
+			<form class="login-form" id="loginForm">
+			<label>Username</label>
+            <input type="text" name="username"/>
             <label>Password</label>
-            <input name="uPass" type="password" name="password"/>
+            <input type="password" name="password"/>
             
-            <button type="submit">Sign In</button>
+            <button type="submit" onclick="submitLogin()">Sign In</button>
 
             <a href="">Forgot Password?</a>
 
