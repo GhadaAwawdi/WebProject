@@ -50,8 +50,8 @@ public class GetAllReviewsByTitle extends HttpServlet {
 		while ((line = reader.readLine()) != null)
 			jsonFileContent.append(line);
 		
-		
-	//	String Id = request.getParameter("id");
+		System.out.println(jsonFileContent);
+		String title = request.getParameter("title");
 	//	int id=Integer.parseInt(Id);
 		Collection<Review> reviews = new ArrayList<Review>();
 		Gson gson = new Gson();
@@ -68,7 +68,7 @@ public class GetAllReviewsByTitle extends HttpServlet {
 		if (jsonFileContent.toString() != null) {
 			try {
 				da = new DataAccess();
-				reviews = da.getSingleEbookReviews(rev.getTitle());
+				reviews = da.getSingleEbookReviews(title);
 //				reviews.add(r1);
 //				reviews.add(r2);
 //				reviews.add(r3);
