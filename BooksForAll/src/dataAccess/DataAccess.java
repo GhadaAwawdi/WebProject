@@ -222,14 +222,18 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public int numOfEbookLikes(String title) throws SQLException {
-
+		System.out.println(title);
 		int count = 0;
-		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
+		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getLikesNumByTitle);
 		stmt.setString(1, title);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
-			count++;
+//			count++;
+		count = rs.getInt("likesNum");
+
 		}
+		count = rs.getInt("likesNum");
+		System.out.println(count);
 		return count;
 	}
 
