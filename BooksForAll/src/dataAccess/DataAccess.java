@@ -261,10 +261,11 @@ public class DataAccess implements DataInterface {
 					rs.getString(DataContract.PurchaseTable.COL_FULLNAME),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDCOMPANY));
 			Date date = new Date(rs.getTimestamp(DataContract.PurchaseTable.COL_TIME).getTime());
-			String formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
+			String formatter = new SimpleDateFormat("yyyy-MM-dd").format(date);
 			//	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			p.setTime(formatter);
 			purchases.add(p);
+			System.out.println("time is "+p.getTime()+" "+date);
 		}
 		return purchases;
 	}

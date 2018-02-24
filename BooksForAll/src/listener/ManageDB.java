@@ -32,11 +32,13 @@ import com.google.gson.reflect.TypeToken;
 
 import constants.Constants;
 import constants.SQLStatements;
+import dataAccess.DataContract;
 import model.Ebook;
 import model.EbookUser;
 import model.Like;
 import model.Purchase;
 import model.Review;
+import utils.DBUtils;
 
 /**
  * An example listener that reads the customer json file and populates the data
@@ -303,6 +305,19 @@ public class ManageDB implements ServletContextListener {
 					pstmt2.setString(2, like.getTitle());
 					pstmt2.setString(3, like.getNickname());
 					pstmt2.executeUpdate();
+					
+					PreparedStatement stm = conn.prepareStatement(SQLStatements.getLikesNumByTitle);
+					stm.setString(1, like.getTitle());
+					ResultSet res = stm.executeQuery();
+					int likesNum = 0;
+					if (res.next()) {
+						likesNum = res.getInt(DataContract.EbookTable.COL_LIKESNUM);
+					}
+					likesNum = likesNum + 1;
+					PreparedStatement stm1 = conn.prepareStatement(SQLStatements.updateLikesNum);
+					stm1.setInt(1, likesNum);
+					stm1.setString(2, like.getTitle());
+					stm1.executeUpdate();
 				}
 				
 				PreparedStatement pstmt3 = conn.prepareStatement(SQLStatements.addNewReview);

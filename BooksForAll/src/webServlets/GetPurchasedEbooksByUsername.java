@@ -45,19 +45,19 @@ public class GetPurchasedEbooksByUsername extends HttpServlet {
 		BufferedReader reader = request.getReader();
 		while ((line = reader.readLine()) != null)
 			jsonFileContent.append(line);
-		
+		String username = request.getParameter("username");
 		Gson gson = new Gson();
 		Purchase purchase = gson.fromJson(jsonFileContent.toString(), Purchase.class);
-		
+		System.out.println("GetPurchasedEbooksByUsername: " +username);
 		//String username = request.getParameter("username");
 		//System.out.println("in purchases "+username);
 
 		Collection<Purchase> userPurchases = new ArrayList<Purchase>();
 		DataAccess da;
-		if (jsonFileContent.toString()!= null && !jsonFileContent.toString().equals("")) {
+		if (jsonFileContent.toString()!= null) {
 			try {
 				da = new DataAccess();
-				userPurchases = da.getUserPurchases(purchase.getUsername());
+				userPurchases = da.getUserPurchases(username);
 	        	da.closeConnection();
 
 			} catch (SQLException | NamingException e1) {
