@@ -183,19 +183,17 @@ img:hover {opacity: 0.7;}
 				document.getElementById("selectedBook").innerHTML = id;
 				document.getElementById("selectedBook").style.visibility = " none";
 			}
-			$scope.getReviews = function(id, title) {
-				document.getElementById('ebookName').innerHTML = title;
+			$scope.getReviews =function (id,title){
+				document.getElementById('ebookName').innerHTML =  title;
 				var temp = {
-						{title: title}
+					title: title
 				};
 				var jsonId = JSON.stringify(temp);
 				var pars = {
-					params : {
-						id : id
-					}
+					params:{title: title}
 				};
-				//console.log(jsonId)
-				$http.get('GetAllReviewsByTitle', pars).then(function(response) {
+				console.log(jsonId)
+				$http.get('GetAllReviewsByTitle',pars).then(function(response) {
 					$scope.reviews = response.data;
 					$scope.statusCode = response.status;
 				});
@@ -278,7 +276,7 @@ img:hover {opacity: 0.7;}
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li><a href="homeUser.html">Home</a></li>
-					<li class="active"><a href="ebooksUser">E-Books</a></li>
+					<li class="active"><a href="ebooksUser.html">E-Books</a></li>
 					<li><a href="myEbooks.html">My E-Books</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

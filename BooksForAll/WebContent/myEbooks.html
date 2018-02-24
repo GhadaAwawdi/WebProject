@@ -193,13 +193,26 @@ img:hover {opacity: 0.7;}
 		                       window.location.href='homeAdmin.html';
 		                   }
 		                   else{
-		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
+		                	   var allcookies = document.cookie;
+		                       cookiearray = allcookies.split(';');
+		                       var username = cookiearray[0].split('=')[1]; 
+		                		var pars = {
+		                			params : {username : username}
+		               			};
+		                		console.log(username);
+		                		$http.get('GetPurchasedEbooksByUsername', pars).then(function(response) {
+		                			$scope.myEbooks = response.data;
+		               				$scope.statusCode = response.status;
+		               			});
+		                	
+		          
+		                	   //$http.get('GetPurchasedEbooksByUsername').then(function(response) {
+		        			//$scope.myEbooks = response.data;
 
-		        		});
-						$scope.myVar = true;
-		                   alert('suuu')
-		                   }
+		        			//});
+							$scope.myVar = true;
+			                alert('suuu')
+		              }
 		            }
 		        });
 
@@ -254,24 +267,7 @@ img:hover {opacity: 0.7;}
 			document.getElementById("allLikes").setAttribute("title", "");
 		}
 
-		$scope.getReviews = function(id, title) {
-			document.getElementById('ebookName').innerHTML = title;
-			var temp = {
-				id : id
-			};
-			var jsonId = JSON.stringify(temp);
-			var pars = {
-				params : {
-					id : id
-				}
-			};
-			//console.log(jsonId)
-			$http.get('GetAllReviewsByTitle', pars).then(function(response) {
-				$scope.reviews = response.data;
-				$scope.statusCode = response.status;
-			});
-		}
-		
+	
 		$scope.openImg = function(imgId,source,alter){
 			console.log("heeey")
 		    	var modal = document.getElementById('ghadaModal');
@@ -337,12 +333,12 @@ img:hover {opacity: 0.7;}
 				</tr>
 			</thead>
 			<tbody>
-				<tr data-ng-repeat="x in allEbooks">
+				<tr data-ng-repeat="x in myEbooks">
 					<td>{{x.title}}</td>
 					<td>
   <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
 </td>					<td>{{x.shortDescription}}</td>
-					<td>    <a  href="#" data-ng-click="openBook(x.location)">CLICK ME</a>
+					<td>    <a  href="#" data-ng-click="openBook(x.location)">Read Me</a>
 					</td>
 
 				</tr>
