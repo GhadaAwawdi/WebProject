@@ -211,7 +211,7 @@ img:hover {opacity: 0.7;}
 
 		        			//});
 							$scope.myVar = true;
-			                alert('suuu')
+			              // alert('suuu')
 		              }
 		            }
 		        });
@@ -245,25 +245,25 @@ img:hover {opacity: 0.7;}
 
 			});
 		}
-		
-		
+		$scope.AddReview = function(title) {
+			document.getElementById("selectedBook").innerHTML = title;
+			document.getElementById("selectedBook").style.visibility = " none";
+		}
 		$scope.AddNewLike =function (title){
-			v
-			var pars = {
-				params:{title: title}
-			};
+// 			var pars = {
+// 				params:{title: title}
+// 			};
 			var allcookies = document.cookie;
 	        cookiearray = allcookies.split(';');
 			var username = cookiearray[0].split('=')[1]; 
-			ar temp = {
+			var temp = {
 					title: title,
 					username:username
 			};
 			var jsonTitle = JSON.stringify(temp);
 			console.log(jsonTitle);
-			$http.post('',jsonTitle).then(function(response) {
-				//$scope.like = response.data;
-				//$scope.statusCode = response.status;
+			$http.post('AddNewEbookLike',jsonTitle).then(function(response) {
+				alert('like added successfully')
 			});
 		}
        $scope.getReviews =function (id,title){
@@ -329,6 +329,35 @@ img:hover {opacity: 0.7;}
 		}
 	});
 </script>
+<script>
+function submitAddingReview() {
+	var formData = {};
+	var title = document.getElementById("selectedBook").innerHTML;
+	formData["title"] = title;
+	var allcookies = document.cookie;
+	cookiearray = allcookies.split(';');
+	name = cookiearray[0].split('=')[0];
+	value = cookiearray[0].split('=')[1];
+	formData["username"] = value;
+	//formData["nickname"] = "Ghada";
+	//formData["approved"] = 0;
+	$("#addReviewForm").find("input[name]").each(function(index, node) {
+		formData[node.name] = node.value;
+	});
+	
+	formData = JSON.stringify(formData);
+	console.log(formData);
+	$.post("AddEbookReview", formData).done(function(data) {
+		alert(data);
+
+		$('#addReviewModal').modal('toggle');
+		document.getElementById("selectedBook").innerHTML = "";
+
+		//$('#payModal').dialog("close")
+		//$.modal.close();
+	});
+}
+</script>
 
 </head>
 <body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
@@ -356,7 +385,6 @@ img:hover {opacity: 0.7;}
 	</nav>
 	
 	<div class="container">
-		<p id="test"></p>
 		<div  id="selectedBook" style="color: white; visibility: none;"></div>
 		<table  class="table table-striped">
 			<thead data-ng-cloak>
@@ -385,7 +413,7 @@ img:hover {opacity: 0.7;}
 				<td><a class="btn btn-block btn-primary" data-ng-click="AddNewLike(x.title)" >
 			 		Like
     				</a></td>
-    				<td><a class="btn btn-block btn-primary" data-ng-click="AddNewReview(x.title)" >
+    				<td><a class="btn btn-block btn-primary" data-ng-click="AddReview(x.title)" data-toggle="modal" data-target="#addReviewModal"  >
 			 		Add Review
     				</a></td>
 				
@@ -435,7 +463,38 @@ img:hover {opacity: 0.7;}
       
     </div>
   </div>
-
+  
+  <div class="modal fade" id="addReviewModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"> Add new Review</h4>
+        </div>
+        <div class="modal-body">
+			<div class="container">
+				<form role="form" name="addReviewForm" id="addReviewForm">
+        		<div class="row">
+					<input name="review" style="width: 400px; height: 100px;" type="text">
+				</div>
+				<br>
+				<div class="row">
+					<input type="submit" style="width: 100px;" class="btn btn-block btn-primary" onclick="submitAddingReview()" value="Add Review">
+        		</div>
+        		</form>
+    		</div>	
+		</div>          
+		
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
+  
+	
 		</div>
 	
 </body>

@@ -395,8 +395,8 @@ public class DataAccess implements DataInterface {
 	public boolean addNewReview(Review review) throws SQLException {
 
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.addNewReview);
-		stmt1.setString(1, review.getUsername());
-		stmt1.setString(2, review.getTitle());
+		stmt1.setString(1, review.getTitle());
+		stmt1.setString(2, review.getUsername());
 		stmt1.setString(3, review.getNickname());
 		stmt1.setString(4, review.getReview());
 		stmt1.setInt(5, review.getApproved());
