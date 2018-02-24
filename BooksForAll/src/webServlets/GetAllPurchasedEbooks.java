@@ -39,7 +39,7 @@ public class GetAllPurchasedEbooks extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+System.out.println("get purchases");
 		Collection<Purchase> purchases = new ArrayList<Purchase>();
 		DataAccess da;
 		try {

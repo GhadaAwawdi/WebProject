@@ -88,6 +88,7 @@ public class Login extends HttpServlet {
 			response.addCookie(ck2);
 			HttpSession session = request.getSession();
 			session.setAttribute("username", ebookUser.getUsername());
+			session.setAttribute("type", "user");
 			System.out.println("user");
 			response.setStatus(200);
 		} else if (admin != null) {
@@ -99,6 +100,9 @@ public class Login extends HttpServlet {
 			response.addCookie(ck2);// adding cookie in the response
 			HttpSession session = request.getSession();
 			session.setAttribute("username", admin.getUsername());
+			session.setAttribute("type", "admin");
+	   		response.setContentType("application/json");// set content to json
+		    response.setCharacterEncoding("UTF-8");
 			response.setStatus(200);
 
 		} 

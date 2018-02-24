@@ -1,165 +1,270 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <head>
 <meta charset="UTF-8">
-<!-- This viewport controls page dimensions on different devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="lib/angular.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="cssEbooks.css">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="lib/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="cssEbooks.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<title> Ebooks</title>
+<style>
+
+img {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+img:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+#ghadaModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {    
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+
+</style>
 <script>
-		var app = angular.module('myApp', []);
-		app.controller('ebooksCtrl', function($scope, $http) {
+	var app = angular.module('myApp', []);
+	app.controller('ebooksCtrl', function($scope, $http,$window) {		
+		
+			var timerhandler;
+
+		    $scope.CheckNow = function()
+		    {
+		        $.ajax(
+		        {
+		            type: 'GET',
+		            url: 'GetAllLikesNumOrdered',
+		            success: function(data) 
+		            {
+		     //       	alert('success');
+		                var allcookies = document.cookie;
+		                cookiearray = allcookies.split(';');
+		                  // username = cookiearray[0].split('=')[1]; 
+		                   type = cookiearray[1].split('=')[1];  
+		                   console.log(type)
+		                   if(type=="admin"){
+		                       window.location.href='homeAdmin.html';
+		                   }
+		                   else{
+		           		$http.get('GetAllEbooks').then(function(response) {
+		        			$scope.allEbooks = response.data;
+
+		        		});
+						$scope.myVar = true;
+		                   alert('suuu')
+		                   }
+		            }
+		        });
+
+		    }
+		    console.log("ajaaax")
+		    timerhandler = setInterval($scope.CheckNow,50000);
+					
 			$http.get('GetAllEbooks').then(function(response) {
 				$scope.myData = response.data;
-				$scope.im=null;
+				$scope.im = null;
 				$scope.statuscode = response.status;
 			});
-			$http.get('GetAllLikesNumOrdered').then(function(response) {
-				$scope.likes = response.data;
-				$scope.statuscode = response.status;
-			});
-			
+		//	$http.get('GetAllLikesNumOrdered').then(function(response) {
+		//		$scope.likes = response.data;
+		//		$scope.statuscode = response.status;
+		//	});
+
 			$scope.logout = function(){
-				$http.get('Logout').then(function(response){
+				$http.get("Logout").then(function(response){
 					alert(response);
+                    window.location.href='index.html';
+
 				});
 			}
-			$scope.showLikes = function (id){
+			$scope.showLikes = function(id) {
 				var pars = {
-					params:{id: id}
+					params : {
+						id : id
+					}
 				};
-				$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
-					$scope.likes = response.data;
-					$scope.likeStatusCode = response.status;
-				});
-				
+				$http.get('GetAllNicknamesByEbookLikes', pars).then(
+						function(response) {
+							$scope.likes = response.data;
+							$scope.likeStatusCode = response.status;
+						});
+
 				console.log($scope.likes);
-				document.getElementById("allLikes").setAttribute("title", $scope.likes);
+				document.getElementById("allLikes").setAttribute("title",
+						$scope.likes);
 
 			}
-			$scope.hideLikes = function (){
+			$scope.hideLikes = function() {
 				//$scope.likes=null;
 				document.getElementById("allLikes").setAttribute("title", "");
 			}
-			
-			$scope.BuyEbook =	function (id,title){
-				document.getElementById("BuyEbookName").innerHTML = "paying for: "+title ;
-				document.getElementById("selectedBook").innerHTML = id ;
-				document.getElementById("selectedBook").style.visibility=" none";
+
+			$scope.BuyEbook = function(id, title) {
+				document.getElementById("BuyEbookName").innerHTML = "paying for: "
+						+ title;
+				document.getElementById("selectedBook").innerHTML = id;
+				document.getElementById("selectedBook").style.visibility = " none";
 			}
-			$scope.getReviews =function (id,title){
-				document.getElementById('ebookName').innerHTML =  title;
+			$scope.getReviews = function(id, title) {
+				document.getElementById('ebookName').innerHTML = title;
 				var temp = {
-					id: id,
+						{title: title}
 				};
 				var jsonId = JSON.stringify(temp);
 				var pars = {
-					params:{id: id}
+					params : {
+						id : id
+					}
 				};
 				//console.log(jsonId)
-				$http.get('GetAllReviewsByTitle',pars).then(function(response) {
+				$http.get('GetAllReviewsByTitle', pars).then(function(response) {
 					$scope.reviews = response.data;
 					$scope.statusCode = response.status;
 				});
 			}
+		
+			$scope.openImg = function(imgId,source,alter){
+		    	var modal = document.getElementById('ghadaModal');
+
+		    	// Get the image and insert it inside the modal - use its "alt" text as a caption
+		    	var img = document.getElementById(imgId);
+		    	var modalImg = document.getElementById("img01");
+		    	var captionText = document.getElementById("caption");
+		    	    modal.style.display = "block";
+		    	    modalImg.src = source;
+		    	    captionText.innerHTML = alter;
+		    	// Get the <span> element that closes the modal
+		    	var span = document.getElementsByClassName("close")[0];
+
+		    	// When the user clicks on <span> (x), close the modal
+		    	span.onclick = function() { 
+		    	    modal.style.display = "none";
+		    	}
+		}
+			function submitPayment() {
+				//var formData = $("#payment-form").serializeArray();
+				//formData=JSON.stringify(formData);
+				var formData = {};
+				var id = document.getElementById("selectedBook").innerHTML;
+				formData["id"] = id;
+				var allcookies = document.cookie;
+				cookiearray = allcookies.split(';');
+				name = cookiearray[0].split('=')[0];
+				value = cookiearray[0].split('=')[1];
+				formData[name] = value;
+
+				$("#payment-form").find("input[name]").each(function(index, node) {
+					formData[node.name] = node.value;
+				});
+				$("#payment-form").find("select[name]").each(function(index, node) {
+					formData[node.name] = node.value;
+				});
+				//if(!(formData["id"]!=null&&formData["username"]!=null&&formData["fullName"]!=null&&formData["expiry"]!=null&&formData["cvv"]!=null&&formData["creditCardNumber"]!=null&&formData["creditCardComapany"]!=null)){
+				//return false;
+				//	}
+
+				//d=JSON.stringify(formData["creditCardNumber"]);
+				//console.log(d.replace(/\s/g, ''));  // ##A#B##C###D#EF#
+				//e=JSON.stringify(formData["expiry"]);
+
+				formData = JSON.stringify(formData);
+				$.post("AddNewEbookPurchase", formData).done(function(data) {
+					alert(data);
+
+					$('#payModal').modal('toggle');
+					document.getElementById("selectedBook").innerHTML = "";
+
+					//$('#payModal').dialog("close")
+					//$.modal.close();
+				});
+			}
 			
-			
-			$scope.name = null;
-			$scope.age = null;
-			$scope.address = null;
-			$scope.lblMsg = null;
-			$scope.postdata = function (name, age, address) {
-			var data = {
-				username: name,
-				id: address,
-			};
-			//Call the services
-			var jsonData = JSON.stringify(data);
-			$http.post('AddNewEbookLike',jsonData).then(function (response) {
-			if (response.data)
-				$scope.msg = "Post Data Submitted Successfully!" ;
-			}, function (response) {
-				$scope.msg = "Service not Exists"+ jsonData;
-				$scope.statusval = response.status;
-				$scope.statustext = response.statusText;
-				$scope.headers = response.headers();
-				
+			$(document).ready(function() {
+				$('[data-toggle="tooltip"]').tooltip();
 			});
-		};
 	});
-	</script>
-<script>
-// function submitPayment(){
-// 	var formData = JSON.stringify($("#payForm").serializeArray());
-// 	console.log(formData);
-// 	$.ajax({
-// 		  type: "POST",
-// 		  url: "AddNewEbookPurchase",
-// 		  data: formData,
-// 		  success: function(){},
-// 		  dataType: "json",
-// 		  contentType : "application/json"
-// 	});
-// }
-function submitPayment(){
-    //var formData = $("#payment-form").serializeArray();
-	//formData=JSON.stringify(formData);
-	var formData = {};
-	var id=document.getElementById("selectedBook").innerHTML;
-	formData["id"]=id;
-	var allcookies = document.cookie;
-    cookiearray = allcookies.split(';');   
-   	name = cookiearray[0].split('=')[0];
-   	value = cookiearray[0].split('=')[1];
-   	formData[name] = value;
- 	
-    $("#payment-form").find("input[name]").each(function (index, node) {
-        formData[node.name] = node.value;
-    });
-    $("#payment-form").find("select[name]").each(function (index, node) {
-        formData[node.name] = node.value;
-    });
-   	//if(!(formData["id"]!=null&&formData["username"]!=null&&formData["fullName"]!=null&&formData["expiry"]!=null&&formData["cvv"]!=null&&formData["creditCardNumber"]!=null&&formData["creditCardComapany"]!=null)){
-   		//return false;
-   //	}
-	
-    //d=JSON.stringify(formData["creditCardNumber"]);
-    //console.log(d.replace(/\s/g, ''));  // ##A#B##C###D#EF#
-    //e=JSON.stringify(formData["expiry"]);
-    
-    
-    formData=JSON.stringify(formData);
-    $.post("AddNewEbookPurchase", formData).done(function (data) {
-        alert(data);
-        
-   		$('#payModal').modal('toggle');
-   		document.getElementById("selectedBook").innerHTML="";
-
-        //$('#payModal').dialog("close")
-    	//$.modal.close();
-    });
-}
-
-// function f(){
-// 	var formData = $("#payment-form").serializeArray();
-// 	formData=JSON.stringify(formData);
-//  	console.log(formData);
-// }
-
-
-</script>	
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();   
-});
 </script>
-</head>
-<body data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 
+</head>
+<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -177,20 +282,19 @@ $(document).ready(function(){
 					<li><a href="myEbooks.html">My E-Books</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a href="index.html" data-ng-click="logout()"><span
+							class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-
-
-	<div class="container" >
-		<p id="test"></p>
-		<div id="selectedBook" style="color:white;visibility: none;"></div>
+	
+<div class="container">
+		<div id="selectedBook" style="color: white; visibility: none;"></div>
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Name</th>
+					<th>Title</th>
 					<th>Image</th>
 					<th>Price</th>
 					<th>Short Description</th>
@@ -201,218 +305,179 @@ $(document).ready(function(){
 			</thead>
 			<tbody>
 				<tr data-ng-repeat="x in myData">
-					<td>{{x.name}}</td>
-					<td><a data-ng-target="_blank" data-ng-href="{{x.image}}">
-  <img data-ng-src="{{x.image}}" data-ng-alt="Forest" style="width:150px">
-</a></td>
+					<td>{{x.title}}</td>
+					<td>
+  <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
+</td>
 					<td>{{x.price}}</td>
 					<td>{{x.shortDescription}}</td>
-					<td>
-					<a id="allLikes" data-toggle="tooltip" data-ng-mouseover="showLikes(x.id)" data-ng-mouseleave="hideLikes()">{{x.likesNum}}</a>
-<!-- aria-describedby="tooltip177649" 	<div class="tooltip fade top in" role="tooltip" id="tooltip177649" ></div> -->
+					<td><a id="allLikes" data-toggle="tooltip"
+						data-ng-mouseover="showLikes(x.id)"
+						data-ng-mouseleave="hideLikes()">{{x.likesNum}}</a> <!-- aria-describedby="tooltip177649" 	<div class="tooltip fade top in" role="tooltip" id="tooltip177649" ></div> -->
 					</td>
-					<td><a class="btn btn-block btn-primary" data-ng-click="getReviews(x.id,x.name)" data-toggle="modal" data-target="#myModal" >
-			 		Reviews
-    				</a>
-    				</td>
-					<td><a style="background-color:green;" class="btn btn-block btn-primary" data-ng-click="BuyEbook(x.id,x.name)" data-toggle="modal" data-target="#payModal" >
-			 		Buy
-    				</a>
-    				</td>
+					<td><a class="btn btn-block btn-primary"
+						data-ng-click="getReviews(x.id,x.title)" data-toggle="modal"
+						data-target="#myModal"> Reviews </a></td>
+					<td><a style="background-color: green;"
+						class="btn btn-block btn-primary"
+						data-ng-click="BuyEbook(x.id,x.title)" data-toggle="modal"
+						data-target="#payModal"> Buy </a></td>
 				</tr>
 			</tbody>
 		</table>
-		
-	  	
-		<div>
-
-Name : <input data-ng-model="name" /><br/><br/>
-
-Age : <input data-ng-model="age" /><br/><br/>
-
-Address : <input data-ng-model="address" /><br/><br/>
-
-<input type="button" value="Send" data-ng-click="postdata(name, age, address)" /> <br/><br/>
-
+		<div id="ghadaModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+  <div id="caption"></div>
 </div>
 
-<p>Output Message : {{msg}}</p>
 
-<p>StatusCode: {{statusval}}</p>
+		<div class="container">
 
-<p>Status: {{statustext}}</p>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" role="dialog">
+				<div class="modal-dialog">
 
-<p>Response Headers: {{headers}}</p>
-
-	
-<div class="container">
-
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="ebookName"></h4>
-        </div>
-        <div class="modal-body">
-			<div class="container">
-        		<div class="row">
-					<div data-ng-repeat="y in reviews"   >
-					<!-- data-ng-repeat="y in reviews" -->
-   			    		<div class="block-text rel zmin">
-			       		 	<h1>{{y.nickname}}</h1>
-			       		 	<p>{{y.review}}</p>
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title" id="ebookName"></h4>
 						</div>
-						<br>
+						<div class="modal-body">
+							<div class="container">
+								<div class="row">
+									<div data-ng-repeat="y in reviews">
+										<!-- data-ng-repeat="y in reviews" -->
+										<div class="block-text rel zmin">
+											<h1>{{y.nickname}}</h1>
+											<p>{{y.review}}</p>
+										</div>
+										<br>
+									</div>
+								</div>
+							</div>
+						</div>
+
 					</div>
-        		</div>
-    		</div>	
-		</div>          
-		
-        </div>
-        
-      </div>
-      
-    </div>
-  </div>
- 
 
-  <div class="container">
-  
-  <div class="modal fade" id="payModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="BuyEbookName"></h4>
-           
-        </div>
-        <div class="modal-body">
-			<div class="container">
-        		<div class="row">
-					
-        <div class="col-xs-12 col-md-4">
+				</div>
 
-            <div class="panel panel-default credit-card-box" style="display: inline-block;">
-               
-                <div class="panel-body">
-                    <form role="form" name="payForm" id="payment-form"  >
-<!--                     action="AddNewEbookPurchase" method="post" -->
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    
-                                 
-                                    <label for="name">FULL NAME</label>
-                                      	<input type="text" class="form-control" name="fullName"  required autofocus />
-                                    
-                                </div>                            
-                            </div>
-                        </div>
-<!--                         <div class="row"> -->
-<!--                         <button onclick="f()">click here</button> -->
-<!--                         </div> -->
-                      
-                        
-                         <div class="row">
-                            <div class="col-xs-4 col-md-4">
-                                <div class="form-group">
-                                  <label for="cardNumber11">CHOOSE</label>
-                                    <div class="input-group">
-                                   	<select name="creditCardCompany" class="form-control selectpicker" id="method">
-      									<option value="0">Visa</option>
-      									<option value="1">Amex</option>
-      
-    								</select>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-xs-8 col-md-8 pull-right">
-                                <div class="form-group">
-                                    <label for="cardNumber">CARD NUMBER</label>
-                                    
-                                        <input 
-                                            type="tel"
-                                            class="form-control"
-                                            name="creditCardNumber"
-                                            placeholder="Valid Card Number"
-                                            autocomplete="cc-number"
-                                            required 
-                                          	maxlength="16"
-     			                            
-                                            
-                                        />
-                                         
-                            </div>
-                        </div>
-                        
-                        
-                        </div>
-                      
-                        
-                        
-                        <div class="row">
-                            <div class="col-xs-7 col-md-7">
-                                <div class="form-group">
-                                    <label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span> DATE</label>
-                                    <input 
-                                        type="tel" 
-                                        class="form-control" 
-                                        name="expiry"
-                                        placeholder="MM / YY"
-                                        autocomplete="cc-exp"
-                                        required 
-                                        pattern=".{4,}"
-                                        maxlength="4"
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-md-5 pull-right">
-                                <div class="form-group">
-                                    <label for="cardCVV">CV CODE</label>
-                                    <input 
-                                        type="tel" 
-                                        class="form-control"
-                                        name="cvv"
-                                        placeholder="CVC"
-                                        autocomplete="cc-csc"
-                                        required
-                                        pattern=".{3,}"
-                                        maxlength="3"/>
-                                </div>
-                            </div>
-                        </div>
-                       
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <input type="submit" onclick="submitPayment()" value="Confirm And Pay" />
-                            </div>
-                        </div>
-                        <div class="row" style="display:none;">
-                            <div class="col-xs-12">
-                                <p class="payment-errors"></p>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div> 
-        
-    		</div>	
-		</div>          
-		</div>	
-        </div>     
-      </div>   
-    </div>
-  </div>
+			</div>
+		</div>
+
+
+		<div class="container">
+
+			<div class="modal fade" id="payModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title" id="BuyEbookName"></h4>
+
+						</div>
+						<div class="modal-body">
+							<div class="container">
+								<div class="row">
+
+									<div class="col-xs-12 col-md-4">
+
+										<div class="panel panel-default credit-card-box"
+											style="display: inline-block;">
+
+											<div class="panel-body">
+												<form role="form" name="payForm" id="payment-form">
+													<!--                     action="AddNewEbookPurchase" method="post" -->
+													<div class="row">
+														<div class="col-xs-12">
+															<div class="form-group">
+
+
+																<label for="name">FULL NAME</label> <input type="text"
+																	class="form-control" name="fullName" required autofocus />
+
+															</div>
+														</div>
+													</div>
+													<!--                         <div class="row"> -->
+													<!--                         <button onclick="f()">click here</button> -->
+													<!--                         </div> -->
+
+
+													<div class="row">
+														<div class="col-xs-4 col-md-4">
+															<div class="form-group">
+																<label for="cardNumber11">CHOOSE</label>
+																<div class="input-group">
+																	<select name="creditCardCompany"
+																		class="form-control selectpicker" id="method">
+																		<option value="0">Visa</option>
+																		<option value="1">Amex</option>
+
+																	</select>
+																</div>
+															</div>
+														</div>
+														<div class="col-xs-8 col-md-8 pull-right">
+															<div class="form-group">
+																<label for="cardNumber">CARD NUMBER</label> <input
+																	type="tel" class="form-control" name="creditCardNumber"
+																	placeholder="Valid Card Number"
+																	autocomplete="cc-number" required maxlength="16" />
+
+															</div>
+														</div>
+
+
+													</div>
 
 
 
+													<div class="row">
+														<div class="col-xs-7 col-md-7">
+															<div class="form-group">
+																<label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span
+																	class="visible-xs-inline">EXP</span> DATE</label> <input
+																	type="tel" class="form-control" name="expiry"
+																	placeholder="MM / YY" autocomplete="cc-exp" required
+																	pattern=".{4,}" maxlength="4" />
+															</div>
+														</div>
+														<div class="col-xs-5 col-md-5 pull-right">
+															<div class="form-group">
+																<label for="cardCVV">CV CODE</label> <input type="tel"
+																	class="form-control" name="cvv" placeholder="CVC"
+																	autocomplete="cc-csc" required pattern=".{3,}"
+																	maxlength="3" />
+															</div>
+														</div>
+													</div>
 
+													<div class="row">
+														<div class="col-xs-12">
+															<input type="submit" onclick="submitPayment()"
+																value="Confirm And Pay" />
+														</div>
+													</div>
+													<div class="row" style="display: none;">
+														<div class="col-xs-12">
+															<p class="payment-errors"></p>
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
 
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+	
 </body>
 </html>

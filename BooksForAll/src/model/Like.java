@@ -3,13 +3,13 @@ package model;
 public class Like {
 
 	String username;
-	int id;
+	String title;
 	String nickname;
 	
-	public Like(String username, int id, String nickname) {
+	public Like(String username, String title, String nickname) {
 		super();
 		this.username = username;
-		this.id = id;
+		this.title = title;
 		this.nickname = nickname;
 	}
 	public String getUsername() {
@@ -18,11 +18,11 @@ public class Like {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getId() {
-		return id;
+	public String getTitle() {
+		return title;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getNickname() {
 		return nickname;

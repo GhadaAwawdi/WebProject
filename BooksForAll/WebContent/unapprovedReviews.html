@@ -1,13 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <head>
+<meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="lib/angular.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="cssEbooks.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<title>Unapproved Reviews</title>
+<script>
+	var app = angular.module('myApp', []);
+	app.controller('ebooksCtrl', function($scope, $http,$window) {		
+		
+			var timerhandler;
+
+		    $scope.CheckNow = function()
+		    {
+//	        	alert('success');
+
+		        $.ajax(
+		        {
+		            type: 'GET',
+		            url: 'GetAllLikesNumOrdered',
+		            success: function(data) 
+		            {
+		     //       	alert('success');
+		                var allcookies = document.cookie;
+		                cookiearray = allcookies.split(';');
+		                  // username = cookiearray[0].split('=')[1]; 
+		                   type = cookiearray[1].split('=')[1];  
+		                   console.log(type)
+		                   if(type=="user"){
+		                       window.location.href='homeUser.html';
+		                   }
+		                   else{
+		           		$http.get('GetAllEbooks').then(function(response) {
+		        			$scope.allEbooks = response.data;
+
+		        		});
+						$scope.myVar = true;
+		                   alert('suuu')
+		                   }
+		            }
+		        });
+
+		    }
+		    console.log("ajaaax")
+		    timerhandler = setInterval($scope.CheckNow,50000);
+					
+		    $scope.ApproveReview = function(username,button,bookId,review) {
+		    	var btn = document.getElementById(button);
+					var data = {
+							username : username,
+							id : bookId,
+							review : review
+						};
+						//Call the services
+						var jsonData = JSON.stringify(data);
+				    //Logic to delete the item
+				    $http.post('ApproveEbookReview',jsonData).then(function(response) {
+				$scope.users = response.data;
+				$scope.statuscode = response.status;
+			});
+					  var row = btn.parentNode.parentNode;
+					  row.parentNode.removeChild(row);
+			}
+			$scope.IgnoreReview = function(username,button,bookId,review) {
+		    	var btn = document.getElementById(button);
+					var data = {
+							username : username,
+							id : bookId,
+							review : review
+						};
+						//Call the services
+						var jsonData = JSON.stringify(data);
+				    //Logic to delete the item
+				    $http.post('IgnoreEbookReview',jsonData).then(function(response) {
+				$scope.users = response.data;
+				$scope.statuscode = response.status;
+			});
+					  var row = btn.parentNode.parentNode;
+					  row.parentNode.removeChild(row);
+			}
+			$scope.logout = function(){
+				$http.get("Logout").then(function(response){
+					alert(response);
+                    window.location.href='index.html';
+
+				});
+			}
+       		$http.get('GetAllUnapprovedReviews').then(function(response) {
+    			$scope.reviews = response.data;
+
+    		});
+	});
+</script>
+
 </head>
-<body>
+<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -24,13 +117,49 @@
 					<li><a href="ebooksAdmin.html">E-Books</a></li>
 					<li><a href="AllUsers.html">All Users</a></li>
 					<li><a href="purchaseHistory.html">Purchase History</a></li>
-					<li class="active"><a href="unapprovedReviews.html">Unapproved Reviews</a></li>
+					<li class="active"><a href="unapprovedReviews.html">Unapproved
+							Reviews</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a href="index.html" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
+	
+	<div class="container"  data-ng-if="myVar"  data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>username</th>
+					<th>book title</th>
+					<th>nickname</th>
+					<th>Review</th>
+					<th>Approve</th>
+					<th>Ignore</th>
+
+					<th></th>
+
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-if="myVar"  data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-repeat="x in reviews">
+					<td>{{x.username}}</td>
+					<td>{{x.title}}</td>
+					<td>{{x.approved}}</td>
+					<td>{{x.nickname}}</td>
+					<td>{{x.review}}</td>
+					<td><a id="{{x.username}}" style="background-color: green;"
+						class="btn btn-block btn-primary"
+						data-ng-click="ApproveReview(x.username,x.username,x.title,x.review)"> Approve </a></td>
+					<td><a id="{{x.nickname}}" style="background-color: red;"
+						class="btn btn-block btn-primary"
+						data-ng-click="IgnoreReview(x.username,x.username,x.title,x.review)"> Ignore </a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
 </body>
 </html>

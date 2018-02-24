@@ -39,18 +39,21 @@ public class GetLikesNumOfEbook extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
 		BufferedReader reader = request.getReader();
-		String ebookID = reader.readLine();
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
 
 		Gson gson = new Gson();
-		Ebook ebook = gson.fromJson(ebookID, Ebook.class);
+		Ebook ebook = gson.fromJson(jsonFileContent.toString(), Ebook.class);
 		
 		int likesNum = 0;
 		DataAccess da;
 	//	if (title != null) {
 			try {
 				da = new DataAccess();
-				likesNum = da.numOfEbookLikes(ebook.getId());
+				likesNum = da.numOfEbookLikes(ebook.getTitle());
 	        	da.closeConnection();
 
 			} catch (SQLException | NamingException e1) {

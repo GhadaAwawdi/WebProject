@@ -1,25 +1,36 @@
 package model;
 
+import java.util.Date;
+
 public class Purchase {
 
 	String username;
-	int id;
+	String title;
 	String creditCardNumber;
 	String expiry;
 	String cvv;
 	String fullName;
 	String creditCardCompany;
+	String time;
 	
-	public Purchase(String username, int id, String creditCardNumber, String expiry, String cVV, String fullName,
+	public Purchase(String username, String title, String creditCardNumber, String expiry, String cVV, String fullName,
 			String creditCardCompany) {
 		super();
 		this.username = username;
-		this.id = id;
+		this.title = title;
 		this.creditCardNumber = creditCardNumber;
 		this.expiry = expiry;
 		this.cvv = cVV;
 		this.fullName = fullName;
 		this.creditCardCompany = creditCardCompany;
+	}
+	
+	
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time =  time;
 	}
 	
 	public String getUsername() {
@@ -28,11 +39,11 @@ public class Purchase {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getId() {
-		return id;
+	public String getTitle() {
+		return title;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getCreditCardNumber() {
 		return creditCardNumber;

@@ -38,11 +38,13 @@ public class ApproveEbookReview extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
 		BufferedReader reader = request.getReader();
-		String newReview = reader.readLine();
-
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
 		Gson gson = new Gson();
-		Review review = gson.fromJson(newReview, Review.class);
+		Review review = gson.fromJson(jsonFileContent.toString(), Review.class);
 		
 		boolean res = false;
 		DataAccess da = null;
@@ -51,7 +53,7 @@ public class ApproveEbookReview extends HttpServlet {
 			try {
 				da = new DataAccess();
 				nickname = da.getNicknameByUsername(review.getUsername());
-				Review r = new Review(review.getUsername(), review.getId(), 1, nickname, review.getReview());
+				Review r = new Review(review.getUsername(), review.getTitle(), 1, nickname, review.getReview());
 				res = da.approveReview(r);
 	        	da.closeConnection();
 			} catch (NamingException e) {

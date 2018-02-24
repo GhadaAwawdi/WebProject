@@ -40,11 +40,16 @@ public class AddNewEbookPurchase extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("AddNewEbookPurchase");
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
 		BufferedReader reader = request.getReader();
-		String newPurchase = reader.readLine();
-		System.out.println(newPurchase);
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
+		
+		
+		System.out.println(jsonFileContent);
 		Gson gson = new Gson();
-		Purchase purchase = gson.fromJson(newPurchase, Purchase.class);
+		Purchase purchase = gson.fromJson(jsonFileContent.toString(), Purchase.class);
 		boolean res = false;
 		DataAccess da = null;
 		String username = purchase.getUsername(),ccnum = purchase.getCreditCardNumber(),exp=purchase.getExpiry();
@@ -56,7 +61,7 @@ public class AddNewEbookPurchase extends HttpServlet {
 				if(date/100 >= 18 && date%100 <=12 && date%100 >=1) {
 					if((ccnum.substring(0, 1)=="4") && (ccnum.substring(1, 2)=="5" && ccCom=="0" &&ccnum.length()==16)||
 							( ccCom=="1" &&ccnum.length()==15)) {
-						Purchase p = new Purchase(purchase.getUsername(), purchase.getId(), purchase.getCreditCardNumber(),
+						Purchase p = new Purchase(purchase.getUsername(), purchase.getTitle(), purchase.getCreditCardNumber(),
 								purchase.getExpiry(), purchase.getCvv(), purchase.getFullName(), purchase.getCreditCardCompany());
 						try {
 							da = new DataAccess();

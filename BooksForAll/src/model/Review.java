@@ -3,15 +3,15 @@ package model;
 public class Review {
 	
 	String username;
-	int id;
+	String title;
 	int approved;
 	String nickname;
 	String review;
 	
-	public Review(String username, int id, int approved, String nickname, String review) {
+	public Review(String username,String title, int approved, String nickname, String review) {
 		super();
 		this.username = username;
-		this.id = id;
+		this.title = title;
 		this.approved = approved;
 		this.nickname = nickname;
 		this.review = review;
@@ -23,11 +23,11 @@ public class Review {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public int getId() {
-		return id;
+	public String getTitle() {
+		return title;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public int getApproved() {
 		return approved;

@@ -1,15 +1,306 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <head>
+<meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="lib/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="cssEbooks.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<title>Insert title here</title>
+
+<title>My Ebooks</title>
+<style>
+img {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+img:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+#ghadaModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {    
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+}
+
+</style>
+<script>
+// var timerhandler;
+
+// $(document).ready(function() {
+// CheckNow();
+//     function CheckNow()
+//     {
+
+//         $.ajax(
+//         {
+//             type: 'GET',
+//             url: 'GetAllUnapprovedReviews',
+//             success: function(data) 
+//             {
+//             //	alert('success');
+//                 var allcookies = document.cookie;
+//                 cookiearray = allcookies.split(';');
+//                   // username = cookiearray[0].split('=')[1]; 
+//                    type = cookiearray[1].split('=')[1];  
+//                    console.log(type)
+//                    if(type=="admin"){
+//                        window.location='homeAdmin.html';
+//                    }
+//             }
+//         });
+
+//     }
+//     console.log("ajaaax")
+//     timerhandler = setInterval(CheckNow,50000);
+//     //50000 = 50 seconds
+// });
+</script>
+<script>
+
+// 	var firstApp = angular.module('initApp', []);
+// 	firstApp.controller('initCtrl', function($scope, $http,$window) {
+		
+// 		var timerhandler;
+
+// 	    $scope.CheckNow = function()
+// 	    {
+// //        	alert('success');
+
+// 	        $.ajax(
+// 	        {
+// 	            type: 'GET',
+// 	            url: 'GetAllLikesNumOrdered',
+// 	            success: function(data) 
+// 	            {
+// 	     //       	alert('success');
+// 	                var allcookies = document.cookie;
+// 	                cookiearray = allcookies.split(';');
+// 	                  // username = cookiearray[0].split('=')[1]; 
+// 	                   type = cookiearray[1].split('=')[1];  
+// 	                   console.log(type)
+// 	                   if(type=="admin"){
+// 	                       window.location='homeAdmin.html';
+// 	                   }
+// 	            }
+// 	        });
+
+// 	    }
+// 	    console.log("ajaaax")
+// 	    timerhandler = setInterval($scope.CheckNow,50000);
+		
+		
+// 	});
+</script>
+<script>
+	var app = angular.module('myApp', []);
+	app.controller('ebooksCtrl', function($scope, $http,$window) {		
+		
+			var timerhandler;
+
+		    $scope.CheckNow = function()
+		    {
+//	        	alert('success');
+
+		        $.ajax(
+		        {
+		            type: 'GET',
+		            url: 'GetAllLikesNumOrdered',
+		            success: function(data) 
+		            {
+		     //       	alert('success');
+		                var allcookies = document.cookie;
+		                cookiearray = allcookies.split(';');
+		                  // username = cookiearray[0].split('=')[1]; 
+		                   type = cookiearray[1].split('=')[1];  
+		                   console.log(type)
+		                   if(type=="admin"){
+		                       window.location.href='homeAdmin.html';
+		                   }
+		                   else{
+		           		$http.get('GetAllEbooks').then(function(response) {
+		        			$scope.allEbooks = response.data;
+
+		        		});
+						$scope.myVar = true;
+		                   alert('suuu')
+		                   }
+		            }
+		        });
+
+		    }
+		    console.log("ajaaax")
+		    timerhandler = setInterval($scope.CheckNow,50000);
+					
+        var allcookies = document.cookie;
+        cookiearray = allcookies.split(';');
+           username = cookiearray[0].split('=')[1]; 
+           type = cookiearray[1].split('=')[1];  
+           console.log(username);
+   //		if(type=="admin")
+	//			window.location.href = 'homeAdmin.html';
+
+
+       var parameters = { params: {
+			username : username
+          }
+       }
+// 		$http.get('GetPurchasedEbooksByUsername',parameters).then(function(response) {
+// 			$scope.purchased = response.data;
+
+// 		});
+		
+		$scope.logout = function(){
+			$http.get("Logout").then(function(response){
+				alert(response);
+               window.location.href='index.html';
+
+			});
+		}
+		$scope.showLikes = function(id) {
+			var pars = {
+				params : {
+					id : id
+				}
+			};
+			$http.get('GetAllNicknamesByEbookLikes', pars).then(
+					function(response) {
+						$scope.likes = response.data;
+						$scope.likeStatusCode = response.status;
+					});
+
+			console.log($scope.likes);
+			document.getElementById("allLikes").setAttribute("title",
+					$scope.likes);
+
+		}
+		$scope.hideLikes = function() {
+			//$scope.likes=null;
+			document.getElementById("allLikes").setAttribute("title", "");
+		}
+
+		$scope.getReviews = function(id, title) {
+			document.getElementById('ebookName').innerHTML = title;
+			var temp = {
+				id : id
+			};
+			var jsonId = JSON.stringify(temp);
+			var pars = {
+				params : {
+					id : id
+				}
+			};
+			//console.log(jsonId)
+			$http.get('GetAllReviewsByTitle', pars).then(function(response) {
+				$scope.reviews = response.data;
+				$scope.statusCode = response.status;
+			});
+		}
+		
+		$scope.openImg = function(imgId,source,alter){
+			console.log("heeey")
+		    	var modal = document.getElementById('ghadaModal');
+
+		    	// Get the image and insert it inside the modal - use its "alt" text as a caption
+		    	var img = document.getElementById(imgId);
+		    	var modalImg = document.getElementById("img01");
+		    	var captionText = document.getElementById("caption");
+
+		    	    modal.style.display = "block";
+		    	    modalImg.src = source;
+		    	    captionText.innerHTML = alter;
+		    	// Get the <span> element that closes the modal
+		    	var span = document.getElementsByClassName("close")[0];
+
+		    	// When the user clicks on <span> (x), close the modal
+		    	span.onclick = function() { 
+		    	    modal.style.display = "none";
+		    	}
+		}
+		$scope.openBook = function(ebook){
+			window.open(ebook);
+		}
+	});
+</script>
+
 </head>
-<body>
-<nav class="navbar navbar-inverse">
+<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+<nav  class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -26,10 +317,45 @@
 					<li class="active"><a href="myEbooks.html">My E-Books</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a href="index.html" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
+	
+	<div class="container">
+		<p id="test"></p>
+		<div  id="selectedBook" style="color: white; visibility: none;"></div>
+		<table  class="table table-striped">
+			<thead data-ng-cloak>
+				<tr data-ng-cloak>
+					<th>Image</th>
+					<th>Price</th>
+					<th>Short Description</th>
+					<th>Likes' Number</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="x in allEbooks">
+					<td>{{x.title}}</td>
+					<td>
+  <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
+</td>					<td>{{x.shortDescription}}</td>
+					<td>    <a  href="#" data-ng-click="openBook(x.location)">CLICK ME</a>
+					</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<div id="ghadaModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+  <div id="caption"></div>
+</div>
+
+		</div>
+	
 </body>
 </html>

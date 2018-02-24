@@ -39,16 +39,22 @@ public class GetPurchasedEbooksByUsername extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		BufferedReader reader = request.getReader();
-		String userPurchasesJSON = reader.readLine();
-
-		Gson gson = new Gson();
-		Purchase purchase = gson.fromJson(userPurchasesJSON, Purchase.class);
 		
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
+		BufferedReader reader = request.getReader();
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
+		
+		Gson gson = new Gson();
+		Purchase purchase = gson.fromJson(jsonFileContent.toString(), Purchase.class);
+		
+		//String username = request.getParameter("username");
+		//System.out.println("in purchases "+username);
+
 		Collection<Purchase> userPurchases = new ArrayList<Purchase>();
 		DataAccess da;
-		if (purchase.getUsername() != null) {
+		if (jsonFileContent.toString()!= null && !jsonFileContent.toString().equals("")) {
 			try {
 				da = new DataAccess();
 				userPurchases = da.getUserPurchases(purchase.getUsername());
@@ -65,7 +71,7 @@ public class GetPurchasedEbooksByUsername extends HttpServlet {
            	writer.println(userPurchasesJsonResult);
            	response.setStatus(200);
            	writer.flush();
-        	System.out.println(userPurchasesJsonResult);
+        	System.out.println("heey "+userPurchasesJsonResult);
 		}
 	}
 

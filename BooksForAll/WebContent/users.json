@@ -1,0 +1,282 @@
+[
+	{
+		"username": "Ghada",
+		"email": "ghada8a@gmail.com",
+		"street": "street1",
+		"apartment": "353",
+		"city": "Haifa",
+		"postalCode": "8989898",
+		"telephoneNumber": "0528034308",
+		"password": "ghada123",
+		"nickname": "GhadaAw",
+		"shortDescription": "is a Student",
+		"photo": ""
+
+	},
+	{
+		"username": "Joey",
+		"email": "Joey@hotmail.com",
+		"street": "street1",
+		"apartment": "5",
+		"city": "Haifa",
+		"postalCode": "1234567",
+		"telephoneNumber": "0544489290",
+		"password": "joey*54",
+		"nickname": "joy123",
+		"shortDescription": "lecturer",
+		"photo": ""
+
+	},
+	{
+		"username": "username1",
+		"email": "username1@gmail.com",
+		"street": "street1",
+		"apartment": "66",
+		"city": "Haifa",
+		"postalCode": "9999999",
+		"telephoneNumber": "0524489290",
+		"password": "usercool",
+		"nickname": "theBest",
+		"shortDescription": "researcher",
+		"photo": ""
+
+	},
+	{
+		"username": "username2",
+		"email": "username2@gmail.com",
+		"street": "times square",
+		"apartment": "54",
+		"city": "New york",
+		"postalCode": "7676767",
+		"telephoneNumber": "0544477290",
+		"password": "low282",
+		"nickname": "lucky1",
+		"shortDescription": "student",
+		"photo": ""
+
+	},
+	{
+		"username": "Sam",
+		"email": "sam@gmail.com",
+		"street": "Tel aviv11",
+		"apartment": "32",
+		"city": "Tel aviv",
+		"postalCode": "2222222",
+		"telephoneNumber": "0523489290",
+		"password": "sam121",
+		"nickname": "niceMan",
+		"shortDescription": "mathematician",
+		"photo": ""
+
+	},
+	{
+		"username": "Adam",
+		"email": "adam@gmail.com",
+		"street": "megdal",
+		"apartment": "54",
+		"city": "Megdal",
+		"postalCode": "5545454",
+		"telephoneNumber": "0524789290",
+		"password": "adam72",
+		"nickname": "reader1",
+		"shortDescription": "Dancer",
+		"photo": ""
+
+	},
+	{
+		"username": "Merry",
+		"email": "Merry@gmail.com",
+		"street": "royalStreet",
+		"apartment": "67",
+		"city": "London",
+		"postalCode": "1122334",
+		"telephoneNumber": "0544489288",
+		"password": "merry22",
+		"nickname": "nerdyy",
+		"shortDescription": "song Writer",
+		"photo": ""
+
+	},
+	{
+		"username": "John",
+		"email": "John@gmail.com",
+		"street": "haifa",
+		"apartment": "75",
+		"city": "Nesher",
+		"postalCode": "5454566",
+		"telephoneNumber": "0523389290",
+		"password": "john233",
+		"nickname": "happyUser",
+		"shortDescription": "Programmer",
+		"photo": ""
+
+	},
+	{
+		"username": "Camila",
+		"email": "camila@gmail.com",
+		"street": "firatStreet",
+		"apartment": "3",
+		"city": "Nazareth",
+		"postalCode": "7676777",
+		"telephoneNumber": "0524589290",
+		"password": "cam323",
+		"nickname": "camila56",
+		"shortDescription": "Teacher",
+		"photo": ""
+
+	},
+	{
+		"username": "KimUser",
+		"email": "kim@gmail.com",
+		"street": "telAviv street",
+		"apartment": "43",
+		"city": "Tel Aviv",
+		"postalCode": "1234567",
+		"telephoneNumber": "0546767290",
+		"password": "kimclo2",
+		"nickname": "unknown",
+		"shortDescription": "Student",
+		"photo": ""
+
+	},
+		{
+		"username": "LancyUser",
+		"email": "lancy@gmail.com",
+		"street": "University",
+		"apartment": "55",
+		"city": "Haifa",
+		"postalCode": "7654321",
+		"telephoneNumber": "0544577790",
+		"password": "pass122",
+		"nickname": "unknown12",
+		"shortDescription": "Student",
+		"photo": ""
+
+	},
+		{
+		"username": "Lilly",
+		"email": "lilly@gmail.com",
+		"street": "TelAviv",
+		"apartment": "22",
+		"city": "Tel Aviv",
+		"postalCode": "3344334",
+		"telephoneNumber": "0529989295",
+		"password": "read232",
+		"nickname": "smartBoy",
+		"shortDescription": "engineer",
+		"photo": ""
+
+	},
+		{
+		"username": "Henry",
+		"email": "henry@gmail.com",
+		"street": "nesher",
+		"apartment": "11",
+		"city": "Nesher",
+		"postalCode": "3343345",
+		"telephoneNumber": "0544485341",
+		"password": "henry1",
+		"nickname": "Henry12",
+		"shortDescription": "programmer",
+		"photo": ""
+
+	},
+		{
+		"username": "Mark",
+		"email": "mark@gmail.com",
+		"street": "haifa33",
+		"apartment": "44",
+		"city": "Haifa",
+		"postalCode": "1111222",
+		"telephoneNumber": "0520089290",
+		"password": "markzuck",
+		"nickname": "zuckerberg",
+		"shortDescription": "programmer",
+		"photo": ""
+
+	},
+		{
+		"username": "Suzan",
+		"email": "suzan@hotmail.com",
+		"street": "77Street",
+		"apartment": "88",
+		"city": "Madrid",
+		"postalCode": "6656655",
+		"telephoneNumber": "0521119290",
+		"password": "suzy12",
+		"nickname": "suzy",
+		"shortDescription": "teacher",
+		"photo": ""
+
+	},
+		{
+		"username": "Jemmy",
+		"email": "jemmy@gmail.com",
+		"street": "haifaStreet",
+		"apartment": "4",
+		"city": "Tel Aviv",
+		"postalCode": "1234567",
+		"telephoneNumber": "0544455550",
+		"password": "jemmy78",
+		"nickname": "jemmyUser",
+		"shortDescription": "computer science student",
+		"photo": ""
+
+	},
+		{
+		"username": "Maria",
+		"email": "Maria@gmail.com",
+		"street": "33Steert",
+		"apartment": "1",
+		"city": "Haifa",
+		"postalCode": "7654321",
+		"telephoneNumber": "0548789290",
+		"password": "mar44",
+		"nickname": "mariamaria",
+		"shortDescription": "student",
+		"photo": ""
+
+	},
+		{
+		"username": "hadeel",
+		"email": "hadeel@gmail.com",
+		"street": "77Street",
+		"apartment": "21",
+		"city": "TelAViv",
+		"postalCode": "9090909",
+		"telephoneNumber": "0523456490",
+		"password": "hadel3",
+		"nickname": "hadeelAb",
+		"shortDescription": "writer",
+		"photo": ""
+
+	},
+		{
+		"username": "Hanan",
+		"email": "hanan@gmail.com",
+		"street": "22Street",
+		"apartment": "33",
+		"city": "Nesher",
+		"postalCode": "0912309",
+		"telephoneNumber": "0528989290",
+		"password": "hanannn",
+		"nickname": "hanan11",
+		"shortDescription": "student",
+		"photo": ""
+
+	},
+		{
+		"username": "Amy",
+		"email": "amy123@gmail.com",
+		"street": "16Street",
+		"apartment": "23",
+		"city": "Haifa",
+		"postalCode": "2342322",
+		"telephoneNumber": "0544489777",
+		"password": "emma91",
+		"nickname": "justAmy",
+		"shortDescription": "teacher",
+		"photo": ""
+
+	}
+]

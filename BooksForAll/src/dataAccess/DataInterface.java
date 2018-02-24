@@ -25,7 +25,6 @@ public interface DataInterface {
 	 * @return number of users that liked the ebook 
 	 * @throws SQLException
 	 */
-	ArrayList<String> getUsersThatLikedEbook(int ebookId) throws SQLException;
 	ArrayList<Purchase> getAllPurchases() throws SQLException;
 	ArrayList<EbookUser> getAllEbookUsers() throws SQLException;
 	ArrayList<Review> getAllUnapprovedReviews() throws SQLException;
@@ -34,17 +33,18 @@ public interface DataInterface {
 	boolean addNewPurchase(Purchase p) throws SQLException;
 	String getNicknameByUsername(String username)  throws SQLException;
 	boolean approveReview(Review review) throws SQLException;
-	boolean increaseNumOfEbookLikes(int idOfEbook) throws SQLException;
 	ArrayList<Purchase> getAllPurchasesByTitle(String title) throws SQLException;
 	Collection<Ebook> getAllEbooks(InputStream is) throws SQLException, IOException;
 	void closeConnection() throws SQLException;
-	boolean likeEbook(int idOfEbook, String username) throws SQLException;
 	//Collection<Integer> getLikesNumOrderedById() throws SQLException;
-	int numOfEbookLikes(int idOfEbook) throws SQLException;
-	ArrayList<Review> getSingleEbookReviews(int idOfEbook) throws SQLException;
-	boolean checkIfEbookPurchased(String username, int id) throws SQLException;
-	boolean unlikeEbook(int idOfEbook, String username) throws SQLException;
-	boolean decreaseNumOfEbookLikes(int idOfEbook) throws SQLException;
+	boolean unlikeEbook(String title, String username) throws SQLException;
+	boolean decreaseNumOfEbookLikes(String title) throws SQLException;
+	int numOfEbookLikes(String title) throws SQLException;
+	boolean likeEbook(String title, String username) throws SQLException;
+	boolean increaseNumOfEbookLikes(String title) throws SQLException;
+	boolean checkIfEbookPurchased(String username, String title) throws SQLException;
+	ArrayList<Review> getSingleEbookReviews(String title) throws SQLException;
+	ArrayList<String> getUsersThatLikedEbook(String title) throws SQLException;
 
 
 }

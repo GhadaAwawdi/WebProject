@@ -1,29 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <head>
 <meta charset="UTF-8">
-<!-- This viewport controls page dimensions on different devices -->
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="lib/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="cssEbooks.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-
+<title>BooksForAll Users</title>
 <script>
-		var app = angular.module('UserApp', []);
-		app.controller('usersCtrl', function($scope, $http) {
+	var app = angular.module('myApp', []);
+	app.controller('ebooksCtrl', function($scope, $http,$window) {		
+		
+			var timerhandler;
+
+		    $scope.CheckNow = function()
+		    {
+//	        	alert('success');
+
+		        $.ajax(
+		        {
+		            type: 'GET',
+		            url: 'GetAllLikesNumOrdered',
+		            success: function(data) 
+		            {
+		     //       	alert('success');
+		                var allcookies = document.cookie;
+		                cookiearray = allcookies.split(';');
+		                  // username = cookiearray[0].split('=')[1]; 
+		                   type = cookiearray[1].split('=')[1];  
+		                   console.log(type)
+		                   if(type=="user"){
+		                       window.location.href='homeUser.html';
+		                   }
+		                   else{
+		           		$http.get('GetAllEbooks').then(function(response) {
+		        			$scope.allEbooks = response.data;
+
+		        		});
+						$scope.myVar = true;
+		                   alert('suuu')
+		                   }
+		            }
+		        });
+
+		    }
+		    console.log("ajaaax")
+		    timerhandler = setInterval($scope.CheckNow,50000);
+					
 			$http.get('GetAllEbookUsers').then(function(response) {
 				$scope.users = response.data;
 				$scope.statuscode = response.status;
 			});
-	});
-	</script>
-	
-</head>
-<body>
+			
+			$scope.RemoveUser = function(username,button) {
+		    	var btn = document.getElementById(button);
+		console.log(btn);
+				var result = confirm("Want to delete?");
+				if (result) {
+					var data = {
+							username : username,
+						};
+						//Call the services
+						var jsonData = JSON.stringify(data);
+				    //Logic to delete the item
+				    $http.post('RemoveEbookUser',jsonData).then(function(response) {
+				$scope.users = response.data;
+				$scope.statuscode = response.status;
+			});
+					  var row = btn.parentNode.parentNode;
+					  row.parentNode.removeChild(row);
+		//			document.getElementById("selectedUser").innerHTML = id;
+			//		document.getElementById("selectedUser").style.visibility = " none";
+				}
 
+				
+			}
+			
+			$scope.logout = function(){
+				$http.get("Logout").then(function(response){
+					alert(response);
+                    window.location.href='index.html';
+
+				});
+			}
+	});
+</script>
+
+</head>
+<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -38,23 +106,22 @@
 				<ul class="nav navbar-nav">
 					<li><a href="homeAdmin.html">Home</a></li>
 					<li><a href="ebooksAdmin.html">E-Books</a></li>
-					<li  class="active"><a href="AllUsers.html">All Users</a></li>
+					<li class="active"><a href="AllUsers.html">All Users</a></li>
 					<li><a href="purchaseHistory.html">Purchase History</a></li>
 					<li><a href="unapprovedReviews.html">Unapproved Reviews</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a href="index.html" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-
-
-	<div class="container" data-ng-app="UserApp"
-		data-ng-controller="usersCtrl">
+	
+	<div id="selectedUser" class="container" data-ng-app="myApp"
+		data-ng-controller="ebooksCtrl">
 		<table class="table table-striped">
 			<thead>
-				<tr>				
+				<tr>
 					<th>username</th>
 					<th>email</th>
 					<th>street</th>
@@ -63,13 +130,15 @@
 					<th>postal code</th>
 					<th>Telephone Number</th>
 					<th>password</th>
-					<th>nickname </th>
-					<th>short Description </th>
-					<th>photo </th>
+					<th>nickname</th>
+					<th>short Description</th>
+					<th>photo</th>
+					<th>Remove</th>
+
 				</tr>
 			</thead>
 			<tbody>
-				<tr data-ng-repeat="x in users">
+				<tr data-ng-repeat="x in users | filter: searchKeyword">
 					<td>{{x.username}}</td>
 					<td>{{x.email}}</td>
 					<td>{{x.street}}</td>
@@ -80,13 +149,18 @@
 					<td>{{x.password}}</td>
 					<td>{{x.nickname}}</td>
 					<td>{{x.shortDescription}}</td>
-    				<td><a data-ng-target="_blank" data-ng-href="{{x.photo}}">
-  					<img data-ng-src="{{x.photo}}" data-ng-alt="Forest" style="width:100px;height:100px">
+					<td><a data-ng-target="_blank" data-ng-href="{{x.photo}}">
+							<img data-ng-src="{{x.photo}}" data-ng-alt="Forest"
+							style="width: 100px; height: 100px">
 					</a></td>
+					<td><a id="{{x.username}}" style="background-color: red;"
+						class="btn btn-block btn-primary"
+						data-ng-click="RemoveUser(x.username,x.username)"> Remove </a></td>
 
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	
 </body>
 </html>

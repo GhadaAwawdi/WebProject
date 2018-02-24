@@ -39,7 +39,7 @@ public class GetAllUnapprovedReviews extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+System.out.println("unapproved reviews");
 		Collection<Review> unapprovedReviews = new ArrayList<Review>();
 		DataAccess da;
 			try {

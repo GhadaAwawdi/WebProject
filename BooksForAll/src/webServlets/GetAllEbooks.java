@@ -48,7 +48,7 @@ public class GetAllEbooks extends HttpServlet {
 			da = new DataAccess();
 			temp = da.getAllEbooks(getServletContext().getResourceAsStream(File.separator + Constants.EBOOKSS_FILE));
 			for(Ebook ebook : temp){
-				ebook.setLikesNum(da.numOfEbookLikes(ebook.getId()));
+		//		ebook.setLikesNum(da.numOfEbookLikes(ebook.getTitle()));
 				ebooks.add(ebook);
 			}
 			// likesNum = da.getLikesNumOrderedById();

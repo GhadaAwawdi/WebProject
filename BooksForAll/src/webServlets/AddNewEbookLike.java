@@ -50,25 +50,27 @@ public class AddNewEbookLike extends HttpServlet {
 			throws ServletException, IOException {	
 		System.out.println("add new ebook like");
 		
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
 		BufferedReader reader = request.getReader();
-		String newLike = reader.readLine();
-		
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
 		
 		Gson gson = new Gson();
-		Like like = gson.fromJson(newLike, Like.class);
-		System.out.println("json   "+newLike );
-		System.out.println( like.getId() + like.getUsername());
+		Like like = gson.fromJson(jsonFileContent.toString(), Like.class);
+		System.out.println("json   "+jsonFileContent.toString() );
+		System.out.println( like.getTitle() + like.getUsername());
 
 		boolean res = false;
 		DataAccess da = null;
 		String nickname = null;
-		if (newLike!= null) {
+		if (jsonFileContent.toString()!= null && !jsonFileContent.toString().equals("")) {
 			try {
 				da = new DataAccess();
 				 nickname = da.getNicknameByUsername(like.getUsername());
-				res = da.likeEbook(like.getId(), like.getUsername());
+				res = da.likeEbook(like.getTitle(), like.getUsername());
 				if(res==true){
-					da.increaseNumOfEbookLikes(like.getId());
+					da.increaseNumOfEbookLikes(like.getTitle());
 					}
 	        	da.closeConnection();
 			} catch (NamingException e) {

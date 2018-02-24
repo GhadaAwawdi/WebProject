@@ -39,11 +39,14 @@ public class RemoveEbookUser extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
 		BufferedReader reader = request.getReader();
-		String userJSON = reader.readLine();
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
 
 		Gson gson = new Gson();
-		EbookUser user = gson.fromJson(userJSON, EbookUser.class);
+		EbookUser user = gson.fromJson(jsonFileContent.toString(), EbookUser.class);
 		boolean res = false;
 		DataAccess da = null;
 		if (user.getUsername() != null) {

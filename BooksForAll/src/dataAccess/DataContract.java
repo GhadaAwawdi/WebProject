@@ -27,21 +27,21 @@ public final class DataContract {
 
 	public static class EbookTable{
 		public static final String TABLE_NAME = "ebook";
-		public static final String COL_ID = "id";
+		public static final String COL_EBOOKTITLE = "title";
 		public static final String COL_LIKESNUM = "likesNum";
 	}
 	
 	public static class LikesTable{
 		public static final String TABLE_NAME = "likes";
 		public static final String COL_USERNAME = "username";
-		public static final String COL_EBOOKID = "id";
+		public static final String COL_EBOOKTITLE = "title";
 		public static final String COL_NICKNAME = "nickname";
 	}
 	
 	public static class ReviewsTable{
 		public static final String TABLE_NAME = "reviews";
 		public static final String COL_USERNAME = "username";
-		public static final String COL_EBOOKID = "id";
+		public static final String COL_EBOOKTITLE = "title";
 		public static final String COL_USERID = "userId";
 		public static final String COL_NICKNAME = "nickname";
 		public static final String COL_REVIEW = "review";
@@ -52,11 +52,12 @@ public final class DataContract {
 		public static final String TABLE_NAME = "purchase";
 		public static final String COL_USERID = "userId";
 		public static final String COL_USERNAME = "username";
-		public static final String COL_EBOOKID = "id";
+		public static final String COL_EBOOKTITLE = "title";
 		public static final String COL_CREDITCARDNUMBER = "creditCardNumber";
 		public static final String COL_EXPIRY = "expiry";
 		public static final String COL_CVV = "cvv";
 		public static final String COL_FULLNAME = "fullName";
 		public static final String COL_CREDITCARDCOMPANY = "creditCardCompany";
+		public static final String COL_TIME = "currentTimestamp";
 	}
 }

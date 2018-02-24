@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,15 +133,16 @@ public class DataAccess implements DataInterface {
 		PreparedStatement stmt3 = DBUtils.conn.prepareStatement(SQLStatements.selectUserByUserInfo);
 		stmt3.setString(1, user.getUsername());
 		stmt3.setString(2, user.getPassword());
-		stmt3.setString(1, user.getEmail());
-		stmt3.setString(1, user.getStreet());
-		stmt3.setInt(1, user.getApartment());
-		stmt3.setString(1, user.getCity());
-		stmt3.setString(1, user.getPostalCode());
-		stmt3.setString(1, user.getTelephoneNumber());
-		stmt3.setString(1, user.getNickname());
-		stmt3.setString(1, user.getShortDescription());
-		stmt3.setString(1, user.getPhoto());
+		stmt3.setString(3, user.getEmail());
+		stmt3.setString(4, user.getStreet());
+		stmt3.setInt(5, user.getApartment());
+		stmt3.setString(6, user.getCity());
+		stmt3.setString(7, user.getPostalCode());
+		stmt3.setString(8, user.getTelephoneNumber());
+		stmt3.setString(9, user.getNickname());
+		stmt3.setString(10, user.getShortDescription());
+		stmt3.setString(11, user.getPhoto());
+		
 		rs = stmt3.executeQuery();
 		if (rs.next()) // user exists
 		{
@@ -155,11 +158,11 @@ public class DataAccess implements DataInterface {
 		stmt2.setInt(4, user.getApartment());
 		stmt2.setString(5, user.getCity());
 		stmt2.setString(6, user.getPostalCode());
-		stmt2.setString(4, user.getTelephoneNumber());
-		stmt2.setString(5, user.getPassword());
-		stmt2.setString(6, user.getNickname());
-		stmt2.setString(7, user.getShortDescription());
-		stmt2.setString(8, user.getPhoto());
+		stmt2.setString(7, user.getTelephoneNumber());
+		stmt2.setString(8, user.getPassword());
+		stmt2.setString(9, user.getNickname());
+		stmt2.setString(10, user.getShortDescription());
+		stmt2.setString(11, user.getPhoto());
 		stmt2.executeUpdate();
 
 		return 1;
@@ -182,14 +185,14 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean likeEbook(int idOfEbook, String username) throws SQLException {
+	public boolean likeEbook(String title, String username) throws SQLException {
 		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getNicknameByUsername);
 		stmt.setString(1, username);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.addNewLike);
 			stmt1.setString(1, username);
-			stmt1.setInt(2, idOfEbook);
+			stmt1.setString(2, title);
 			stmt1.setString(3, rs.getString(DataContract.LikesTable.COL_NICKNAME));
 			stmt1.executeUpdate();
 			System.out.println("added to database");
@@ -199,7 +202,7 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean unlikeEbook(int idOfEbook, String username) throws SQLException {
+	public boolean unlikeEbook(String title, String username) throws SQLException {
 		// PreparedStatement stm =
 		// c.prepareStatement(SQLStatements.unlikeEbook);
 		// stm.setString(1, username);
@@ -211,18 +214,18 @@ public class DataAccess implements DataInterface {
 		// }
 		PreparedStatement stm1 = DBUtils.conn.prepareStatement(SQLStatements.unlikeEbook);
 		stm1.setString(1, username);
-		stm1.setInt(2, idOfEbook);
+		stm1.setString(2, title);
 		stm1.executeUpdate();
 		System.out.println("unlike done successfully");
 		return true;
 	}
 
 	@Override
-	public int numOfEbookLikes(int idOfEbook) throws SQLException {
+	public int numOfEbookLikes(String title) throws SQLException {
 
 		int count = 0;
 		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
-		stmt.setInt(1, idOfEbook);
+		stmt.setString(1, title);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
 			count++;
@@ -231,10 +234,10 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public ArrayList<String> getUsersThatLikedEbook(int ebookId) throws SQLException {
+	public ArrayList<String> getUsersThatLikedEbook(String title) throws SQLException {
 
 		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookLikes_STMT);
-		stm.setInt(1, ebookId);
+		stm.setString(1, title);
 		ArrayList<String> nicknames = new ArrayList<String>();
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
@@ -251,12 +254,16 @@ public class DataAccess implements DataInterface {
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			p = new Purchase(rs.getString(DataContract.PurchaseTable.COL_USERNAME),
-					rs.getInt(DataContract.PurchaseTable.COL_EBOOKID),
+					rs.getString(DataContract.PurchaseTable.COL_EBOOKTITLE),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDNUMBER),
 					rs.getString(DataContract.PurchaseTable.COL_EXPIRY),
 					rs.getString(DataContract.PurchaseTable.COL_CVV),
 					rs.getString(DataContract.PurchaseTable.COL_FULLNAME),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDCOMPANY));
+			Date date = new Date(rs.getTimestamp(DataContract.PurchaseTable.COL_TIME).getTime());
+			String formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
+			//	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			p.setTime(formatter);
 			purchases.add(p);
 		}
 		return purchases;
@@ -272,7 +279,7 @@ public class DataAccess implements DataInterface {
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			p = new Purchase(rs.getString(DataContract.PurchaseTable.COL_USERNAME),
-					rs.getInt(DataContract.PurchaseTable.COL_EBOOKID),
+					rs.getString(DataContract.PurchaseTable.COL_EBOOKTITLE),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDNUMBER),
 					rs.getString(DataContract.PurchaseTable.COL_EXPIRY),
 					rs.getString(DataContract.PurchaseTable.COL_CVV),
@@ -293,7 +300,7 @@ public class DataAccess implements DataInterface {
 		// ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			p = new Purchase(rs.getString(DataContract.PurchaseTable.COL_USERNAME),
-					rs.getInt(DataContract.PurchaseTable.COL_EBOOKID),
+					rs.getString(DataContract.PurchaseTable.COL_EBOOKTITLE),
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDNUMBER),
 					rs.getString(DataContract.PurchaseTable.COL_EXPIRY),
 					rs.getString(DataContract.PurchaseTable.COL_CVV),
@@ -305,10 +312,10 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean checkIfEbookPurchased(String username, int id) throws SQLException {
+	public boolean checkIfEbookPurchased(String username, String title) throws SQLException {
 		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.checkIfPurchased);
 		stm.setString(1, username);
-		stm.setInt(2, id);
+		stm.setString(2, title);
 		ResultSet rs = stm.executeQuery();
 		if (rs.next()) {
 			return true;
@@ -351,7 +358,7 @@ public class DataAccess implements DataInterface {
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			review = new Review(rs.getString(DataContract.ReviewsTable.COL_USERNAME),
-					rs.getInt(DataContract.ReviewsTable.COL_EBOOKID), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
+					rs.getString(DataContract.ReviewsTable.COL_EBOOKTITLE), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
 					rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
 					rs.getString(DataContract.ReviewsTable.COL_REVIEW));
 			reviews.add(review);
@@ -360,18 +367,18 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public ArrayList<Review> getSingleEbookReviews(int idOfEbook) throws SQLException {
+	public ArrayList<Review> getSingleEbookReviews(String title) throws SQLException {
 		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_ebookApprovedReviews_STMT);
-		stm.setInt(1, idOfEbook);
+		stm.setString(1, title);
 		ResultSet rs = stm.executeQuery();
 		DBUtils.conn.commit();
-		System.out.println("is of book " + idOfEbook);
+		System.out.println("is of book " + title);
 		ArrayList<Review> reviews = new ArrayList<Review>();
 		Review review = null;
 		// ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			review = new Review(rs.getString(DataContract.ReviewsTable.COL_USERNAME),
-					rs.getInt(DataContract.ReviewsTable.COL_EBOOKID), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
+					rs.getString(DataContract.ReviewsTable.COL_EBOOKTITLE), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
 					rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
 					rs.getString(DataContract.ReviewsTable.COL_REVIEW));
 			reviews.add(review);
@@ -384,7 +391,7 @@ public class DataAccess implements DataInterface {
 
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.addNewReview);
 		stmt1.setString(1, review.getUsername());
-		stmt1.setInt(2, review.getId());
+		stmt1.setString(2, review.getTitle());
 		stmt1.setString(3, review.getNickname());
 		stmt1.setString(4, review.getReview());
 		stmt1.setInt(5, review.getApproved());
@@ -420,25 +427,6 @@ public class DataAccess implements DataInterface {
 		}.getType();
 		Collection<Ebook> tempEbooks = gson.fromJson(jsonFileContent.toString(), type);
 
-		// Collection<Ebook> ebooks =tempEbooks;
-		// Iterator<Ebook> iter = tempEbooks.iterator();
-		// while (iter.hasNext()) {
-		// System.out.println("iteeeer");
-		// Ebook ebook = iter.next();
-		// PreparedStatement stmt =
-		// DBUtils.conn.prepareStatement(SQLStatements.getLikesNumByTitle);
-		// stmt.setInt(1, ebook.getId());
-		// ResultSet rs = stmt.executeQuery();
-		// //
-		// System.out.println(iter.next().getId()+iter.next().getImage()+iter.next().getLocation());
-		// if (rs.next()) {
-		// System.out.println("rs.next");
-		// ebook.setLikesNum(rs.getInt(DataContract.EbookTable.COL_LIKESNUM));
-		// ebooks.add(ebook);
-		// }
-		// iter.remove();
-		//
-		// }
 		// close
 		br.close();
 		return tempEbooks;
@@ -540,7 +528,7 @@ public class DataAccess implements DataInterface {
 	public boolean addNewPurchase(Purchase p) throws SQLException {
 		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.addNewPurchase);
 		stmt.setString(1, p.getUsername());
-		stmt.setInt(2, p.getId());
+		stmt.setString(2, p.getTitle());
 		stmt.setString(3, p.getCreditCardNumber());
 		stmt.setString(4, p.getExpiry());
 		stmt.setString(5, p.getCvv());
@@ -555,7 +543,7 @@ public class DataAccess implements DataInterface {
 	@Override
 	public boolean approveReview(Review review) throws SQLException {
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.approveReview);
-		stmt1.setInt(1, review.getId());
+		stmt1.setString(1, review.getTitle());
 		stmt1.setString(2, review.getUsername());
 		stmt1.setString(3, review.getNickname());
 		stmt1.setString(4, review.getReview());
@@ -566,9 +554,9 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean increaseNumOfEbookLikes(int idOfEbook) throws SQLException {
+	public boolean increaseNumOfEbookLikes(String title) throws SQLException {
 		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getLikesNumByTitle);
-		stmt.setInt(1, idOfEbook);
+		stmt.setString(1, title);
 		ResultSet rs = stmt.executeQuery();
 		int likesNum = 0;
 		if (rs.next()) {
@@ -577,16 +565,16 @@ public class DataAccess implements DataInterface {
 		likesNum = likesNum + 1;
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.updateLikesNum);
 		stmt1.setInt(1, likesNum);
-		stmt1.setInt(2, idOfEbook);
+		stmt1.setString(2, title);
 		stmt1.executeUpdate();
 		System.out.println(" num of likes increased");
 		return true;
 	}
 
 	@Override
-	public boolean decreaseNumOfEbookLikes(int idOfEbook) throws SQLException {
+	public boolean decreaseNumOfEbookLikes(String title) throws SQLException {
 		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getLikesNumByTitle);
-		stmt.setInt(1, idOfEbook);
+		stmt.setString(1, title);
 		ResultSet rs = stmt.executeQuery();
 		int likesNum = 0;
 		if (rs.next()) {
@@ -595,10 +583,12 @@ public class DataAccess implements DataInterface {
 		likesNum = likesNum - 1;
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.updateLikesNum);
 		stmt1.setInt(1, likesNum);
-		stmt1.setInt(2, idOfEbook);
+		stmt1.setString(2, title);
 		stmt1.executeUpdate();
 		System.out.println(" num of likes decreased");
 		return true;
 	}
 
+	
+	
 }

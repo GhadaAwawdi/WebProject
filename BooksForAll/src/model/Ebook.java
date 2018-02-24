@@ -6,35 +6,32 @@ import javax.naming.NamingException;
 
 public class Ebook {
 
-	int id;
+//	int id;
 	double price;
 	int likesNum;
 	String location;
-	String name;
+	String title;
 	String image;
 	String shortDescription;
-	public Ebook(int id, String name, double price, String image, String shortDescription,String location, int likesNum) throws NamingException, SQLException {
+	public Ebook( String title, double price, String image, String shortDescription,String location, int likesNum) throws NamingException, SQLException {
 		super();
 		System.out.println("in constructor");
-		this.id = id;
+		this.title = title;
 		this.price = price;
 		this.likesNum=likesNum;
-		this.name = name;
 		this.image = image;
 		this.shortDescription = shortDescription;
 		this.location = location;
 	}
-	public int getId() {
-		return id;
-	}
+
 	public double getPrice() {
 		return price;
 	}
 	public int getLikesNum() {
 		return likesNum;
 	}
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 	public String getImage() {
 		return image;
@@ -42,17 +39,15 @@ public class Ebook {
 	public String getShortDescription() {
 		return shortDescription;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public void setPrice(double price) {
 		this.price = price;
 	}
 	public void setLikesNum(int likesNum) throws NamingException, SQLException {
 		this.likesNum = likesNum;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public void setImage(String image) {
 		this.image = image;

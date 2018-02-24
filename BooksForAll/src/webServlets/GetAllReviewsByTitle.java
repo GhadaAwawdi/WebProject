@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 
 import dataAccess.DataAccess;
+import model.EbookUser;
 import model.Like;
 import model.Review;
 
@@ -43,33 +44,31 @@ public class GetAllReviewsByTitle extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
+		BufferedReader reader = request.getReader();
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
 		
-//		BufferedReader reader = request.getReader();
-	//	String bookId = reader.readLine();
-//		request.setCharacterEncoding("UTF-8");
-//
-//		StringBuilder sb = new StringBuilder();
-//		String s;
-//		while((s = request.getReader().readLine()) != null) {
-//			sb.append(s);
-//			System.out.println(s);
-//		}
-		String Id = request.getParameter("id");
-		int id=Integer.parseInt(Id);
+		
+	//	String Id = request.getParameter("id");
+	//	int id=Integer.parseInt(Id);
 		Collection<Review> reviews = new ArrayList<Review>();
 		Gson gson = new Gson();
+		Review rev = gson.fromJson(jsonFileContent.toString(), Review.class);
+
 		//Review review = gson.fromJson(sb.toString(), Review.class);
 //		Review r1=new Review("username1", 1,1, "nickname1", "review1");
 //		Review r2=new Review("username2", 1,1, "nickname2", "review2");
 //		Review r3=new Review("username3", 1,1, "nickname3", "review3");
 //		Review r4=new Review("username1", 2,1, "nickname1", "review1111");
 		
-		System.out.println("get reviews;  "+id);
+		//System.out.println("get reviews;  "+id);
 		DataAccess da;
-		if (Id != null) {
+		if (jsonFileContent.toString() != null) {
 			try {
 				da = new DataAccess();
-				reviews = da.getSingleEbookReviews(id);
+				reviews = da.getSingleEbookReviews(rev.getTitle());
 //				reviews.add(r1);
 //				reviews.add(r2);
 //				reviews.add(r3);

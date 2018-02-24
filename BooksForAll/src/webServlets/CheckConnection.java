@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class GetAllLikesNumOrdered
+ * Servlet implementation class CheckConnection
  */
-@WebServlet("/GetAllLikesNumOrdered")
-public class GetAllLikesNumOrdered extends HttpServlet {
+@WebServlet("/CheckConnection")
+public class CheckConnection extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetAllLikesNumOrdered() {
+    public CheckConnection() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,5 +27,8 @@ public class GetAllLikesNumOrdered extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setStatus(200);
+
 	}
+
+
 }

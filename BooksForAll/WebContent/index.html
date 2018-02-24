@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="windows-1255">
+<meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="lib/angular.min.js" ></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="cssIndex.css">
+<!-- <link rel="stylesheet" type="text/css" href="../##/cssIndex.css">-->
 <link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script>
 var app = angular.module('myApp', []);
-app.controller('ebooksCtrl', function($scope, $http) {
+app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
+	
+
 	//,$location,$window,$state
 	$scope.submitLogin = function (){
 	    var loginData = {};
@@ -22,18 +25,20 @@ app.controller('ebooksCtrl', function($scope, $http) {
 	    console.log(loginData);
 		
 		$http.post('Login',loginData).success(function(data,status,headers,config){
-			//alert("success");
+			alert("success");
 			var allcookies = document.cookie;
+
     		cookiearray = allcookies.split(';');   
    			username = cookiearray[0].split('=')[1];
    			type = cookiearray[1].split('=')[1];
-   			//console.log(type,username);
+   			console.log(type);
    			if(type=="admin"){
-   				//$location.path('/NewFile.html');
+   				window.location.href = 'homeAdmin.html';
+   				console.log($location)
    				alert("admin");
    			}
-   			else{
-   				//$location.replace = '/books.html';
+   			if(type=="user"){
+   				window.location.href = 'homeUser.html';
    				alert("user");
    			}
 		})
@@ -86,7 +91,7 @@ app.controller('ebooksCtrl', function($scope, $http) {
 <body data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <div class="container">
 	<div class="row">
-		<h2> Login / Registration </h2>
+		<h2> BooksForAll </h2>
 	</div>
 </div>
 
@@ -138,31 +143,31 @@ app.controller('ebooksCtrl', function($scope, $http) {
         </div>
         <div id="sectionB" class="tab-pane fade">
 			<div class="innter-form">
-            <form class="sa-innate-form" id="registrationForm">
+            <form class="sa-innate-form" id="registrationForm" data-ng-submit="submitRegistration()">
             <label>Username</label>
-            <input type="text" name="username">
+            <input type="text" name="username" maxlength="10" autofocus required>            
             <label>Email</label>
-            <input type="text" name="email">
+            <input type="email" name="email" autocomplete="on" required>            
             <label>City</label>
-            <input type="text" name="city">
+            <input type="text" name="city" pattern=".{3,}[A-Za-z\s]+" required title="4 characters minimum">
             <label>Street</label>
-            <input type="text" name="street">
+            <input type="text" name="street" pattern=".{3,}" required title="4 characters minimum">
             <label>Apartment Number</label>
-            <input type="text" name="apartment">
+            <input type="number" name="apartment" min="1" required>
             <label>Postal Code</label>
-            <input type="text" name="postalCode">
+            <input type="text" name="postalCode" required pattern="[0-9]{7}">
             <label>Telephone Number</label>
-            <input type="text" name="telephoneNumber">
+            <input type="text" name="telephoneNumber" >
             <label>Password</label>
-            <input type="password" name="password">
+            <input type="password" name="password" maxlength="8" required>
             <label>Nickname</label>
-            <input type="text" name="nickname">
+            <input type="text" name="nickname" maxlength="20" required>
             <label>Description</label>
-            <input type="text" name="shortDescription">
+            <input type="text" name="shortDescription" maxlength="50">
             <label>Photo</label>
 <!--         <input type="file" accept="image/*" name="photo"> -->
             <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" />
-            <input data-ng-click="submitRegistration()" type="submit" value="Join now">
+            <input type="submit" value="Join now"  >
             </form>
             </div>
             

@@ -36,12 +36,15 @@ public class SignUp extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		StringBuilder jsonFileContent = new StringBuilder();
+		String line = null;
 		BufferedReader reader = request.getReader();
-		String newUser = reader.readLine();
-		System.out.println("sign up");
-		System.out.println(newUser);
+		while ((line = reader.readLine()) != null)
+			jsonFileContent.append(line);
+		System.out.println(jsonFileContent);
 		Gson gson = new Gson();
-		EbookUser user = gson.fromJson(newUser, EbookUser.class);
+		EbookUser user = gson.fromJson(jsonFileContent.toString(), EbookUser.class);
 		int res = 0 ;
 		DataAccess da = null;
 		if (user.getUsername()!=null&& user.getEmail()!=null &&
