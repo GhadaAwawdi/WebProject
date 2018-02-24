@@ -81,6 +81,7 @@ public interface SQLStatements {
 	public final String GET_nicknamesOfebookLikes_STMT = "SELECT nickname FROM likes WHERE title=? ";
 //	public final String GET_ebookLikesNum_STMT = "SELECT count(*) FROM likes WHERE title=? ";
 	public final String GET_ebookLikes_STMT = "SELECT* FROM likes WHERE title=? ";
+	
 	public final String GET_ebookApprovedReviews_STMT = "SELECT* FROM reviews WHERE title=? and approved=1";
 	public final String GET_unapprovedReviews_STMT = "SELECT* FROM reviews WHERE approved=0";
 	public final String GET_PURCHASES_STMT = "SELECT* FROM purchase";
@@ -103,7 +104,7 @@ public interface SQLStatements {
 
 	public final static String unlikeEbook = "DELETE FROM likes WHERE username=? and title=?";
 	public final static String updateLikesNum = "UPDATE ebook SET likesNum=? WHERE title=?";
-	public final String getLikesNumByTitle = "SELECT likesNum FROM ebook WHERE title=? ";
+	public final String getLikesNumByTitle = "SELECT* FROM ebook WHERE title=? ";
 	public final String getLikesOrderedById = "SELECT * FROM ebook Order By title ";
 
 	
