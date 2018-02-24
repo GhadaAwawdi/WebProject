@@ -245,6 +245,42 @@ img:hover {opacity: 0.7;}
 
 			});
 		}
+		
+		
+		$scope.AddNewLike =function (title){
+			v
+			var pars = {
+				params:{title: title}
+			};
+			var allcookies = document.cookie;
+	        cookiearray = allcookies.split(';');
+			var username = cookiearray[0].split('=')[1]; 
+			ar temp = {
+					title: title,
+					username:username
+			};
+			var jsonTitle = JSON.stringify(temp);
+			console.log(jsonTitle);
+			$http.post('',jsonTitle).then(function(response) {
+				//$scope.like = response.data;
+				//$scope.statusCode = response.status;
+			});
+		}
+       $scope.getReviews =function (id,title){
+			document.getElementById('ebookName').innerHTML =  title;
+			var temp = {
+				title: title
+			};
+			var jsonId = JSON.stringify(temp);
+			var pars = {
+				params:{title: title}
+			};
+			console.log(jsonId)
+			$http.get('GetAllReviewsByTitle',pars).then(function(response) {
+				$scope.reviews = response.data;
+				$scope.statusCode = response.status;
+			});
+		}
 		$scope.showLikes = function(id) {
 			var pars = {
 				params : {
@@ -325,20 +361,35 @@ img:hover {opacity: 0.7;}
 		<table  class="table table-striped">
 			<thead data-ng-cloak>
 				<tr data-ng-cloak>
+					<th>EBook Name</th>
 					<th>Image</th>
-					<th>Price</th>
 					<th>Short Description</th>
 					<th>Likes' Number</th>
-
+					<th>All Reviews</th>
+					<th>Like</th>
+					<th>Add Review</th>
+					<th>Read EBook</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr data-ng-repeat="x in myEbooks">
 					<td>{{x.title}}</td>
 					<td>
-  <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
-</td>					<td>{{x.shortDescription}}</td>
-					<td>    <a  href="#" data-ng-click="openBook(x.location)">Read Me</a>
+ 				 <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
+					</td>					
+				<td>{{x.shortDescription}}</td>
+				<td>{{x.likesNum}}</td>
+				<td><a class="btn btn-block btn-primary" data-ng-click="getReviews(x.id,x.title)" data-toggle="modal" data-target="#myModal" >
+			 		Reviews
+    				</a></td>
+				<td><a class="btn btn-block btn-primary" data-ng-click="AddNewLike(x.title)" >
+			 		Like
+    				</a></td>
+    				<td><a class="btn btn-block btn-primary" data-ng-click="AddNewReview(x.title)" >
+			 		Add Review
+    				</a></td>
+				
+				<td>    <a   class="btn btn-block btn-primary" href="#" data-ng-click="openBook(x.location)">Read Me</a>
 					</td>
 
 				</tr>
@@ -350,6 +401,40 @@ img:hover {opacity: 0.7;}
   <img class="modal-content" id="img01">
   <div id="caption"></div>
 </div>
+
+<div class="container">
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id="ebookName"></h4>
+        </div>
+        <div class="modal-body">
+			<div class="container">
+        		<div class="row">
+					<div data-ng-repeat="y in reviews"   >
+					<!-- data-ng-repeat="y in reviews" -->
+   			    		<div class="block-text rel zmin">
+			       		 	<h1>{{y.nickname}}</h1>
+			       		 	<p>{{y.review}}</p>
+						</div>
+						<br>
+					</div>
+        		</div>
+    		</div>	
+		</div>          
+		
+        </div>
+        
+      </div>
+      
+    </div>
+  </div>
 
 		</div>
 	
