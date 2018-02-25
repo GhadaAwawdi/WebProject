@@ -42,7 +42,7 @@
 
 		        		});
 						$scope.myVar = true;
-		                   alert('suuu')
+		                  // alert('suuu')
 		                   }
 		            }
 		        });
@@ -58,12 +58,14 @@
 			
 			$scope.RemoveUser = function(username,button) {
 		    	var btn = document.getElementById(button);
-		console.log(btn);
-				var result = confirm("Want to delete?");
+				console.log(btn);
+				var result = confirm("Are you sure you want to delete the user "+username+"?" );
 				if (result) {
 					var data = {
 							username : username,
 						};
+					 //var row = btn.parentNode.parentNode;
+					  //row.parentNode.removeChild(row);
 						//Call the services
 						var jsonData = JSON.stringify(data);
 				    //Logic to delete the item
@@ -71,8 +73,8 @@
 				$scope.users = response.data;
 				$scope.statuscode = response.status;
 			});
-					  var row = btn.parentNode.parentNode;
-					  row.parentNode.removeChild(row);
+				    location.reload();
+					 
 		//			document.getElementById("selectedUser").innerHTML = id;
 			//		document.getElementById("selectedUser").style.visibility = " none";
 				}
@@ -123,6 +125,7 @@
 			<thead>
 				<tr>
 					<th>username</th>
+					<th>photo</th>
 					<th>email</th>
 					<th>street</th>
 					<th>apartment</th>
@@ -132,7 +135,6 @@
 					<th>password</th>
 					<th>nickname</th>
 					<th>short Description</th>
-					<th>photo</th>
 					<th>Remove</th>
 
 				</tr>
@@ -140,6 +142,10 @@
 			<tbody>
 				<tr data-ng-repeat="x in users | filter: searchKeyword">
 					<td>{{x.username}}</td>
+					<td><a data-ng-target="_blank" data-ng-href="{{x.photo}}">
+							<img data-ng-src="{{x.photo}}" data-ng-alt="Forest"
+							style="width: 100px; height: 100px">
+					</a></td>
 					<td>{{x.email}}</td>
 					<td>{{x.street}}</td>
 					<td>{{x.apartment}}</td>
@@ -149,10 +155,6 @@
 					<td>{{x.password}}</td>
 					<td>{{x.nickname}}</td>
 					<td>{{x.shortDescription}}</td>
-					<td><a data-ng-target="_blank" data-ng-href="{{x.photo}}">
-							<img data-ng-src="{{x.photo}}" data-ng-alt="Forest"
-							style="width: 100px; height: 100px">
-					</a></td>
 					<td><a id="{{x.username}}" style="background-color: red;"
 						class="btn btn-block btn-primary"
 						data-ng-click="RemoveUser(x.username,x.username)"> Remove </a></td>
