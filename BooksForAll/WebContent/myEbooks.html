@@ -182,6 +182,26 @@
 				alert('like added successfully')
 			});
 		}
+		
+		
+		$scope.removeLike =function (title){
+// 			var pars = {
+// 				params:{title: title}
+// 			};
+			var allcookies = document.cookie;
+	        cookiearray = allcookies.split(';');
+			var username = cookiearray[0].split('=')[1]; 
+			var temp = {
+					title: title,
+					username:username
+			};
+			var jsonTitle = JSON.stringify(temp);
+			console.log(jsonTitle);
+			$http.post('UnlikeEbook',jsonTitle).then(function(response) {
+				alert('unlike done')
+			});
+		}
+		
        $scope.getReviews =function (id,title){
 			document.getElementById('ebookName').innerHTML =  title;
 			var temp = {
@@ -332,8 +352,11 @@ function submitAddingReview() {
 				<td><a class="btn btn-block btn-primary" data-ng-click="getReviews(x.id,x.title)" data-toggle="modal" data-target="#myModal" >
 			 		Reviews
     				</a></td>
-				<td><a class="btn btn-block btn-primary" data-ng-click="AddNewLike(x.title)" >
+    				<td ><a  data-ng-if="{{x.liked}}" class="btn btn-block btn-primary" data-ng-click="AddNewLike(x.title)" >
 			 		Like
+    				</a></td>
+				<td><a  data-ng-if="!{{x.liked}}" class="btn btn-block btn-primary" data-ng-click="removeLike(x.title)" >
+			 		Unlike
     				</a></td>
     				<td><a class="btn btn-block btn-primary" data-ng-click="AddReview(x.title)" data-toggle="modal" data-target="#addReviewModal"  >
 			 		Add Review
