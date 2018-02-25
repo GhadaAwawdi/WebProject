@@ -680,4 +680,19 @@ public class DataAccess implements DataInterface {
 		}
 		return User;
 	}
+	
+	@Override
+	public boolean ignoreReview(Review review) throws SQLException {
+		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.ignoreReview);
+		stmt1.setString(1, review.getTitle());
+		stmt1.setString(2, review.getUsername());
+		stmt1.setString(3, review.getNickname());
+		stmt1.setString(4, review.getReview());
+		// stmt1.setInt(5, review.getApproved());
+		stmt1.executeUpdate();
+		DBUtils.conn.commit();
+		stmt1.close();
+		System.out.println("ignored");
+		return true;
+	}
 }
