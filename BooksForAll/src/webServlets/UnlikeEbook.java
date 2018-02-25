@@ -52,10 +52,11 @@ public class UnlikeEbook extends HttpServlet {
 			try {
 				da = new DataAccess();
 				res = da.unlikeEbook(like.getTitle(), like.getUsername());
-	        	da.closeConnection();
+	        	
 
 				if(res==true)
 					da.decreaseNumOfEbookLikes(like.getTitle());
+				da.closeConnection();
 			} catch (NamingException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {

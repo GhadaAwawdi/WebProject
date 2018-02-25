@@ -161,6 +161,38 @@
 
 			});
 		}
+		
+		$scope.submitAddingReview = function() {
+			var formData = {};
+			var title = document.getElementById("selectedBook").innerHTML;
+			formData["title"] = title;
+			var allcookies = document.cookie;
+			cookiearray = allcookies.split(';');
+			name = cookiearray[0].split('=')[0];
+			value = cookiearray[0].split('=')[1];
+			formData["username"] = value;
+			//formData["nickname"] = "Ghada";
+			//formData["approved"] = 0;
+			$("#addReviewForm").find("input[name]").each(function(index, node) {
+				formData[node.name] = node.value;
+			});
+			
+			formData = JSON.stringify(formData);
+			console.log(formData);
+			$http.post('AddEbookReview', formData).success(function(data,status,headers,config) {
+				alert(data);
+				document.getElementById("review").value = null;
+				$('#addReviewModal').modal('toggle');
+				document.getElementById("selectedBook").innerHTML = "";
+
+				})
+				.error(function(data,status,headers,config){
+					alert("failed");
+				});
+		}
+		
+		
+		
 		$scope.AddReview = function(title) {
 			document.getElementById("selectedBook").innerHTML = title;
 			document.getElementById("selectedBook").style.visibility = " none";
@@ -178,8 +210,12 @@
 			};
 			var jsonTitle = JSON.stringify(temp);
 			console.log(jsonTitle);
-			$http.post('AddNewEbookLike',jsonTitle).then(function(response) {
-				alert('like added successfully')
+			$http.post('AddNewEbookLike',jsonTitle).success(function(data,status,headers,config) {
+				alert('like added successfully');
+				location.reload();
+			})
+			.error(function(data,status,headers,config){
+				alert("failed");
 			});
 		}
 		
@@ -198,7 +234,8 @@
 			var jsonTitle = JSON.stringify(temp);
 			console.log(jsonTitle);
 			$http.post('UnlikeEbook',jsonTitle).then(function(response) {
-				alert('unlike done')
+				alert('unlike done');
+				location.reload();
 			});
 		}
 		
@@ -271,35 +308,7 @@
 		}
 	});
 </script>
-<script>
-function submitAddingReview() {
-	var formData = {};
-	var title = document.getElementById("selectedBook").innerHTML;
-	formData["title"] = title;
-	var allcookies = document.cookie;
-	cookiearray = allcookies.split(';');
-	name = cookiearray[0].split('=')[0];
-	value = cookiearray[0].split('=')[1];
-	formData["username"] = value;
-	//formData["nickname"] = "Ghada";
-	//formData["approved"] = 0;
-	$("#addReviewForm").find("input[name]").each(function(index, node) {
-		formData[node.name] = node.value;
-	});
-	
-	formData = JSON.stringify(formData);
-	console.log(formData);
-	$.post("AddEbookReview", formData).done(function(data) {
-		alert(data);
 
-		$('#addReviewModal').modal('toggle');
-		document.getElementById("selectedBook").innerHTML = "";
-
-		//$('#payModal').dialog("close")
-		//$.modal.close();
-	});
-}
-</script>
 
 </head>
 <body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
@@ -352,12 +361,14 @@ function submitAddingReview() {
 				<td><a class="btn btn-block btn-primary" data-ng-click="getReviews(x.id,x.title)" data-toggle="modal" data-target="#myModal" >
 			 		Reviews
     				</a></td>
-    				<td ><a  data-ng-if="{{x.liked}}" class="btn btn-block btn-primary" data-ng-click="AddNewLike(x.title)" >
-			 		Like
-    				</a></td>
-				<td><a  data-ng-if="!{{x.liked}}" class="btn btn-block btn-primary" data-ng-click="removeLike(x.title)" >
+    				<td >
+    				<a  data-ng-if="x.liked" class="btn btn-block btn-primary" data-ng-click="removeLike(x.title)" >
 			 		Unlike
-    				</a></td>
+    				</a>
+    				<a  data-ng-if="!x.liked" class="btn btn-block btn-primary" data-ng-click="AddNewLike(x.title)" >
+			 		Like
+    				</a>
+					</td>
     				<td><a class="btn btn-block btn-primary" data-ng-click="AddReview(x.title)" data-toggle="modal" data-target="#addReviewModal"  >
 			 		Add Review
     				</a></td>
@@ -420,13 +431,13 @@ function submitAddingReview() {
         </div>
         <div class="modal-body">
 			<div class="container">
-				<form role="form" name="addReviewForm" id="addReviewForm">
+				<form role="form" name="addReviewForm" id="addReviewForm" data-ng-submit="submitAddingReview()" >
         		<div class="row">
-					<input name="review" maxlength="1000" style="width: 400px; height: 100px;" type="text">
+					<input id="review" name="review" maxlength="1000" style="width: 400px; height: 100px;" type="text" autofocus required>
 				</div>
 				<br>
 				<div class="row">
-					<input type="submit" style="width: 100px;" class="btn btn-block btn-primary" onclick="submitAddingReview()" value="Submit">
+					<input type="submit" style="width: 100px;" class="btn btn-block btn-primary" value="Submit">
         		</div>
         		</form>
     		</div>	
