@@ -13,6 +13,7 @@ public class Ebook {
 	String title;
 	String image;
 	String shortDescription;
+	boolean liked;
 	public Ebook( String title, double price, String image, String shortDescription,String location, int likesNum) throws NamingException, SQLException {
 		super();
 		System.out.println("in constructor");
@@ -62,6 +63,12 @@ public class Ebook {
 		this.shortDescription = shortDescription;
 	}
 	
+	public void setLiked(boolean liked) {
+		this.liked = liked;
+	}
+	public boolean getLiked() {
+		return liked;
+	}
 	
 	
 }

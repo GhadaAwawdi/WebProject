@@ -51,6 +51,8 @@ public class GetEbooksByUsername extends HttpServlet {
 			temp = da.getAllEbooks(getServletContext().getResourceAsStream(File.separator + Constants.EBOOKSS_FILE));
 			for(Ebook ebook : temp){
 				ebook.setLikesNum(da.numOfEbookLikes(ebook.getTitle()));
+				boolean liked = da.checkEbookLikedByUser(username, ebook.getTitle());
+				ebook.setLiked(liked);
 				boolean res = da.checkIfEbookPurchased(username, ebook.getTitle());
 				if(res){
 					ebooks.add(ebook);
