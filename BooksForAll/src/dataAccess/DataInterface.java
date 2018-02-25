@@ -48,6 +48,7 @@ public interface DataInterface {
 	boolean validatePurchase(Purchase purchase);
 	boolean checkEbookLikedByUser(String username, String title) throws SQLException;
 	ArrayList<EbookUser> getUserBynickname(String nickname) throws SQLException;
+	boolean ignoreReview(Review review) throws SQLException;
 
 
 }
