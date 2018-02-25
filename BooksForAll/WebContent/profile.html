@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/angular.min.js" ></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script>
+var app = angular.module('myApp', []);
+app.controller('ebooksCtrl', function($scope, $http,$window) {
+	var timerhandler;
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	var c = url.searchParams.get("nickname");
+	//console.log(c);
+	var pars={
+		params:{nickname: c}
+	};
+	console.log(pars);
+    $scope.CheckNow = function()
+    {
+//    	alert('success');
+		
+        $.ajax(
+        {
+            type: 'GET',
+            url: 'GetAllLikesNumOrdered',
+            success: function(data) 
+            {
+     //       	alert('success');
+                var allcookies = document.cookie;
+                cookiearray = allcookies.split(';');
+                  // username = cookiearray[0].split('=')[1]; 
+                   type = cookiearray[1].split('=')[1];  
+                   console.log(type);
+                   if(type=="user"){
+                       window.location.href='homeUser.html';
+                   }
+                   else{
+           		$http.get('GetEbookUserByNickname',pars).then(function(response) {
+        			$scope.userDetails = response.data;
+        			console.log("dfdd");
+
+        		});
+				$scope.myVar = true;
+                  // alert('suuu')
+                }
+            }
+        });
+
+    }
+    console.log("ajaaax")
+    timerhandler = setInterval($scope.CheckNow,50000);
+
+});
+
+</script>
+<title>profile</title>
+</head>
+<body data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+	<div class="container" >
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>username</th>
+					<th>email</th>
+					<th>street</th>
+					<th>apartment</th>
+					<th>city</th>
+					<th>postal code</th>
+					<th>Telephone Number</th>
+					<th>password</th>
+					<th>nickname</th>
+					<th>short Description</th>
+					<th>photo</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="x in userDetails">
+					<td>{{x.username}}</td>
+					<td>{{x.email}}</td>
+					<td>{{x.street}}</td>
+					<td>{{x.apartment}}</td>
+					<td>{{x.city}}</td>
+					<td>{{x.postalCode}}</td>
+					<td>{{x.telephoneNumber}}</td>
+					<td>{{x.password}}</td>
+					<td>{{x.nickname}}</td>
+					<td>{{x.shortDescription}}</td>
+					<td><a data-ng-target="_blank" data-ng-href="{{x.photo}}">
+							<img data-ng-src="{{x.photo}}" data-ng-alt="Forest"
+							style="width: 100px; height: 100px">
+					</a></td>
+					
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>

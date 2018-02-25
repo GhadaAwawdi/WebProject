@@ -71,7 +71,7 @@ public class GetAllNicknamesByEbookLikes extends HttpServlet {
 //           	writer.flush();
 //        	System.out.println(nicknamesJsonResult);
 //		}
-	//	String Id = request.getParameter("id"); 
+		String title = request.getParameter("title"); 
 	//	int id = Integer.parseInt(Id);		
 		Collection<String> likes = new ArrayList<String>();
 		Gson gson = new Gson();
@@ -80,10 +80,10 @@ public class GetAllNicknamesByEbookLikes extends HttpServlet {
 		Ebook ebook = gson.fromJson(jsonFileContent.toString(), Ebook.class);
 
 		DataAccess da;
-		if (jsonFileContent.toString() != null &&!jsonFileContent.toString().equals("")) {
+		if (jsonFileContent.toString() != null ||!jsonFileContent.toString().equals("")) {
 			try {
 				da = new DataAccess();
-				likes = da.getUsersThatLikedEbook(ebook.getTitle());
+				likes = da.getUsersThatLikedEbook(title);
 				//likes.add("nickname2");
 				da.closeConnection();
 

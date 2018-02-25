@@ -231,23 +231,23 @@ img:hover {opacity: 0.7;}
 				alert(response);
 			});
 		}
-		$scope.showLikes = function (id){
-			var pars = {
-				params:{id: id}
-			};
-			$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
-				$scope.likes = response.data;
-				$scope.likeStatusCode = response.status;
-			});
+// 		$scope.showLikes = function (id){
+// 			var pars = {
+// 				params:{id: id}
+// 			};
+// 			$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
+// 				$scope.likes = response.data;
+// 				$scope.likeStatusCode = response.status;
+// 			});
 			
 	//		console.log($scope.likes);
 		//	document.getElementById("allLikes").setAttribute("title", likes);
 
-		}
-		$scope.hideLikes = function (){
-			//$scope.likes=null;
-			document.getElementById("allLikes").setAttribute("title", "");
-		}
+		//}
+// 		$scope.hideLikes = function (){
+// 			//$scope.likes=null;
+// 			document.getElementById("allLikes").setAttribute("title", "");
+// 		}
 		
 		$scope.getReviews =function (id,title){
 			document.getElementById('ebookName').innerHTML =  title;
@@ -265,18 +265,26 @@ img:hover {opacity: 0.7;}
 			});
 		}
 		
+		$scope.goToprofile =function (nickname){
+
+			var pars = {
+				params:{nickname: nickname}
+			};
+			document.getElementById('myLink').setAttribute('href', 'profile.html?nickname=' + nickname);
+		}
+		
 		$scope.myFunction = function(bookTitle) {
 		//	 alert('myFunction');
-			 console.log(bookTitle)
+			console.log(bookTitle);
 			var pars = {
 					params:{title: bookTitle}
 				};
 				$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
-			//		$scope.likes = response.data;
+					$scope.booklikes = response.data;
 					$scope.likeStatusCode = response.status;
 				});
-				$scope.likes = {name : "sampleName", age : 18, email : "mail"};
-				var popup = document.getElementById(bookTitle);
+		//$scope.likes = {name : "sampleName", age : 18, email : "mail"};
+		var popup = document.getElementById(bookTitle);
 	//	 popup.clasList.add('ghada','heeey');
 		 popup.classList.toggle("show");
 		}
@@ -357,19 +365,14 @@ img:hover {opacity: 0.7;}
 					<td>{{x.shortDescription}}</td>
 					<td>
 		<!--  			<a id="allLikes" data-toggle="tooltip" data-ng-mouseover="showLikes(x.id)" data-ng-mouseleave="hideLikes()">{{x.likesNum}}</a> -->
-<div class="popup" data-ng-click="myFunction(x.title)">{{x.likesNum}}
+		<div class="popup" data-ng-click="myFunction(x.title)"> {{x.likesNum}}
 <!--  <a   class="popuptext" id="{{x.title + x.likesNum}}" href='https://www.facebook.com'>facebook link</a> -->
         <ul class="popuptext" id="{{x.title}}">
-         <li data-ng-repeat="z in likes"> 
-         <a  href='https://www.google.com'>google link</a> 
+         <li data-ng-repeat="f in booklikes"> 
+         <a href="#" id="myLink" data-ng-click="goToprofile(f)" style="color: white;" >
+        {{f}}
+        </a>
          </li>
-     
-     <!-- 
-        <li><a  href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a  href="#">Separated link</a></li>
-         -->
-        
       </ul>
 
 </div>
@@ -424,7 +427,14 @@ img:hover {opacity: 0.7;}
       
     </div>
   </div>
-
+  
+<!--   <button data-ng-click="myFunction('The Joy of Life')"></button> -->
+<!--     	<ul> -->
+<!--          <li data-ng-repeat="f in booklikes">  -->
+<!--         {{f}} -->
+<!--          </li> -->
+        
+<!--       </ul> -->
 		</div>
 	
 </body>
