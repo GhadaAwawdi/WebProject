@@ -55,6 +55,47 @@
 				$scope.im = null;
 				$scope.statuscode = response.status;
 			});
+			
+			
+			$scope.submitPayment=function() {
+				//var formData = $("#payment-form").serializeArray();
+				//formData=JSON.stringify(formData);
+				var formData = {};
+				var title = document.getElementById("selectedBook").innerHTML;
+				formData["title"] = title;
+				var allcookies = document.cookie;
+				cookiearray = allcookies.split(';');
+				name = cookiearray[0].split('=')[0];
+				value = cookiearray[0].split('=')[1];
+				formData[name] = value;
+
+				$("#payment-form").find("input[name]").each(function(index, node) {
+					formData[node.name] = node.value;
+				});
+				$("#payment-form").find("select[name]").each(function(index, node) {
+					formData[node.name] = node.value;
+				});
+				//if(!(formData["id"]!=null&&formData["username"]!=null&&formData["fullName"]!=null&&formData["expiry"]!=null&&formData["cvv"]!=null&&formData["creditCardNumber"]!=null&&formData["creditCardComapany"]!=null)){
+				//return false;
+				//	}
+
+				//d=JSON.stringify(formData["creditCardNumber"]);
+				//console.log(d.replace(/\s/g, ''));  // ##A#B##C###D#EF#
+				//e=JSON.stringify(formData["expiry"]);
+				console.log(formData);
+				formData = JSON.stringify(formData);
+				$http.post('AddNewEbookPurchase', formData).success(function(data,status,headers,config) {
+					alert(data);
+					$('#payModal').modal('toggle');
+					document.getElementById("selectedBook").innerHTML = "";
+					//$('#payModal').dialog("close")
+					//$.modal.close();
+				})
+				.error(function(data,status,headers,config){
+					alert("failed");
+				});
+			}
+			
 		//	$http.get('GetAllLikesNumOrdered').then(function(response) {
 		//		$scope.likes = response.data;
 		//		$scope.statuscode = response.status;
@@ -89,10 +130,10 @@
 				document.getElementById("allLikes").setAttribute("title", "");
 			}
 
-			$scope.BuyEbook = function(id, title) {
+			$scope.BuyEbook = function(title) {
 				document.getElementById("BuyEbookName").innerHTML = "paying for: "
 						+ title;
-				document.getElementById("selectedBook").innerHTML = id;
+				document.getElementById("selectedBook").innerHTML = title;
 				document.getElementById("selectedBook").style.visibility = " none";
 			}
 			$scope.getReviews =function (id,title){
@@ -129,43 +170,7 @@
 		    	    modal.style.display = "none";
 		    	}
 		}
-			function submitPayment() {
-				//var formData = $("#payment-form").serializeArray();
-				//formData=JSON.stringify(formData);
-				var formData = {};
-				var id = document.getElementById("selectedBook").innerHTML;
-				formData["id"] = id;
-				var allcookies = document.cookie;
-				cookiearray = allcookies.split(';');
-				name = cookiearray[0].split('=')[0];
-				value = cookiearray[0].split('=')[1];
-				formData[name] = value;
-
-				$("#payment-form").find("input[name]").each(function(index, node) {
-					formData[node.name] = node.value;
-				});
-				$("#payment-form").find("select[name]").each(function(index, node) {
-					formData[node.name] = node.value;
-				});
-				//if(!(formData["id"]!=null&&formData["username"]!=null&&formData["fullName"]!=null&&formData["expiry"]!=null&&formData["cvv"]!=null&&formData["creditCardNumber"]!=null&&formData["creditCardComapany"]!=null)){
-				//return false;
-				//	}
-
-				//d=JSON.stringify(formData["creditCardNumber"]);
-				//console.log(d.replace(/\s/g, ''));  // ##A#B##C###D#EF#
-				//e=JSON.stringify(formData["expiry"]);
-
-				formData = JSON.stringify(formData);
-				$.post("AddNewEbookPurchase", formData).done(function(data) {
-					alert(data);
-
-					$('#payModal').modal('toggle');
-					document.getElementById("selectedBook").innerHTML = "";
-
-					//$('#payModal').dialog("close")
-					//$.modal.close();
-				});
-			}
+			
 			
 			$(document).ready(function() {
 				$('[data-toggle="tooltip"]').tooltip();
@@ -230,7 +235,7 @@
 						data-target="#myModal"> Reviews </a></td>
 					<td><a style="background-color: green;"
 						class="btn btn-block btn-primary"
-						data-ng-click="BuyEbook(x.id,x.title)" data-toggle="modal"
+						data-ng-click="BuyEbook(x.title)" data-toggle="modal"
 						data-target="#payModal"> Buy </a></td>
 				</tr>
 			</tbody>
@@ -297,7 +302,7 @@
 											style="display: inline-block;">
 
 											<div class="panel-body">
-												<form role="form" name="payForm" id="payment-form">
+												<form role="form" name="payForm" id="payment-form" data-ng-submit="submitPayment()">
 													<!--                     action="AddNewEbookPurchase" method="post" -->
 													<div class="row">
 														<div class="col-xs-12">
@@ -334,7 +339,7 @@
 																<label for="cardNumber">CARD NUMBER</label> <input
 																	type="tel" class="form-control" name="creditCardNumber"
 																	placeholder="Valid Card Number"
-																	autocomplete="cc-number" required maxlength="16" />
+																	autocomplete="cc-number" pattern=".{15,}" required maxlength="16" />
 
 															</div>
 														</div>
@@ -351,13 +356,13 @@
 																	class="visible-xs-inline">EXP</span> DATE</label> <input
 																	type="tel" class="form-control" name="expiry"
 																	placeholder="MM / YY" autocomplete="cc-exp" required
-																	pattern=".{4,}" maxlength="4" />
+																	pattern=".{5,}" maxlength="5" />
 															</div>
 														</div>
 														<div class="col-xs-5 col-md-5 pull-right">
 															<div class="form-group">
-																<label for="cardCVV">CV CODE</label> <input type="tel"
-																	class="form-control" name="cvv" placeholder="CVC"
+																<label for="cardCVV">CVV CODE</label> <input type="tel"
+																	class="form-control" name="cvv" placeholder="CVV"
 																	autocomplete="cc-csc" required pattern=".{3,}"
 																	maxlength="3" />
 															</div>
@@ -366,7 +371,7 @@
 
 													<div class="row">
 														<div class="col-xs-12">
-															<input type="submit" onclick="submitPayment()"
+															<input type="submit" 
 																value="Confirm And Pay" />
 														</div>
 													</div>

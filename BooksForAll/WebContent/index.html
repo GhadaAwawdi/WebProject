@@ -120,11 +120,10 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
 			<h3>Login to your account</h3>
 			<form class="login-form" id="loginForm">
 			<label>Username</label>
-			<br>
-            <input type="text" name="username"/>
-           	<br>
+            <input type="text" name="username" id="ex">
+           	
             <label>Password</label>
-            <input type="password" name="password"/>
+            <input type="password" name="password">
             
             <input type="submit" data-ng-click="submitLogin()" value="Sign In"/>
 
@@ -153,7 +152,7 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
             <label>Street</label>
             <input type="text" name="street" pattern=".{3,}" required title="4 characters minimum">
             <label>Apartment Number</label>
-            <input type="number" name="apartment" min="1" required>
+            <input type="number" name="apartment" min="1" required  id="ex">
             <label>Postal Code</label>
             <input type="text" name="postalCode" required pattern="[0-9]{7}">
             <label>Telephone Number</label>
@@ -165,8 +164,9 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
             <label>Description</label>
             <input type="text" name="shortDescription" maxlength="50">
             <label>Photo</label>
-<!--         <input type="file" accept="image/*" name="photo"> -->
-            <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" />
+	        <input type="url" name="photo">
+<!--        <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" /> -->
+			<br>
             <input type="submit" value="Join now"  >
             </form>
             </div>
