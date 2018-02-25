@@ -111,4 +111,7 @@ public interface SQLStatements {
 	public final static String approveReview = "UPDATE reviews SET approved=1 WHERE title=? and username=? and nickname=? and review=?";
 
 	public final String checkIfPurchased = "SELECT* FROM purchase WHERE username=? and title=?";
+	public final String checkIfLiked = "SELECT* FROM likes WHERE username=? and title=?";
+	public final String Get_UserByNickname = "SELECT* FROM ebookUser WHERE nickname=?";
+
 }

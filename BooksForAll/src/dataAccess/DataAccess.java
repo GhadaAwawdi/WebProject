@@ -129,7 +129,7 @@ public class DataAccess implements DataInterface {
 			System.out.println("BAD, USERname ALREADY EXISTS");
 			return -1;
 		}
-		
+
 		PreparedStatement stmt3 = DBUtils.conn.prepareStatement(SQLStatements.selectUserByUserInfo);
 		stmt3.setString(1, user.getUsername());
 		stmt3.setString(2, user.getPassword());
@@ -142,15 +142,16 @@ public class DataAccess implements DataInterface {
 		stmt3.setString(9, user.getNickname());
 		stmt3.setString(10, user.getShortDescription());
 		stmt3.setString(11, user.getPhoto());
-		
+
 		rs = stmt3.executeQuery();
 		if (rs.next()) // user exists
 		{
+			stmt3.close();
+			rs.close();
 			System.out.println("BAD, USER ALREADY EXISTS");
 			return 0;
 		}
-		
-		
+
 		PreparedStatement stmt2 = DBUtils.conn.prepareStatement(SQLStatements.addNewUser);
 		stmt2.setString(1, user.getUsername());
 		stmt2.setString(2, user.getEmail());
@@ -165,6 +166,8 @@ public class DataAccess implements DataInterface {
 		stmt2.setString(11, user.getPhoto());
 		stmt2.executeUpdate();
 
+		DBUtils.conn.commit();
+		stmt2.close();
 		return 1;
 	}
 
@@ -180,6 +183,8 @@ public class DataAccess implements DataInterface {
 		PreparedStatement stm1 = DBUtils.conn.prepareStatement(SQLStatements.deleteUser);
 		stm1.setString(1, username);
 		stm1.executeUpdate();
+		DBUtils.conn.commit();
+		stm1.close();
 		System.out.println("ebook user deleted successfully");
 		return true;
 	}
@@ -195,6 +200,8 @@ public class DataAccess implements DataInterface {
 			stmt1.setString(2, title);
 			stmt1.setString(3, rs.getString(DataContract.LikesTable.COL_NICKNAME));
 			stmt1.executeUpdate();
+			DBUtils.conn.commit();
+			stmt1.close();
 			System.out.println("added to database");
 			return true;
 		}
@@ -216,6 +223,8 @@ public class DataAccess implements DataInterface {
 		stm1.setString(1, username);
 		stm1.setString(2, title);
 		stm1.executeUpdate();
+		DBUtils.conn.commit();
+		stm1.close();
 		System.out.println("unlike done successfully");
 		return true;
 	}
@@ -228,8 +237,8 @@ public class DataAccess implements DataInterface {
 		stmt.setString(1, title);
 		ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
-//			count++;
-		count = rs.getInt("likesNum");
+			// count++;
+			count = rs.getInt("likesNum");
 
 		}
 		count = rs.getInt("likesNum");
@@ -266,10 +275,11 @@ public class DataAccess implements DataInterface {
 					rs.getString(DataContract.PurchaseTable.COL_CREDITCARDCOMPANY));
 			Date date = new Date(rs.getTimestamp(DataContract.PurchaseTable.COL_TIME).getTime());
 			String formatter = new SimpleDateFormat("yyyy-MM-dd").format(date);
-			//	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			// SimpleDateFormat formatter = new
+			// SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			p.setTime(formatter);
 			purchases.add(p);
-			System.out.println("time is "+p.getTime()+" "+date);
+			System.out.println("time is " + p.getTime() + " " + date);
 		}
 		return purchases;
 	}
@@ -363,7 +373,8 @@ public class DataAccess implements DataInterface {
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			review = new Review(rs.getString(DataContract.ReviewsTable.COL_USERNAME),
-					rs.getString(DataContract.ReviewsTable.COL_EBOOKTITLE), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
+					rs.getString(DataContract.ReviewsTable.COL_EBOOKTITLE),
+					rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
 					rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
 					rs.getString(DataContract.ReviewsTable.COL_REVIEW));
 			reviews.add(review);
@@ -383,7 +394,8 @@ public class DataAccess implements DataInterface {
 		// ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
 			review = new Review(rs.getString(DataContract.ReviewsTable.COL_USERNAME),
-					rs.getString(DataContract.ReviewsTable.COL_EBOOKTITLE), rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
+					rs.getString(DataContract.ReviewsTable.COL_EBOOKTITLE),
+					rs.getInt(DataContract.ReviewsTable.COL_APPROVED),
 					rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
 					rs.getString(DataContract.ReviewsTable.COL_REVIEW));
 			reviews.add(review);
@@ -401,6 +413,8 @@ public class DataAccess implements DataInterface {
 		stmt1.setString(4, review.getReview());
 		stmt1.setInt(5, review.getApproved());
 		stmt1.executeUpdate();
+		DBUtils.conn.commit();
+		stmt1.close();
 		System.out.println("added to database");
 		return true;
 	}
@@ -438,96 +452,97 @@ public class DataAccess implements DataInterface {
 
 	}
 
-//	@Override
-//	public Collection<Integer> getLikesNumOrderedById() throws SQLException {
-//		Collection<Integer> c = new Collection<Integer>() {
-//
-//			@Override
-//			public <T> T[] toArray(T[] a) {
-//				// TODO Auto-generated method stub
-//				return null;
-//			}
-//
-//			@Override
-//			public Object[] toArray() {
-//				// TODO Auto-generated method stub
-//				return null;
-//			}
-//
-//			@Override
-//			public int size() {
-//				// TODO Auto-generated method stub
-//				return 0;
-//			}
-//
-//			@Override
-//			public boolean retainAll(Collection<?> c) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//
-//			@Override
-//			public boolean removeAll(Collection<?> c) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//
-//			@Override
-//			public boolean remove(Object o) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//
-//			@Override
-//			public Iterator<Integer> iterator() {
-//				// TODO Auto-generated method stub
-//				return null;
-//			}
-//
-//			@Override
-//			public boolean isEmpty() {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//
-//			@Override
-//			public boolean containsAll(Collection<?> c) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//
-//			@Override
-//			public boolean contains(Object o) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//
-//			@Override
-//			public void clear() {
-//				// TODO Auto-generated method stub
-//
-//			}
-//
-//			@Override
-//			public boolean addAll(Collection<? extends Integer> c) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//
-//			@Override
-//			public boolean add(Integer e) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//		};
-//		PreparedStatement stmt = DBUtils.conn.prepareStatement(SQLStatements.getLikesOrderedById);
-//		ResultSet rs = stmt.executeQuery();
-//		while (rs.next()) {
-//			c.add(rs.getInt(DataContract.EbookTable.COL_LIKESNUM));
-//		}
-//		return c;
-//
-//	}
+	// @Override
+	// public Collection<Integer> getLikesNumOrderedById() throws SQLException {
+	// Collection<Integer> c = new Collection<Integer>() {
+	//
+	// @Override
+	// public <T> T[] toArray(T[] a) {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public Object[] toArray() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public int size() {
+	// // TODO Auto-generated method stub
+	// return 0;
+	// }
+	//
+	// @Override
+	// public boolean retainAll(Collection<?> c) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean removeAll(Collection<?> c) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean remove(Object o) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public Iterator<Integer> iterator() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public boolean isEmpty() {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean containsAll(Collection<?> c) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean contains(Object o) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public void clear() {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public boolean addAll(Collection<? extends Integer> c) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean add(Integer e) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
+	// };
+	// PreparedStatement stmt =
+	// DBUtils.conn.prepareStatement(SQLStatements.getLikesOrderedById);
+	// ResultSet rs = stmt.executeQuery();
+	// while (rs.next()) {
+	// c.add(rs.getInt(DataContract.EbookTable.COL_LIKESNUM));
+	// }
+	// return c;
+	//
+	// }
 
 	@Override
 	public boolean addNewPurchase(Purchase p) throws SQLException {
@@ -541,6 +556,8 @@ public class DataAccess implements DataInterface {
 		stmt.setString(7, p.getCreditCardCompany());
 
 		stmt.executeUpdate();
+		DBUtils.conn.commit();
+		stmt.close();
 		System.out.println("added to database");
 		return true;
 	}
@@ -554,6 +571,8 @@ public class DataAccess implements DataInterface {
 		stmt1.setString(4, review.getReview());
 		// stmt1.setInt(5, review.getApproved());
 		stmt1.executeUpdate();
+		DBUtils.conn.commit();
+		stmt1.close();
 		System.out.println("approved");
 		return true;
 	}
@@ -572,6 +591,8 @@ public class DataAccess implements DataInterface {
 		stmt1.setInt(1, likesNum);
 		stmt1.setString(2, title);
 		stmt1.executeUpdate();
+		DBUtils.conn.commit();
+		stmt1.close();
 		System.out.println(" num of likes increased");
 		return true;
 	}
@@ -590,10 +611,73 @@ public class DataAccess implements DataInterface {
 		stmt1.setInt(1, likesNum);
 		stmt1.setString(2, title);
 		stmt1.executeUpdate();
+		DBUtils.conn.commit();
+		stmt1.close();
 		System.out.println(" num of likes decreased");
 		return true;
 	}
 
+	@Override
+	public boolean validatePurchase(Purchase purchase) {
+		if(purchase.getUsername()==null||purchase.getTitle()==null){
+			return false;
+		}
+		
+			if(purchase.getFullName()==null ||purchase.getFullName().equals("")){
+				return false;
+			}
+			if(purchase.getCvv().length()>4){
+				return false;
+			}
+			if(!purchase.getCreditCardCompany().equals("amex")&&!purchase.getCreditCardCompany().equals("visa")){
+				return false;
+			}
+			if(purchase.getCreditCardNumber().length()>16){
+				return false;
+			}
+			if(purchase.getExpiry().length()>5){
+				return false;
+			}		
+		
+		return true;
 	
+	}
 	
+	@Override
+	public boolean checkEbookLikedByUser(String username, String title) throws SQLException {
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.checkIfLiked);
+		stm.setString(1, username);
+		stm.setString(2, title);
+		ResultSet rs = stm.executeQuery();
+		if (rs.next()) {
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public ArrayList<EbookUser> getUserBynickname(String nickname) throws SQLException{
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.Get_UserByNickname);
+		stm.setString(1, nickname);
+		ResultSet rs = stm.executeQuery();
+		DBUtils.conn.commit();
+		System.out.println("user: " + nickname);
+		ArrayList<EbookUser> User = new ArrayList<EbookUser>();
+		EbookUser user = null;
+		// ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			user = new EbookUser(rs.getString(DataContract.EbookUserTable.COL_USERNAME),
+					rs.getString(DataContract.EbookUserTable.EMAIL),
+					rs.getString(DataContract.EbookUserTable.COL_STREET),
+					rs.getInt(DataContract.EbookUserTable.COL_APARTMENT),
+					rs.getString(DataContract.EbookUserTable.COL_CITY),
+					rs.getString(DataContract.EbookUserTable.COL_POSTALCODE),
+					rs.getString(DataContract.EbookUserTable.COL_TELEPHONENUMBER),
+					rs.getString(DataContract.EbookUserTable.COL_PASSWORD),
+					rs.getString(DataContract.EbookUserTable.COL_NICKNAME),
+					rs.getString(DataContract.EbookUserTable.COL_SHORTDESCRIPTION),
+					rs.getString(DataContract.EbookUserTable.COL_PHOTO));
+			User.add(user);
+		}
+		return User;
+	}
 }

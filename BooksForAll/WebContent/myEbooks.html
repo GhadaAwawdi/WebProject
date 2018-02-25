@@ -83,7 +83,7 @@ img:hover {opacity: 0.7;}
     position: absolute;
     top: 15px;
     right: 35px;
-    color: #f1f1f1;
+    color: #777;
     font-size: 40px;
     font-weight: bold;
     transition: 0.3s;
@@ -205,7 +205,7 @@ img:hover {opacity: 0.7;}
 		                			params : {username : username}
 		               			};
 		                		console.log(username);
-		                		$http.get('GetPurchasedEbooksByUsername', pars).then(function(response) {
+		                		$http.get('GetEbooksByUsername', pars).then(function(response) {
 		                			$scope.myEbooks = response.data;
 		               				$scope.statusCode = response.status;
 		               			});
@@ -486,7 +486,7 @@ function submitAddingReview() {
 				</div>
 				<br>
 				<div class="row">
-					<input type="submit" style="width: 100px;" class="btn btn-block btn-primary" onclick="submitAddingReview()" value="Add Review">
+					<input type="submit" style="width: 100px;" class="btn btn-block btn-primary" onclick="submitAddingReview()" value="Submit">
         		</div>
         		</form>
     		</div>	

@@ -35,7 +35,8 @@ public class Logout extends HttpServlet {
           
      //   request.getRequestDispatcher("link.html").include(request, response);  
           
-        HttpSession session=request.getSession();  
+        HttpSession session=request.getSession(false);  
+        session.setAttribute("username",null);
         session.invalidate();  
           		Cookie ck=new Cookie("username",null);//deleting cookie object
 		       	response.addCookie(ck);//adding cookie in the response
