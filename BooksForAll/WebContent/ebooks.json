@@ -2,70 +2,70 @@
 	{
 		"title": "Young Housekeeper",
 		"location": "ebooks\\1\\1.htm",
-		"image": "ebooks\\1\\images\\cover.jpg",
+		"image": "images\\cover1.jpg",
 		"price": "100",
 		"shortDescription": "Miss Parloa's young housekeeper, designed especially to aid beginners; economical receipts for those who are cooking for two or three, by Maria Parloa"
 	},
 	{
 		"title": "The Joy of Life",
 		"location": "ebooks\\2\\2.htm",
-		"image": "ebooks\\2\\images\\cover.jpg",
+		"image": "images\\cover2.jpg",
 		"price": "100",
 		"shortDescription": "Emile Zola (1840-1902) was an influential French writer and a major figure in the exoneration of the falsely accused and convicted army officer Alfred Dreyfus, which is encapsulated in the renowned newspaper headline J'Accuse. The Joy of Life( Joie de Vivre) is the 12th first in Zola's monumental twenty-volume series, Les Rougon-Macquart."
 	},
 	{
 		"title": "Inventor of the Telephone",
 		"location": "ebooks\\3\\3.htm",
-		"image": "ebooks\\3\\images\\cover.jpg",
+		"image": "images\\cover3.jpg",
 		"price": "200",
 		"shortDescription": "This scarce antiquarian book is a facsimile reprint of the original. Due to its age, it may contain imperfections such as marks, notations, marginalia and flawed pages. Because we believe this work is culturally important, we have made it available as part of our commitment for protecting, preserving, and promoting the world's literature in affordable, high quality, modern editions that are true to the original work."
 	},
 	{
 		"title": "Monsieur Henri",
 		"location": "ebooks\\4\\4.htm",
-		"image": "ebooks\\4\\images\\cover.jpg",
+		"image": "images\\cover4.jpg",
 		"price": "150",
 		"shortDescription": "High Quality FACSIMILE REPRODUCTION: Guiney, Louise Imogen :Monsieur Henri: A Foot-Note To French History :Originally published by New York : Harper & brothers in 1892. Book will be printed in black and white, with grayscale images. Book will be 6 inches wide by 9 inches tall and soft cover bound. Any foldouts will be scaled to page size. If the book is larger than 1000 pages, it will be printed and bound in two parts. Due to the age of the original titles, we cannot be held responsible for missing pages, faded, or cut off text."
 	},
 	{
 		"title": "Nietzsche",
 		"location": "ebooks\\5\\5.htm",
-		"image": "ebooks\\5\\images\\cover.jpg",
+		"image": "images\\cover5.jpg",
 		"price": "400",
 		"shortDescription": "No description available"
 	},
 	{
 		"title": "The Popol Vuh",
 		"location": "ebooks\\6\\6.htm",
-		"image": "ebooks\\6\\images\\cover.jpg",
+		"image": "images\\cover6.jpg",
 		"price": "250",
 		"shortDescription": "This book may have occasional imperfections such as missing or blurred pages, poor pictures, errant marks, etc. that were either part of the original artifact"
 	},
 	{
 		"title": "The Newspaper",
 		"location": "ebooks\\7\\7.htm",
-		"image": "ebooks\\7\\images\\cover.jpg",
+		"image": "images\\cover7.jpg",
 		"price": "200",
 		"shortDescription": "Except from The Newspaper So common an object as a newspaper is seldom the subject of serious reﬂection."
 	},
 	{
 		"title": "The Sugar Creek Gang Digs for Treasure",
 		"location": "ebooks\\8\\8.htm",
-		"image": "ebooks\\8\\images\\cover.jpg",
+		"image": "images\\cover8.jpg",
 		"price": "200",
 		"shortDescription": "A mysterious note in invisible ink leads the Sugar Creek Gang on a hunt for buried treasure. Is the key to the treasure in the weathered log house, or is it in the icehouse?"
 	},
 	{
 		"title": "The Sugar Creek Gang Goes North",
 		"location": "ebooks\\9\\9.htm",
-		"image": "ebooks\\9\\images\\cover.jpg",
+		"image": "images\\cover9.jpg",
 		"price": "100",
 		"shortDescription": "Mystery juvenile"
 	},
 	{
 		"title": "The Magical Mimics in Oz",
 		"location": "ebooks\\10\\10.htm",
-		"image": "ebooks\\10\\images\\cover.jpg",
+		"image": "images\\cover10.jpg",
 		"price": "120",
 		"shortDescription": "The Magical Mimics of Oz is the thirty-seventh volume in the Oz book series. It is the first Oz novel written by Jack Snow, and the first illustrated by Frank Kramer."
 	}
