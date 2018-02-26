@@ -16,15 +16,15 @@
 <script>
 var app = angular.module('myApp', []);
 app.controller('ebooksCtrl', function($scope, $http,$window) {
-// 	var timerhandler;
-// 	var url_string = window.location.href;
-// 	var url = new URL(url_string);
-// 	var c = url.searchParams.get("nickname");
-// 	//console.log(c);
-// 	var pars={
-// 		params:{nickname: c}
-// 	};
-// 	console.log(pars);
+	var timerhandler;
+	var url_string = window.location.href;
+	var url = new URL(url_string);
+	var c = url.searchParams.get("nickname");
+	//console.log(c);
+	var pars={
+		params:{nickname: c}
+	};
+	console.log(pars);
     $scope.CheckNow = function()
     {
 //    	alert('success');
@@ -59,12 +59,12 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
     }
     //console.log("ajaaax")
     timerhandler = setInterval($scope.CheckNow,50000);
-    nickname="GhadaAw";
-    var data={
-    	params:{nickname:nickname}
-    };
+//	nickname="GhadaAw";
+//     var data={
+//     	params:{nickname:nickname}
+//     };
     console.log(data);	
-	$http.get('GetEbookUserByNickname', data)
+	$http.get('GetEbookUserByNickname', pars)
 	.success(function(data,status,headers,config) {
 		$scope.userDetails=data;
 		//alert("success");
