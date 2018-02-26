@@ -45,7 +45,7 @@ public class UpdateScrollPosition extends HttpServlet {
 			jsonFileContent.append(line);
 		Gson gson = new Gson();
 		Purchase purchase = gson.fromJson(jsonFileContent.toString(), Purchase.class);
-		System.out.println("scroll update "+ purchase.getScrollPos()+purchase.getUsername()+purchase.getTitle());
+	//	System.out.println("scroll update "+ purchase.getScrollPos()+purchase.getUsername()+purchase.getTitle());
 
 		boolean res = false;
 		DataAccess da =null;
