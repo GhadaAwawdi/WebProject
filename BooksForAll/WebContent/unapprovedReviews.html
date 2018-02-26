@@ -42,7 +42,7 @@
 
 		        		});
 						$scope.myVar = true;
-		                   alert('suuu')
+		                  // alert('suuu')
 		                   }
 		            }
 		        });
@@ -142,6 +142,7 @@
 	</nav>
 	
 	<div class="container"  data-ng-if="myVar"  data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+		<div class="scrollit">
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -157,11 +158,11 @@
 
 				</tr>
 			</thead>
-			<tbody>
+			
+			<tbody >
 				<tr data-ng-if="myVar"  data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-repeat="x in reviews">
 					<td>{{x.username}}</td>
 					<td>{{x.title}}</td>
-					<td>{{x.approved}}</td>
 					<td>{{x.nickname}}</td>
 					<td>{{x.review}}</td>
 					<td><a id="{{x.username}}" style="background-color: green;"
@@ -172,7 +173,9 @@
 						data-ng-click="IgnoreReview(x.username,x.nickname,x.title,x.review)"> Ignore </a></td>
 				</tr>
 			</tbody>
+			
 		</table>
+		</div>
 	</div>
 	
 </body>
