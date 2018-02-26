@@ -184,6 +184,9 @@
 			formData["username"] = value;
 			//formData["nickname"] = "Ghada";
 			//formData["approved"] = 0;
+			$("#addReviewForm").find("textarea[name]").each(function(index, node) {
+				formData[node.name] = node.value;
+			});
 			$("#addReviewForm").find("input[name]").each(function(index, node) {
 				formData[node.name] = node.value;
 			});
@@ -427,7 +430,7 @@
 
 </head>
 <body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-err-src="http://google.com/favicon.ico">
-<nav  class="navbar navbar-default navbar-fixed-top">
+ <nav  class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -558,7 +561,7 @@
 			<div class="container">
 				<form role="form" name="addReviewForm" id="addReviewForm" data-ng-submit="submitAddingReview()" >
         		<div class="row">
-					<input id="review" name="review" maxlength="1000" style="width: 400px; height: 100px;" type="text" autofocus required>
+					<textarea id="review" name="review" maxlength="1000" style="width: 400px; height: 100px;" type="text" autofocus required></textarea>
 				</div>
 				<br>
 				<div class="row">
