@@ -5,7 +5,10 @@
  height: 400px;
  overflow: auto;
 }
-
+.scrollit {
+    overflow:scroll !important;
+    height: 565px !important;
+}
 .modal-body{
 	max-height: 500px;
     overflow-y: auto;
