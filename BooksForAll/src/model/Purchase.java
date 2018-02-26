@@ -12,7 +12,7 @@ public class Purchase {
 	String fullName;
 	String creditCardCompany;
 	String time;
-	int scrollPos;
+	float scrollPos;
 	
 	public Purchase(String username, String title, String creditCardNumber, String expiry, String cVV, String fullName,
 			String creditCardCompany) {
@@ -34,10 +34,10 @@ public class Purchase {
 		this.time =  time;
 	}
 	
-	public int getScrollPos() {
+	public float getScrollPos() {
 		return scrollPos;
 	}
-	public void setScrollPos(int scrollPos) {
+	public void setScrollPos(float scrollPos) {
 		this.scrollPos =  scrollPos;
 	}
 	

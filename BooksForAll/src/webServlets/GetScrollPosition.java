@@ -38,7 +38,7 @@ public class GetScrollPosition extends HttpServlet {
 		String username = request.getParameter("username");
 		String title = request.getParameter("title");
 		
-		int pos=0;
+		float pos=(float) 0;
 		DataAccess da;
 		Gson gson = new Gson();
 

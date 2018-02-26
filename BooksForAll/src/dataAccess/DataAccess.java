@@ -696,9 +696,9 @@ public class DataAccess implements DataInterface {
 	}
 	
 	@Override
-	public boolean updateScrollPosition(int pos,String username,String title) throws SQLException {
+	public boolean updateScrollPosition(float pos,String username,String title) throws SQLException {
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.updateScrollPosition);
-		stmt1.setInt(1, pos);
+		stmt1.setFloat(1, pos);
 		stmt1.setString(2, title);
 		stmt1.setString(3, username);
 		stmt1.executeUpdate();
@@ -709,14 +709,14 @@ public class DataAccess implements DataInterface {
 	}
 	
 	@Override
-	public int getScrollPosition(String username,String title) throws SQLException {
-		int pos=0;
+	public float getScrollPosition(String username,String title) throws SQLException {
+		float pos=0;
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.getScrollPosition);
 		stmt1.setString(1, title);
 		stmt1.setString(2, username);
 		ResultSet rs = stmt1.executeQuery();
 		if(rs.next()){
-			pos = rs.getInt("scrollPos");
+			pos = rs.getFloat("scrollPos");
 		}
 		DBUtils.conn.commit();
 		stmt1.close();

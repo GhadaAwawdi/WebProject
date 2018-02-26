@@ -57,7 +57,7 @@ public interface SQLStatements {
 			"fullName VARCHAR(20) NOT NULL," +
 			"creditCardCompany VARCHAR(10) NOT NULL," +
 			"currentTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
-			"scrollPos INT NOT NULL DEFAULT 0," +
+			"scrollPos FLOAT NOT NULL DEFAULT 0," +
 			"FOREIGN KEY (username) REFERENCES ebookUser(username) ON DELETE CASCADE," + 
 			"FOREIGN KEY (title) REFERENCES ebook(title)" + 
 			"ON DELETE CASCADE"+
