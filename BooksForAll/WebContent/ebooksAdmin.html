@@ -12,6 +12,37 @@
 
 <title>Ebooks</title>
 
+<style>
+.tooltip {
+    position: relative !important;
+    display: inline-block !important;
+    border-bottom: 1px dotted black !important;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden !important;
+    width: 120px !important;
+    background-color: black !important;
+    color: #fff !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+    padding: 5px 0 !important;
+    position: absolute !important;
+    z-index: 1 !important;
+    bottom: 100% !important;
+    left: 50%;
+    margin-left: -60px !important;
+    
+    /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+    opacity: 0 !important;
+    transition: opacity 1s !important;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+</style>
 
 <script>
 
@@ -134,9 +165,9 @@
 					$scope.likeStatusCode = response.status;
 				});
 		//$scope.likes = {name : "sampleName", age : 18, email : "mail"};
-		var popup = document.getElementById(bookTitle);
+	//	var popup = document.getElementById(bookTitle);
 	//	 popup.clasList.add('ghada','heeey');
-		 popup.classList.toggle("show");
+		// popup.classList.toggle("show");
 		}
 		
 		$scope.openImg = function(imgId,source,alter){
@@ -215,15 +246,14 @@
 					<td>{{x.shortDescription}}</td>
 					<td>
 		<!--  			<a id="allLikes" data-toggle="tooltip" data-ng-mouseover="showLikes(x.id)" data-ng-mouseleave="hideLikes()">{{x.likesNum}}</a> -->
-		<button class="popup" data-ng-mouseover="myFunction(x.title)"> {{x.likesNum}}
-<!--  <a   class="popuptext" id="{{x.title + x.likesNum}}" href='https://www.facebook.com'>facebook link</a> -->
-        <ul class="popuptext" id="{{x.title}}">
-         <li data-ng-repeat="f in booklikes"> 
-        {{f}}
-         </li>
-      </ul>
 
-</button>
+<div class="tooltip" data-ng-mouseover="myFunction(x.title)">{{x.likesNum}}
+  <span class="tooltiptext" data-ng-repeat="f in booklikes">
+<a href="#" id="myLink" data-ng-click="goToprofile(f)" >
+        {{f}}
+        </a>
+    </span>
+</div>
 
 					</td>
 					
