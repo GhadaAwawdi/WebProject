@@ -57,6 +57,7 @@ public interface SQLStatements {
 			"fullName VARCHAR(20) NOT NULL," +
 			"creditCardCompany VARCHAR(10) NOT NULL," +
 			"currentTimestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+			"scrollPos INT NOT NULL DEFAULT 0," +
 			"FOREIGN KEY (username) REFERENCES ebookUser(username) ON DELETE CASCADE," + 
 			"FOREIGN KEY (title) REFERENCES ebook(title)" + 
 			"ON DELETE CASCADE"+
@@ -114,5 +115,9 @@ public interface SQLStatements {
 	public final String checkIfPurchased = "SELECT* FROM purchase WHERE username=? and title=?";
 	public final String checkIfLiked = "SELECT* FROM likes WHERE username=? and title=?";
 	public final String Get_UserByNickname = "SELECT* FROM ebookUser WHERE nickname=?";
+
+	public final String updateScrollPosition = "UPDATE purchase SET scrollPos=? WHERE title=? and username=?";
+
+	public final String getScrollPosition = "SELECT* FROM purchase WHERE title=? and username=?";
 
 }

@@ -82,6 +82,17 @@
 </script>
 <script>
 	var app = angular.module('myApp', []);
+	app.directive('errSrc', function() {
+		  return {
+		    link: function(scope, element, attrs) {
+		      element.bind('error', function() {
+		        if (attrs.src != attrs.errSrc) {
+		          attrs.$set('src', attrs.errSrc);
+		        }
+		      });
+		    }
+		  }
+		});
 	app.controller('ebooksCtrl', function($scope, $http,$window) {		
 			var isReading=0;
 			var timerhandler;
@@ -297,23 +308,115 @@
 		    	    modal.style.display = "none";
 		    	}
 		}
-		$scope.openBook = function(ebook){ 
-			$('#selectedTarget').load(ebook);
+		$scope.openBook = function(ebook,title){
+		    document.getElementById('selectedTarget').style.visibility='hidden';
+
+			var tempScrollTop = $(window).scrollTop();
+			var allcookies = document.cookie;
+			cookiearray = allcookies.split(';');
+			name = cookiearray[0].split('=')[0];
+			value = cookiearray[0].split('=')[1];
+			var pars = {
+					params : {
+						title : title,
+						username : value
+					}
+				};
+				$http.get('GetScrollPosition', pars).then(
+						function(response) {
+							tempScrollTop = response.data;
+							console.log($scope.lastPosition)						
+							var result = confirm(username+", "+ "want to go to where you last stopped reading?" );
+							if(result){
+							//	console.log("to scroll")
+								$(window).scrollTop(tempScrollTop);
+							//	$(document).scrollTop($scope.lastPosition);
+
+							}
+							
+						});
+				
+		//	$('#selectedTarget').load(ebook);
+			
+		//	$("img").each(function() {
+			//    console.log($(this).prop("src"));
+		//	});
+			
+		//    var x = document.getElementById("selectedTarget");
+
+		    $scope.openBook=true;
+			$scope.ebookContent  =ebook;
+			$scope.theBookTitle = title;
+			console.log($scope.openBook)
+			console.log(ebook)
+// 			$('#selectedTarget').load(ebook,function(data){
+// 			    $(data).find('img').each(function(){
+// 			         $(this).attr('src','...')
+// 			    });
+// 			});
 			//var a=document.getElementById("allmyebooks");
 			//a.setAttribute('data-ng-include',ebook);
 			//isReading=1;
 			//var a=document.getElementById("allmyebooks");
 			//var b=document.getElementById("readbook");
 			//a.setAttribute('data-ng-include',ebook);
-			window.open(ebook);
+			//window.open(ebook);
+
 		}
+		
+
+		
+		$scope.finishReading = function(id){
+			if($scope.openBook){
+				
+				var tempScrollTop = $(window).scrollTop();
+				var allcookies = document.cookie;
+				cookiearray = allcookies.split(';');
+				name = cookiearray[0].split('=')[0];
+				value = cookiearray[0].split('=')[1];
+				var temp = {
+						scrollPos: tempScrollTop,
+						username:value,
+						title : $scope.theBookTitle
+				};
+				var position = JSON.stringify(temp);
+				$http.post('UpdateScrollPosition', position).success(function(data,status,headers,config) {
+					alert(data);
+	     //           window.location.href='myEbooks.html';
+					$scope.openBook=false;
+					
+					})
+					.error(function(data,status,headers,config){
+						alert("failed");
+					});
+				if(id=="home"){
+	                window.location.href='homeUser.html';
+				}
+				if(id=="ebooks"){
+	                window.location.href='ebooksUser.html';
+				}
+				if(id=="myEbooks"){
+	                window.location.href='myEbooks.html';
+				}
+				if(id=="booksForAll"){
+	                window.location.href='homeUser.html';
+				}
+			 //   document.getElementById(id).href="xyz.php"; 
+		//	    document.getElementById("ebooks").href="ebooksUser"; 
+		//	    document.getElementById("myEbooks").href="myEbooks.html"; 
+3		//	    document.getElementById("booksForAll").href="xyz.php"; 
+
+
+			}
+		}
+		
 	});
 </script>
 
 
 </head>
-<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
-<nav  class="navbar navbar-inverse">
+<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-err-src="http://google.com/favicon.ico">
+<nav  class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -321,13 +424,13 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="homeUser.html">Books For All</a>
+				<a class="navbar-brand" href="homeUser.html" id="booksForAll" data-ng-click="finishReading()">Books For All</a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="homeUser.html">Home</a></li>
-					<li><a href="ebooksUser.html">E-Books</a></li>
-					<li class="active"><a href="myEbooks.html">My E-Books</a></li>
+					<li><a href="homeUser.html" id="home" data-ng-click="finishReading()">Home</a></li>
+					<li><a href="ebooksUser.html" id="ebooks" data-ng-click="finishReading()">E-Books</a></li>
+					<li class="active"><a href="myEbooks.html" id="myEbooks" data-ng-click="finishReading()">My E-Books</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="index.html" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
@@ -336,6 +439,14 @@
 		</div>
 	</nav>
 
+<div data-ng-if="openBook">
+
+<a  class="btn btn-block btn-primary" data-ng-click="finishReading(ebookContent)" >Back</a>
+<div  data-ng-include="ebookContent" id="displayEbook">
+
+
+</div>
+</div>
 	<div class="container" id="selectedTarget">
 		<div  id="selectedBook" style="color: white; visibility: none;"></div>
 		<table  class="table table-striped">
@@ -374,7 +485,7 @@
 			 		Add Review
     				</a></td>
 				
-				<td>    <a   class="btn btn-block btn-primary"  data-ng-click="openBook(x.location)">Read Me</a>
+				<td>    <a   class="btn btn-block btn-primary"  data-ng-click="openBook(x.location,x.title)">Read Me</a>
 					</td>
 
 				</tr>

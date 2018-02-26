@@ -241,7 +241,6 @@ public class DataAccess implements DataInterface {
 			count = rs.getInt("likesNum");
 
 		}
-		count = rs.getInt("likesNum");
 		System.out.println(count);
 		return count;
 	}
@@ -695,4 +694,37 @@ public class DataAccess implements DataInterface {
 		System.out.println("ignored");
 		return true;
 	}
+	
+	@Override
+	public boolean updateScrollPosition(int pos,String username,String title) throws SQLException {
+		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.updateScrollPosition);
+		stmt1.setInt(1, pos);
+		stmt1.setString(2, title);
+		stmt1.setString(3, username);
+		stmt1.executeUpdate();
+		DBUtils.conn.commit();
+		stmt1.close();
+		System.out.println("updated");
+		return true;
+	}
+	
+	@Override
+	public int getScrollPosition(String username,String title) throws SQLException {
+		int pos=0;
+		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.getScrollPosition);
+		stmt1.setString(1, title);
+		stmt1.setString(2, username);
+		ResultSet rs = stmt1.executeQuery();
+		if(rs.next()){
+			pos = rs.getInt("scrollPos");
+		}
+		DBUtils.conn.commit();
+		stmt1.close();
+		System.out.println("updated");
+		return pos;
+	}
+	
+	
+	
+	
 }

@@ -12,6 +12,7 @@ public class Purchase {
 	String fullName;
 	String creditCardCompany;
 	String time;
+	int scrollPos;
 	
 	public Purchase(String username, String title, String creditCardNumber, String expiry, String cVV, String fullName,
 			String creditCardCompany) {
@@ -31,6 +32,13 @@ public class Purchase {
 	}
 	public void setTime(String time) {
 		this.time =  time;
+	}
+	
+	public int getScrollPos() {
+		return scrollPos;
+	}
+	public void setScrollPos(int scrollPos) {
+		this.scrollPos =  scrollPos;
 	}
 	
 	public String getUsername() {

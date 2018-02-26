@@ -49,6 +49,8 @@ public interface DataInterface {
 	boolean checkEbookLikedByUser(String username, String title) throws SQLException;
 	ArrayList<EbookUser> getUserBynickname(String nickname) throws SQLException;
 	boolean ignoreReview(Review review) throws SQLException;
+	boolean updateScrollPosition(int pos, String username, String title) throws SQLException;
+	int getScrollPosition(String username, String title) throws SQLException;
 
 
 }
