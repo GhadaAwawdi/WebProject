@@ -17,7 +17,6 @@
 .hadil {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
 }
 
 .hadil .tooltiptext {
@@ -28,7 +27,7 @@
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
+	top: 100%;
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
@@ -73,7 +72,7 @@
 
 		        		});
 						$scope.myVar = true;
-		                   alert('suuu')
+		                  // alert('suuu')
 		                   }
 		            }
 		        });
@@ -142,12 +141,8 @@
 			});
 		}
 		
-		$scope.goToprofile =function (nickname){
-
-			var pars = {
-				params:{nickname: nickname}
-			};
-			document.getElementById('myLink').setAttribute('href', 'profile.html?nickname=' + nickname);
+		$scope.goToprofile =function (title,nickname){
+			document.getElementById(title+nickname).setAttribute('href', 'profile.html?nickname=' + nickname);
 		}
 		
 		$scope.myFunction = function(bookTitle) {
@@ -245,7 +240,8 @@
 
       <div id="allLikes" class="hadil" data-toggle="tooltip" data-ng-mouseover="myFunction(x.title)" >{{x.likesNum}}
   <span  class="tooltiptext">
-<span   data-ng-repeat="f in booklikes"><a href="#" id="myLink" data-ng-click="goToprofile(f)" style="color:white;">
+	<span   data-ng-repeat="f in booklikes">
+	<a href="#" id="{{x.title}}{{f}}" data-ng-click="goToprofile(x.title,f)" style="color:white;">
         {{f}}
         </a>
         <br>
