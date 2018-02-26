@@ -311,7 +311,9 @@
 		$scope.openBook = function(ebook,title){
 		    document.getElementById('selectedTarget').style.visibility='hidden';
 
-			var tempScrollTop = $(window).scrollTop();
+		//	var tempScrollTop = $(window).scrollTop();
+		//var tempScrollTop =   document.getElementById('theBook');
+		//var t=tempScrollTop.scrolltop;
 			var allcookies = document.cookie;
 			cookiearray = allcookies.split(';');
 			name = cookiearray[0].split('=')[0];
@@ -324,12 +326,18 @@
 				};
 				$http.get('GetScrollPosition', pars).then(
 						function(response) {
-							tempScrollTop = response.data;
-							console.log($scope.lastPosition)						
+							$scope.lastPostition = response.data;
+							console.log($scope.lastPostition);						
 							var result = confirm(username+", "+ "want to go to where you last stopped reading?" );
 							if(result){
 							//	console.log("to scroll")
-								$(window).scrollTop(tempScrollTop);
+							
+								function updatePos(){
+								
+									$(window).scrollTop($scope.lastPostition);
+								}
+								setTimeout(updatePos,200);
+								
 							//	$(document).scrollTop($scope.lastPosition);
 
 							}
@@ -368,7 +376,9 @@
 		
 		$scope.finishReading = function(id){
 			if($scope.openBook){
-				
+				//var tempScrollTop = $(window).scrollTop();
+				//var tempScrollTop =   document.getElementById('theBook');
+				//var t=tempScrollTop.scrolltop;
 				var tempScrollTop = $(window).scrollTop();
 				var allcookies = document.cookie;
 				cookiearray = allcookies.split(';');
@@ -404,10 +414,11 @@
 			 //   document.getElementById(id).href="xyz.php"; 
 		//	    document.getElementById("ebooks").href="ebooksUser"; 
 		//	    document.getElementById("myEbooks").href="myEbooks.html"; 
-3		//	    document.getElementById("booksForAll").href="xyz.php"; 
+		//	    document.getElementById("booksForAll").href="xyz.php"; 
 
 
 			}
+			$scope.openBook=false;
 		}
 		
 	});
@@ -439,14 +450,13 @@
 		</div>
 	</nav>
 
-<div data-ng-if="openBook">
-
+<div data-ng-if="openBook" id="theBook">
 <a  class="btn btn-block btn-primary" data-ng-click="finishReading(ebookContent)" >Back</a>
 <div  data-ng-include="ebookContent" id="displayEbook">
-
-
 </div>
 </div>
+
+
 	<div class="container" id="selectedTarget">
 		<div  id="selectedBook" style="color: white; visibility: none;"></div>
 		<table  class="table table-striped">
