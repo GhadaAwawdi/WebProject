@@ -20,7 +20,6 @@
 
 		    $scope.CheckNow = function()
 		    {
-//	        	alert('success');
 
 		        $.ajax(
 		        {
@@ -38,14 +37,20 @@
 		                       window.location.href='homeUser.html';
 		                   }
 		                   else{
-		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
+		           		$http.get('GetAllEbooks').success(function(data, status, headers,config) {
+		        			$scope.allEbooks = data;
 
-		        		});
-	               		$http.get('GetAllUnapprovedReviews').then(function(response) {
-	            			$scope.reviews = response.data;
-	            			$scope.statuscode = response.status;
-	            		});
+		        		}).error(function(data, status, headers,config){
+							console.log(data);
+
+               			});
+	               		$http.get('GetAllUnapprovedReviews').success(function(data, status, headers,config) {
+	            			$scope.reviews = data;
+	            			$scope.statuscode = status;
+	            		}).error(function(data, status, headers,config){
+							console.log(data);
+
+               			});
 						$scope.myVar = true;
 		             //      alert('suuu')
 		                   }
@@ -67,10 +72,13 @@
 						//Call the services
 						var jsonData = JSON.stringify(data);
 				    //Logic to delete the item
-				    $http.post('ApproveEbookReview',jsonData).then(function(response) {
-				$scope.users = response.data;
-				$scope.statuscode = response.status;
-			});
+				    $http.post('ApproveEbookReview',jsonData).success(function(data, status, headers,config) {
+				$scope.users = data;
+				$scope.statuscode = status;
+			}).error(function(data, status, headers,config){
+				console.log(data);
+
+   			});
 					  var row = btn.parentNode.parentNode;
 					  row.parentNode.removeChild(row);
 			}
@@ -84,25 +92,33 @@
 						//Call the services
 						var jsonData = JSON.stringify(data);
 				    //Logic to delete the item
-				    $http.post('IgnoreEbookReview',jsonData).then(function(response) {
-				$scope.users = response.data;
-				$scope.statuscode = response.status;
-			});
+				    $http.post('IgnoreEbookReview',jsonData).success(function(data, status, headers,config) {
+				$scope.users =data;
+				$scope.statuscode = status;
+			}).error(function(data, status, headers,config){
+				console.log(data);
+
+   			});
 					  var row = btn.parentNode.parentNode;
 					  row.parentNode.removeChild(row);
 			}
 			
-			$http.get('GetAllPurchasedEbooks').then(function(response) {
-				$scope.purchases = response.data;
-				$scope.statuscode = response.status;
-			});
+			$http.get('GetAllPurchasedEbooks').success(function(data, status, headers,config) {
+				$scope.purchases = data;
+				$scope.statuscode = status;
+			}).error(function(data, status, headers,config){
+				console.log(data);
+
+   			});
 			
 			$scope.logout = function(){
-				$http.get("Logout").then(function(response){
-					//alert(response);
+				$http.get("Logout").success(function(data, status, headers,config){
                     window.location.href='index.html';
 
-				});
+				}).error(function(data, status, headers,config){
+					console.log(data);
+
+	   			});
 			}
 	});
 </script>

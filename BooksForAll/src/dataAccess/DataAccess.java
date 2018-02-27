@@ -627,7 +627,6 @@ public class DataAccess implements DataInterface {
 		stmt1.executeUpdate();
 		DBUtils.conn.commit();
 		stmt1.close();
-		System.out.println(" num of likes decreased");
 		return true;
 	}
 
@@ -647,10 +646,6 @@ public class DataAccess implements DataInterface {
 		if (!purchase.getCreditCardCompany().equals("amex") && !purchase.getCreditCardCompany().equals("visa")) {
 			return null;
 		}
-//		if (purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15
-//				&& purchase.getCreditCardNumber().startsWith("34") && purchase.getCvv().length() == 4)) {
-//			return false;
-//		}
 		
 		if((purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15))){
 			return "Credit card number should be of length 15";
@@ -670,14 +665,6 @@ public class DataAccess implements DataInterface {
 		if((purchase.getCreditCardCompany().equals("visa") && !(purchase.getCvv().length() == 3))){
 			return "CVV should be of length 3";
 		}
-//		if (purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15
-//				&& purchase.getCreditCardNumber().startsWith("34") && purchase.getCvv().length() == 4)) {
-//			return false;
-//		}
-//		if (purchase.getCreditCardCompany().equals("visa") && !(purchase.getCreditCardNumber().length() == 16
-//				&& purchase.getCreditCardNumber().startsWith("4") && purchase.getCvv().length() == 3)) {
-//			return false;
-//		}
 
 		if (purchase.getExpiry() == null || purchase.getExpiry().isEmpty()) {
 			return null;
@@ -737,7 +724,6 @@ public class DataAccess implements DataInterface {
 		stmt1.setString(2, review.getUsername());
 		stmt1.setString(3, review.getNickname());
 		stmt1.setString(4, review.getReview());
-		// stmt1.setInt(5, review.getApproved());
 		stmt1.executeUpdate();
 		DBUtils.conn.commit();
 		stmt1.close();

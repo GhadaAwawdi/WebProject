@@ -37,10 +37,12 @@
 		                       window.location.href='homeUser.html';
 		                   }
 		                   else{
-		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
+		           		$http.get('GetAllEbooks').success(function(data, status, headers,config) {
+		        			$scope.allEbooks = data;
 
-		        		});
+		        		}).error(function(data, status, headers,config){
+               				
+               			});
 						$scope.myVar = true;
 		                  // alert('suuu')
 		                   }
@@ -104,16 +106,20 @@
 				 
 			}
 			$scope.logout = function(){
-				$http.get("Logout").then(function(response){
-					alert(response);
+				$http.get("Logout").success(function(data,status,headers,config){
+					//alert(response);
                     window.location.href='index.html';
 
-				});
+				}).error(function(data, status, headers,config){
+       				
+       			});
 			}
-       		$http.get('GetAllUnapprovedReviews').then(function(response) {
-    			$scope.reviews = response.data;
+       		$http.get('GetAllUnapprovedReviews').success(function(data,status,headers,config) {
+    			$scope.reviews = data;
 
-    		});
+    		}).error(function(data, status, headers,config){
+   				
+   			});
 	});
 </script>
 
