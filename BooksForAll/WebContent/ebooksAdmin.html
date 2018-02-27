@@ -13,32 +13,6 @@
 <title>Ebooks</title>
 
 
-<style>
-.hadil {
-    position: relative;
-    display: inline-block;
-}
-
-.hadil .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-	top: 100%;
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    margin-left: -50px;
-}
-
-.hadil:hover .tooltiptext {
-    visibility: visible;
-}
-
-</style>
 
 
 </head>
@@ -95,7 +69,7 @@
 					<td>{{x.shortDescription}}</td>
 					<td >
 
-      <div id="allLikes" class="hadil" data-toggle="tooltip" data-ng-mouseover="myFunction(x.title)" >{{x.likesNum}}
+      <div class="hadil" data-toggle="tooltip" data-ng-mouseover="myFunction(x.title)" >{{x.likesNum}}
   <span  class="tooltiptext">
 	<span   data-ng-repeat="f in booklikes">
 	<a href="#" id="{{x.title}}{{f}}" data-ng-click="goToprofile(x.title,f)" style="color:white;">
