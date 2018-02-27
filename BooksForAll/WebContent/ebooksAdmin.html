@@ -68,7 +68,7 @@
 		                       window.location.href='homeUser.html';
 		                   }
 		                   else{
-		           		$http.get('GetAllEbooks')..success(function(data, status, headers,config) {
+		           		$http.get('GetAllEbooks').success(function(data, status, headers,config) {
 		        			$scope.allEbooks = data;
 
 		        		})
@@ -85,7 +85,7 @@
 		    console.log("ajaaax")
 		    timerhandler = setInterval($scope.CheckNow,50000);
 		    
-			$http.get('GetAllEbooks')..success(function(data, status, headers,config) {
+			$http.get('GetAllEbooks').success(function(data, status, headers,config) {
 				$scope.myData = data;
 				$scope.statuscode = status;
 			})
@@ -117,24 +117,7 @@
 				
 			});
 		}
-// 		$scope.showLikes = function (id){
-// 			var pars = {
-// 				params:{id: id}
-// 			};
-// 			$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
-// 				$scope.likes = response.data;
-// 				$scope.likeStatusCode = response.status;
-// 			});
-			
-	//		console.log($scope.likes);
-		//	document.getElementById("allLikes").setAttribute("title", likes);
 
-		//}
-		$scope.hideLikes = function (){
-			$scope.likes=null;
-			document.getElementById("allLikes").setAttribute("visibility", "hidden");
-		}
-		
 		$scope.getReviews =function (id,title){
 			document.getElementById('ebookName').innerHTML =  title;
 			var temp = {
@@ -146,8 +129,8 @@
 			};
 			console.log(jsonId)
 			$http.get('GetAllReviewsByTitle',pars).success(function(data, status, headers,config){
-				$scope.reviews = response.data;
-				$scope.statusCode = response.status;
+				$scope.reviews = data;
+				$scope.statusCode = status;
 			})
 			.error(function(data, status, headers,config){
 				
@@ -164,9 +147,12 @@
 			var pars = {
 					params:{title: bookTitle}
 				};
-				$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
-					$scope.booklikes = response.data;
-					$scope.likeStatusCode = response.status;
+				$http.get('GetAllNicknamesByEbookLikes',pars).success(function(data, status, headers,config) {
+					$scope.booklikes = data;
+					$scope.likeStatusCode = status;
+				})
+				.error(function(data, status, headers,config){
+					
 				});
 		//$scope.likes = {name : "sampleName", age : 18, email : "mail"};
 	//	var popup = document.getElementById(bookTitle);
@@ -250,7 +236,6 @@
 					<td>{{x.price}}</td>
 					<td>{{x.shortDescription}}</td>
 					<td >
-		<!--  			<a id="allLikes" data-toggle="tooltip" data-ng-mouseover="showLikes(x.id)" data-ng-mouseleave="hideLikes()">{{x.likesNum}}</a> -->
 
       <div id="allLikes" class="hadil" data-toggle="tooltip" data-ng-mouseover="myFunction(x.title)" >{{x.likesNum}}
   <span  class="tooltiptext">

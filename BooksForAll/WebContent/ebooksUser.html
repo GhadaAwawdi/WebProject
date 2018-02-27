@@ -65,14 +65,12 @@
 											if (type == "admin") {
 												window.location.href = 'homeAdmin.html';
 											} else {
-												$http
-														.get('GetAllEbooks')
-														.then(
-																function(
-																		response) {
-																	$scope.allEbooks = response.data;
-
-																});
+												$http.get('GetAllEbooks').success(function(data, status, headers,config) {
+														$scope.allEbooks = data;
+												})
+												.error(function(data, status, headers,config){
+													
+												});
 												$scope.myVar = true;
 												// alert('suuu')
 											}
@@ -83,10 +81,12 @@
 						console.log("ajaaax")
 						timerhandler = setInterval($scope.CheckNow, 50000);
 
-						$http.get('GetAllEbooks').then(function(response) {
-							$scope.myData = response.data;
-							$scope.im = null;
-							$scope.statuscode = response.status;
+						$http.get('GetAllEbooks').success(function(data, status, headers,config) {
+							$scope.myData = data;
+							$scope.statuscode = status;
+						})
+						.error(function(data, status, headers,config){
+							
 						});
 						$scope.myFunction = function(bookTitle) {
 							console.log(bookTitle);
@@ -95,13 +95,13 @@
 									title : bookTitle
 								}
 							};
-							$http
-									.get('GetAllNicknamesByEbookLikes', pars)
-									.then(
-											function(response) {
-												$scope.booklikes = response.data;
-												$scope.likeStatusCode = response.status;
-											});
+							$http.get('GetAllNicknamesByEbookLikes', pars).success(function(data, status, headers,config) {
+									$scope.booklikes = data;
+									$scope.likeStatusCode = status;
+							})
+							.error(function(data, status, headers,config){
+								
+							});
 						}
 
 						$scope.submitPayment = function() {
@@ -157,41 +157,14 @@
 											});
 						}
 
-						//	$http.get('GetAllLikesNumOrdered').then(function(response) {
-						//		$scope.likes = response.data;
-						//		$scope.statuscode = response.status;
-						//	});
+						$scope.logout = function(){
+							$http.get("Logout").success(function(data, status, headers,config){
+				               window.location.href='index.html';
 
-						$scope.logout = function() {
-							$http.get("Logout").then(function(response) {
-								//alert(response);
-								window.location.href = 'index.html';
-
+							})
+							.error(function(data, status, headers,config){
+								
 							});
-						}
-						$scope.showLikes = function(id) {
-							var pars = {
-								params : {
-									id : id
-								}
-							};
-							$http
-									.get('GetAllNicknamesByEbookLikes', pars)
-									.then(
-											function(response) {
-												$scope.likes = response.data;
-												$scope.likeStatusCode = response.status;
-											});
-
-							console.log($scope.likes);
-							document.getElementById("allLikes").setAttribute(
-									"title", $scope.likes);
-
-						}
-						$scope.hideLikes = function() {
-							//$scope.likes=null;
-							document.getElementById("allLikes").setAttribute(
-									"title", "");
 						}
 
 						$scope.BuyEbook = function(title) {
@@ -212,11 +185,15 @@
 								}
 							};
 							console.log(jsonId)
-							$http.get('GetAllReviewsByTitle', pars).then(
-									function(response) {
-										$scope.reviews = response.data;
-										$scope.statusCode = response.status;
-									});
+							
+							
+							$http.get('GetAllReviewsByTitle', pars).success(function(data, status, headers,config){
+										$scope.reviews = data;
+										$scope.statusCode = status;
+							})
+							.error(function(data, status, headers,config){
+								
+							});
 						}
 
 						$scope.openImg = function(imgId, source, alter) {

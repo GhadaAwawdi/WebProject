@@ -153,16 +153,15 @@ var x;
 		                			params : {username : username}
 		               			};
 		                		console.log(username);
-		                		$http.get('GetEbooksByUsername', pars).then(function(response) {
-		                			$scope.myEbooks = response.data;
-		               				$scope.statusCode = response.status;
+		                		$http.get('GetEbooksByUsername', pars).success(function(data, status, headers,config) {
+		                			$scope.myEbooks = data;
+		               				$scope.statusCode = status;
+		               			})
+		               			.error(function(data, status, headers,config){
+		               				
 		               			});
 		                	
 		          
-		                	   //$http.get('GetPurchasedEbooksByUsername').then(function(response) {
-		        			//$scope.myEbooks = response.data;
-
-		        			//});
 							$scope.myVar = true;
 			              // alert('suuu')
 		              }
@@ -190,19 +189,13 @@ var x;
        
 
        
-// 		$http.get('GetPurchasedEbooksByUsername',parameters).then(function(response) {
-// 			$scope.purchased = response.data;
+       $scope.logout = function(){
+			$http.get("Logout").success(function(data, status, headers,config){
+              window.location.href='index.html';
 
-// 		});
-		
-		$scope.logout = function(){
-			if($scope.openBook){
-				$scope.finishReading();
-			}
-			$http.get("Logout").then(function(response){
-				//alert(response);
-               window.location.href='index.html';
-
+			})
+			.error(function(data, status, headers,config){
+				
 			});
 		}
 		
@@ -272,9 +265,12 @@ var x;
 			var pars = {
 					params:{title: bookTitle}
 				};
-				$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
-					$scope.booklikes = response.data;
-					$scope.likeStatusCode = response.status;
+				$http.get('GetAllNicknamesByEbookLikes',pars).success(function(data, status, headers,config) {
+					$scope.booklikes = data;
+					$scope.likeStatusCode = status;
+				})
+				.error(function(data, status, headers,config){
+					
 				});
 		}
 		$scope.removeLike =function (title){
@@ -290,9 +286,12 @@ var x;
 			};
 			var jsonTitle = JSON.stringify(temp);
 			console.log(jsonTitle);
-			$http.post('UnlikeEbook',jsonTitle).then(function(response) {
+			$http.post('UnlikeEbook',jsonTitle).success(function(data, status, headers,config){
 				//alert('unlike done');
 				location.reload();
+			})
+			.error(function(data, status, headers,config){
+				
 			});
 		}
 		
@@ -306,9 +305,12 @@ var x;
 				params:{title: title}
 			};
 			console.log(jsonId)
-			$http.get('GetAllReviewsByTitle',pars).then(function(response) {
-				$scope.reviews = response.data;
-				$scope.statusCode = response.status;
+			$http.get('GetAllReviewsByTitle',pars)..success(function(data, status, headers,config) {
+				$scope.reviews = data;
+				$scope.statusCode = status;
+			})
+			.error(function(data, status, headers,config){
+				
 			});
 		}
 		
@@ -352,9 +354,8 @@ var x;
 						username : value
 					}
 				};
-				$http.get('GetScrollPosition', pars).then(
-						function(response) {
-							$scope.lastPostition = response.data;
+				$http.get('GetScrollPosition', pars).success(function(data, status, headers,config) {
+							$scope.lastPostition = data;
 							console.log($scope.lastPostition);	
 							if($scope.lastPostition > 0){
 								
@@ -373,6 +374,9 @@ var x;
 								}
 
 						}
+							
+						})
+						.error(function(data, status, headers,config){
 							
 						});
 				
@@ -482,7 +486,7 @@ function savePosition(){
 		var position = JSON.stringify(temp);
 		$.post('UpdateScrollPosition', position).done(function(response) {
 			
-			});
+		});
 	}
 }
 </script>

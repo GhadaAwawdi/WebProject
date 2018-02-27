@@ -45,14 +45,18 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
                    if(type=="user"){
                        window.location.href='homeUser.html';
                    }
-                   else if(type==admin){
-//            		$http.get('GetEbookUserByNickname',pars).then(function(response) {
-//         			$scope.userDetails = response.data;
-        			console.log("dfdd");
-
-        		//});
+                   else if(type=="admin"){
+                		$http.get('GetEbookUserByNickname', pars)
+                		.success(function(data,status,headers,config) {
+                			$scope.userDetails=data;
+                			//alert("success");
+                		})
+                		.error(function(data,status,headers,config){
+                				//alert("failed");
+                			console.log(failed);
+                		});
 					$scope.myVar = true;
-                  // alert('suuu')
+                  
                 	}
                    else{
                 	   window.location.href='index.html';
@@ -77,6 +81,15 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
 			//alert("failed");
 		console.log(failed);
 	});
+    $scope.logout = function(){
+		$http.get("Logout").success(function(data, status, headers,config){
+           window.location.href='index.html';
+
+		})
+		.error(function(data, status, headers,config){
+			
+		});
+	}
 });
 
 function goBack() {
@@ -107,7 +120,7 @@ function goBack() {
 					<li><a href="unapprovedReviews.html">Unapproved Reviews</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a href="index.html" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>

@@ -123,12 +123,8 @@ img:hover {opacity: 0.7;}
 		                   console.log(type)
 		                   if(type=="user"){
 		                       window.location.href='homeUser.html';
-		                   }
-		                   else{
- 		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
-
-		        		}); 
+		                   });
+		        		
 						$scope.myVar = true;
 		        //           alert('suuu')
 		                   }
@@ -139,11 +135,13 @@ img:hover {opacity: 0.7;}
 		    console.log("ajaaax")
 		    timerhandler = setInterval($scope.CheckNow,60000);
 		    
-			$scope.logout = function(){
-				$http.get("Logout").then(function(response){
-					//alert(response);
-                    window.location.href='index.html';
+		    $scope.logout = function(){
+				$http.get("Logout").success(function(data, status, headers,config){
+	               window.location.href='index.html';
 
+				})
+				.error(function(data, status, headers,config){
+					
 				});
 			}
 	});
