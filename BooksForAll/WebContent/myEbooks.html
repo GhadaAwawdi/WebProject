@@ -305,7 +305,7 @@ var x;
 				params:{title: title}
 			};
 			console.log(jsonId)
-			$http.get('GetAllReviewsByTitle',pars)..success(function(data, status, headers,config) {
+			$http.get('GetAllReviewsByTitle',pars).success(function(data, status, headers,config) {
 				$scope.reviews = data;
 				$scope.statusCode = status;
 			})

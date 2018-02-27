@@ -104,8 +104,7 @@ img:hover {opacity: 0.7;}
 	app.controller('ebooksCtrl', function($scope, $http,$window) {		
 		
 			var timerhandler;
-
-		    $scope.CheckNow = function()
+			$scope.CheckNow = function()
 		    {
 //	        	alert('success');
 
@@ -123,8 +122,12 @@ img:hover {opacity: 0.7;}
 		                   console.log(type)
 		                   if(type=="user"){
 		                       window.location.href='homeUser.html';
-		                   });
-		        		
+		                   }
+		                   else{
+ 		           		$http.get('GetAllEbooks').then(function(response) {
+		        			$scope.allEbooks = response.data;
+
+		        		}); 
 						$scope.myVar = true;
 		        //           alert('suuu')
 		                   }
