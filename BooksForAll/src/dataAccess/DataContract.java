@@ -1,7 +1,18 @@
 package dataAccess;
 
+/**
+ * 
+ * @author Ghada
+ *the actual name of each table column in the database is saved as a string in order to make it easy
+ *for us to retrieve and update data from the dataabase
+ */
 public final class DataContract {
 
+	/**
+	 * 
+	 * admin's table
+	 *
+	 */
 	public static class ManagerTable{
 		public static final String TABLE_NAME = "admin";
 		public static final String COL_ID = "id";
@@ -9,6 +20,11 @@ public final class DataContract {
 		public static final String COL_PASSWORD = "password";
 	}
 	
+	/**
+	 * 
+	 * regular user table columns
+	 *
+	 */
 	public static class EbookUserTable{
 		public static final String TABLE_NAME = "ebookUser";
 		public static final String COL_ID = "id";
@@ -24,13 +40,23 @@ public final class DataContract {
 		public static final String COL_SHORTDESCRIPTION = "shortDescription";
 		public static final String COL_PHOTO = "photo";
 	}
+	
+	/**
+	 * 
+	 * ebook table
+	 *
+	 */
 
 	public static class EbookTable{
 		public static final String TABLE_NAME = "ebook";
 		public static final String COL_EBOOKTITLE = "title";
 		public static final String COL_LIKESNUM = "likesNum";
 	}
-	
+	/**
+	 * 
+	 * @author Ghada
+	 *likes table columns names
+	 */
 	public static class LikesTable{
 		public static final String TABLE_NAME = "likes";
 		public static final String COL_USERNAME = "username";
@@ -38,6 +64,11 @@ public final class DataContract {
 		public static final String COL_NICKNAME = "nickname";
 	}
 	
+	/**
+	 * 
+	 * reviews table columns
+	 *
+	 */
 	public static class ReviewsTable{
 		public static final String TABLE_NAME = "reviews";
 		public static final String COL_USERNAME = "username";
@@ -47,7 +78,11 @@ public final class DataContract {
 		public static final String COL_REVIEW = "review";
 		public static final String COL_APPROVED = "approved";
 	}
-	
+	/**
+	 * 
+	 * purchases table columns
+	 *
+	 */
 	public static class PurchaseTable{
 		public static final String TABLE_NAME = "purchase";
 		public static final String COL_USERID = "userId";

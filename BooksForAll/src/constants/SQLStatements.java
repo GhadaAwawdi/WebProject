@@ -1,5 +1,11 @@
 package constants;
-
+/**
+ * 
+ * @author Ghada
+ * in this class we have all the sql statements that were used for retrieving
+ *  and updating data in the database
+ *
+ */
 public interface SQLStatements {
 
 	public final String CREATE_USER_TABLE = "CREATE TABLE ebookUser" + 

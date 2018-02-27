@@ -1,9 +1,17 @@
 package model;
-
+/**
+ * 
+ * Admins class
+ *
+ */
 public class Manager {
 
 	private String username, password;
-
+	/**
+	 * username and password of admin
+	 * @param username
+	 * @param password
+	 */
 	public Manager(String username, String password) {
 		super();
 		this.username = username;

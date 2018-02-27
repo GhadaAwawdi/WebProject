@@ -43,70 +43,80 @@ public interface DataInterface {
 	boolean removeEbookUser(String username) throws SQLException;
 	/**
 	 * 
-	 * @param username
+	 * @param username admin's username
 	 * @param password , password provided by the user
-	 * @return manager info in case it's a manager,  
+	 * @return manager info in case it's a manager,else;null  
 	 * @throws SQLException
+	 * this function is called when a user tries to login, checks if the given info matches the admin's info 
+	 * 
 	 */
 	Manager managerLogin(String username, String password) throws SQLException;
 /**
  * 
- * @return
+ * @return all purchases existing in the database  
  * @throws SQLException
+ * admin gets to see the history of all ebook purchases through this function 
  */
 	ArrayList<Purchase> getAllPurchases() throws SQLException;
 	/**
 	 * 
-	 * @return
+	 * @return an arraylist of all signed up ebook users
 	 * @throws SQLException
+	 * this function retrieves information about each user existing in the database
 	 */
 	ArrayList<EbookUser> getAllEbookUsers() throws SQLException;
 	/**
 	 * 
-	 * @return
+	 * @return all reviews that are yet not approved by the admin 
 	 * @throws SQLException
+	 *
 	 */
 	ArrayList<Review> getAllUnapprovedReviews() throws SQLException;
 	/**
 	 * 
-	 * @param username
-	 * @return
+	 * @param username regular user's username
+	 * @return info about the purchases of the user "username"
 	 * @throws SQLException
+	 * retrieves arraylist of purchases objects
 	 */
 	ArrayList<Purchase> getUserPurchases(String username) throws SQLException;
 	/**
 	 * 
-	 * @param review
-	 * @return
+	 * @param review object containing info about the submitted review
+	 * @return true if review added successfully, otherwise false
 	 * @throws SQLException
+	 * submit new review submitted by some user, the review is added to the database as unapproved
 	 */
 	boolean addNewReview(Review review) throws SQLException;
 	/**
 	 * 
-	 * @param p
-	 * @return
+	 * @param p purchase object containing info about purchase request
+	 * @return true if purchase added successfully, otherwise; return false
 	 * @throws SQLException
 	 */
 	boolean addNewPurchase(Purchase p) throws SQLException;
 	/**
 	 * 
-	 * @param username
-	 * @return
+	 * @param username regular user's username
+	 * @return user nickname
 	 * @throws SQLException
+	 * finds the nickname of a user by his username
 	 */
 	String getNicknameByUsername(String username)  throws SQLException;
 	/**
 	 * 
-	 * @param review
-	 * @return
+	 * @param review object that contains info about a review
+	 * @return true if review approved successfully
 	 * @throws SQLException
+	 * 
 	 */
 	boolean approveReview(Review review) throws SQLException;
 	/**
 	 * 
-	 * @param title
-	 * @return
+	 * @param title the title of ebook
+	 * @return info about ebook submitted purchases
 	 * @throws SQLException
+	 * 
 	 */
 	ArrayList<Purchase> getAllPurchasesByTitle(String title) throws SQLException;
 	/**
@@ -202,9 +212,10 @@ public interface DataInterface {
 	boolean checkEbookLikedByUser(String username, String title) throws SQLException;
 	/**
 	 * 
-	 * @param nickname
-	 * @return 
+	 * @param nickname nickname of a user
+	 * @return object of ebook user (data about a user)
 	 * @throws SQLException
+	 * searches for the user info only by having his nickname
 	 */
 	ArrayList<EbookUser> getUserBynickname(String nickname) throws SQLException;
 	/**
@@ -246,15 +257,18 @@ public interface DataInterface {
 	 */
 	boolean unlikeEbook(String title, String username) throws SQLException;
 /**
- * 
- * @param user
- * @return
+ * @param user an object that has information o a user who's trying to sign uo
+ * @return true if informations inserted while signing up are valid, otherwise; return false
+ * Validates given info according to some rules
  */
 	boolean validateSignUp(EbookUser user);
 	/**
 	 * 
-	 * @param username
+	 * @param username the username of a regular ebook user
 	 * @throws SQLException
+	 * having the username of a user, this functions finds all the ebooks that the user
+	 * has liked in the past and then decreases the number of likes for each one of these ebooks.
+	 * this function is called only when the admin removes a user from the app
 	 */
 void decreaselikesNumByusername(String username) throws SQLException;
 

@@ -1,5 +1,8 @@
 package model;
-
+/**
+ * 
+ *users class
+ */
 public class EbookUser {
 
 	int id;
@@ -82,7 +85,20 @@ public class EbookUser {
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-
+	/**
+	 * 
+	 * @param username user username
+	 * @param email
+	 * @param street
+	 * @param apartment
+	 * @param city
+	 * @param postalCode
+	 * @param telephoneNumber
+	 * @param password
+	 * @param nickname
+	 * @param shortDescription short description about the user
+	 * @param photo
+	 */
 	public EbookUser(String username, String email, String street,int apartment,String city,String postalCode, String telephoneNumber, String password,
 			String nickname, String shortDescription, String photo) {
 		super();

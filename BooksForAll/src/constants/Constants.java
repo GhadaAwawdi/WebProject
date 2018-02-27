@@ -1,5 +1,8 @@
 package constants;
-
+/**
+ * some helping fields in order to set the database 
+ *
+ */
 public interface Constants {
 
 //	public final String CUSTOMERS = "customers";

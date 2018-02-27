@@ -3,7 +3,11 @@ package model;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
-
+/**
+ * 
+ * a class with ebook data, we use this class in order to save and get info about the ebooks
+ * 
+ */
 public class Ebook {
 
 //	int id;
@@ -14,6 +18,17 @@ public class Ebook {
 	String image;
 	String shortDescription;
 	boolean liked;
+	/**
+	 * 
+	 * @param title ebook title
+	 * @param price price of ebook
+	 * @param image ebook cover image 
+	 * @param shortDescription short description regarding the ebook
+	 * @param location the path of the ebook content file ( html)
+	 * @param likesNum the likes number the book has
+	 * @throws NamingException 
+	 * @throws SQLException
+	 */
 	public Ebook( String title, double price, String image, String shortDescription,String location, int likesNum) throws NamingException, SQLException {
 		super();
 		System.out.println("in constructor");

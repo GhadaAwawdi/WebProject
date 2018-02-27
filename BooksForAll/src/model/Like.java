@@ -1,11 +1,20 @@
 package model;
-
+/**
+ * 
+ * Likes class
+ * set and get like info
+ */
 public class Like {
 
 	String username;
 	String title;
 	String nickname;
-	
+	/**
+	 * 
+	 * @param username of the user adding the like
+	 * @param title title of ebook being liked
+	 * @param nickname nickname of the user
+	 */
 	public Like(String username, String title, String nickname) {
 		super();
 		this.username = username;

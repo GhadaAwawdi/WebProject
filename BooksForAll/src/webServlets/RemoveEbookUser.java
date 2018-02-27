@@ -52,8 +52,8 @@ public class RemoveEbookUser extends HttpServlet {
 		if (user.getUsername() != null) {
 			try {
 				da = new DataAccess();
-				res = da.removeEbookUser(user.getUsername());
 				da.decreaselikesNumByusername(user.getUsername());
+				res = da.removeEbookUser(user.getUsername());
 	        	da.closeConnection();
 
 			} catch (NamingException e) {

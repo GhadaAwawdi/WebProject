@@ -821,7 +821,10 @@ public class DataAccess implements DataInterface {
 		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_EBOOKS_STMT);
 		ResultSet rs = stm.executeQuery();
 		while (rs.next()) {
-			decreaseNumOfEbookLikes(rs.getString("title"));
+			boolean result = checkEbookLikedByUser(username, rs.getString("title"));
+			if(result){
+				decreaseNumOfEbookLikes(rs.getString("title"));
+			}
 		}
 		rs.close();
 	}

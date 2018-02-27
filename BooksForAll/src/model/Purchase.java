@@ -1,7 +1,10 @@
 package model;
 
 import java.util.Date;
-
+/**
+ * Purchases class. this class is for creating a purchase object and sending purchase to the client
+ *
+ */
 public class Purchase {
 
 	String username;
@@ -13,7 +16,17 @@ public class Purchase {
 	String creditCardCompany;
 	String time;
 	float scrollPos;
-	
+	/**
+	 * 
+	 * @param username
+	 * @param title
+	 * @param creditCardNumber
+	 * @param expiry 
+	 * @param cVV
+	 * @param fullName
+	 * @param creditCardCompany
+	 * received info of a purchase
+	 */
 	public Purchase(String username, String title, String creditCardNumber, String expiry, String cVV, String fullName,
 			String creditCardCompany) {
 		super();

@@ -1,5 +1,8 @@
 package model;
-
+/**
+ * Revies class
+ *this class is for adding and getting a review
+ */
 public class Review {
 	
 	String username;
@@ -7,7 +10,14 @@ public class Review {
 	int approved;
 	String nickname;
 	String review;
-	
+	/**
+	 * 
+	 * @param username of a user
+	 * @param title ebook title
+	 * @param approved , 0 when adding review , 1 after approving
+	 * @param nickname 
+	 * @param review , the review text 
+	 */
 	public Review(String username,String title, int approved, String nickname, String review) {
 		super();
 		this.username = username;
