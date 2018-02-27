@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="cssEbooks.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="jshomeadmin.js"></script>
 
 <title>Home Page</title>
 <style>
@@ -99,56 +100,7 @@ img:hover {opacity: 0.7;}
 }
 
 </style>
-<script>
-	var app = angular.module('myApp', []);
-	app.controller('ebooksCtrl', function($scope, $http,$window) {		
-		
-			var timerhandler;
-			$scope.CheckNow = function()
-		    {
-//	        	alert('success');
 
-		        $.ajax(
-		        {
-		            type: 'GET',
-		            url: 'GetAllLikesNumOrdered',
-		            success: function(data) 
-		            {
-		     //       	alert('success');
-		                var allcookies = document.cookie;
-		                cookiearray = allcookies.split(';');
-		                  // username = cookiearray[0].split('=')[1]; 
-		                   type = cookiearray[1].split('=')[1];  
-		                   console.log(type)
-		                   if(type=="user"){
-		                       window.location.href='homeUser.html';
-		                   }
-		                   else{
- 		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
-
-		        		}); 
-						$scope.myVar = true;
-		        //           alert('suuu')
-		                   }
-		            }
-		        });
-
-		    }
-		    console.log("ajaaax")
-		    timerhandler = setInterval($scope.CheckNow,60000);
-		    
-		    $scope.logout = function(){
-				$http.get("Logout").success(function(data, status, headers,config){
-	               window.location.href='index.html';
-
-				})
-				.error(function(data, status, headers,config){
-					
-				});
-			}
-	});
-</script>
 
 </head>
 <body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
@@ -176,6 +128,8 @@ img:hover {opacity: 0.7;}
 			</div>
 		</div>
 	</nav>
-	
+	<div class="container">
+	<img src="Logo.PNG">
+	</div>
 </body>
 </html>

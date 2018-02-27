@@ -53,7 +53,7 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
                 		})
                 		.error(function(data,status,headers,config){
                 				//alert("failed");
-                			console.log(failed);
+                			console.log(data);
                 		});
 					$scope.myVar = true;
                   
@@ -79,7 +79,7 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
 	})
 	.error(function(data,status,headers,config){
 			//alert("failed");
-		console.log(failed);
+		console.log(data);
 	});
     $scope.logout = function(){
 		$http.get("Logout").success(function(data, status, headers,config){
@@ -87,7 +87,7 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
 
 		})
 		.error(function(data, status, headers,config){
-			
+			console.log(data);
 		});
 	}
 });

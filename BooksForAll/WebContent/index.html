@@ -9,92 +9,14 @@
 <link rel="stylesheet" href="cssIndex.css">
 <link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-<script>
-var app = angular.module('myApp', []);
-app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
-	
-
-	//,$location,$window,$state
-	$scope.submitLogin = function (){
-	    var loginData = {};
-	    $("#loginForm").find("input[name]").each(function (index, node) {
-	    	loginData[node.name] = node.value;
-	    });
-	    loginData=JSON.stringify(loginData);
-	    console.log(loginData);
-		
-		$http.post('Login',loginData).success(function(data,status,headers,config){
-			//alert("success");
-			var allcookies = document.cookie;
-
-    		cookiearray = allcookies.split(';');   
-   			username = cookiearray[0].split('=')[1];
-   			type = cookiearray[1].split('=')[1];
-   			console.log(type);
-   			if(type=="admin"){
-   				window.location.href = 'homeAdmin.html';
-   				console.log($location)
-   				//alert("admin");
-   			}
-   			if(type=="user"){
-   				window.location.href = 'homeUser.html';
-   				//alert("user");
-   			}
-		})
-		
-		.error(function(data,status,headers,config){
-			//alert("failed");
-			     
-            document.getElementById("failure").innerHTML="invalid username or password";
-			//console.log("failed");
-			//$window.location.href = '/index.html';
-		});
-	};
-	
-	
-	$scope.submitRegistration = function (){
-	    var loginData = {};
-	    var regData = {};
-	     $("#registrationForm").find("input[name]").each(function (index, node) {
-	         regData[node.name] = node.value;
-	     });
-	     console.log(regData);
-	     regData=JSON.stringify(regData);
-		
-		$http.post('SignUp',regData).success(function(data,status,headers,config){
-			//alert("success");
-// 			var allcookies = document.cookie;
-//     		cookiearray = allcookies.split(';');   
-//    			username = cookiearray[0].split('=')[1];
-//    			type = cookiearray[1].split('=')[1];
-//    			//console.log(type,username);
-//    			if(type=="admin"){
-   				
-//    				//$location.path('/NewFile.html');
-//    			}
-//    			else{
-//    				//$location.replace = '/books.html';
-//    			}
-//			alert("success");
-		}) 
-		.error(function(data,status,headers,config){
-			//alert("failed");
-			console.log("failed");
-			//$window.location.href = '/index.html';
-		});
-	};
-});
-
-
-
-</script>
-
-
+<script src="jsindex.js"></script>
 </head>
 <body data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <div class="container">
-	<div class="row">
-		<h2> BooksForAll </h2>
+	<div class="row" style="width: 120%;">
+	  
+
+		<h1 style="text-align: center; font-family:AR DARLING; color: #cc0000; 	font-size: 50px;"> Books For All </h1>
 	</div>
 </div>
 
@@ -157,9 +79,9 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
             <label>Apartment Number</label>
             <input type="number" name="apartment" min="1" required  id="ex">
             <label>Postal Code</label>
-            <input type="text" name="postalCode" required pattern="[0-9]{7}">
+            <input type="text" name="postalCode" maxlength="7" required pattern="[0-9]{7}">
             <label>Telephone Number</label>
-            <input type="text" name="telephoneNumber" >
+            <input type="text" maxlength="10" name="telephoneNumber" >
             <label>Password</label>
             <input type="password" name="password" maxlength="8" required>
             <label>Nickname</label>
@@ -171,6 +93,7 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
 <!--        <input type="file" name="photo" accept="image/x-png,image/gif,image/jpeg" /> -->
 			<br>
             <input type="submit" value="Join now"  >
+            <p id="msg" style="color: red;"></p>
             </form>
             </div>
             

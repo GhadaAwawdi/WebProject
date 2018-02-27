@@ -766,16 +766,17 @@ public class DataAccess implements DataInterface {
 			return false;
 		}
 		if (user.getNickname().isEmpty() || user.getNickname().length() > 20) {
+			
 			return false;
 		}
 		if (user.getPassword().isEmpty() || user.getPassword().length() > 8) {
 			return false;
 		}
 
-		if ((user.getCity().length() <= 3 || (!user.getCity().matches("^.{3,}[A-Za-z ]")))) {
+		if ((user.getCity().length() <= 3)) {
 			return false;
 		}
-		if ((user.getStreet().length() <= 3 || (!user.getStreet().matches("^.{3,}[A-Za-z ]")))) {
+		if (user.getStreet().length() <= 3) {
 			return false;
 		}
 		if (user.getPostalCode() == null || user.getPostalCode().isEmpty()
@@ -785,23 +786,30 @@ public class DataAccess implements DataInterface {
 		if (user.getApartment() <= 0) {
 			return false;
 		}
-
-		if (user.getTelephoneNumber().startsWith("05") && user.getTelephoneNumber().matches("^\\d{10}")) {
-			return true;
+		if(!(user.getTelephoneNumber().startsWith("05")||user.getTelephoneNumber().startsWith("03")
+			||user.getTelephoneNumber().startsWith("04")||user.getTelephoneNumber().startsWith("02")
+			||user.getTelephoneNumber().startsWith("09")||user.getTelephoneNumber().startsWith("09"))) {
+			return false;
 		}
-		if (user.getTelephoneNumber().matches("^\\d{9}") && (user.getTelephoneNumber().startsWith("02")
-				|| user.getTelephoneNumber().startsWith("03") || user.getTelephoneNumber().startsWith("04")
-				|| user.getTelephoneNumber().startsWith("08") || user.getTelephoneNumber().startsWith("09"))) {
-			return true;
+		
+		
+		if((user.getTelephoneNumber().startsWith("05") && !(user.getTelephoneNumber().matches("^\\d{10}")))
+		||((user.getTelephoneNumber().startsWith("02")||user.getTelephoneNumber().startsWith("03")
+		||user.getTelephoneNumber().startsWith("04") ||user.getTelephoneNumber().startsWith("08") 
+		||user.getTelephoneNumber().startsWith("09"))&&(!(user.getTelephoneNumber().matches("^\\d{9}"))))) {
+			
+			return false;
 		}
+		
 		if (user.getEmail() == null || user.getEmail().isEmpty()) {
+			
 			return false;
 		}
 		String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 		Pattern p = java.util.regex.Pattern.compile(ePattern);
 		Matcher m = p.matcher(user.getEmail());
-		if (m.matches()) {
-			return true;
+		if (!m.matches()) {
+			return false;
 		}
 
 		return true;

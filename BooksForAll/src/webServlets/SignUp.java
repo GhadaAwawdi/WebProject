@@ -47,10 +47,10 @@ public class SignUp extends HttpServlet {
 		EbookUser user = gson.fromJson(jsonFileContent.toString(), EbookUser.class);
 		int res = 0 ;
 		DataAccess da = null;
-		if (user.getUsername()!=null&& user.getEmail()!=null &&
-		user.getStreet()!=null&& user.getCity()!=null&& user.getPostalCode()!=null&& user.getTelephoneNumber()!=null
-				
-		&&user.getPassword()!=null&&user.getNickname()!=null) {
+//		if (user.getUsername()!=null&& user.getEmail()!=null &&
+//		user.getStreet()!=null&& user.getCity()!=null&& user.getPostalCode()!=null&& user.getTelephoneNumber()!=null
+//				
+//		&&user.getPassword()!=null&&user.getNickname()!=null) {
 
 			if(user.getPhoto()==null || user.getPhoto().isEmpty()){
 				user.setPhoto("https://cdn3.iconfinder.com/data/icons/black-easy/512/538474-user_512x512.png");
@@ -60,12 +60,17 @@ public class SignUp extends HttpServlet {
 				da = new DataAccess();
 				boolean valid = da.validateSignUp(user);
 				if(valid){
-				res = da.addEbookUser(user);
-				da.closeConnection();
-
+					res = da.addEbookUser(user);
+					da.closeConnection();
+					if(res!=-1) {
+						response.setHeader("message", "true");
+					}
+					else {
+						response.setHeader("message", "username already exists");
+					}
 				}
 				else{
-					response.sendError(400);
+					response.setHeader("message", "invalid information");
 				}
 			} catch (NamingException e) {
 				e.printStackTrace();
@@ -74,7 +79,7 @@ public class SignUp extends HttpServlet {
 			}
 			PrintWriter out = response.getWriter();
 			out.println(res);
-		}
+		
 		
 		
 	}

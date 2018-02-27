@@ -68,7 +68,7 @@ public class GetAllEbooks extends HttpServlet {
 		// writer.println(likesJsonResult);
 		response.setStatus(200);
 		writer.flush();
-		System.out.println(booksJsonResult);
+		//System.out.println(booksJsonResult);
 
 		// response.getWriter().write(booksJsonResult);
 	}
