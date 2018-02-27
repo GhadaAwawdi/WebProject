@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.NamingException;
 
@@ -29,10 +31,20 @@ import model.Manager;
 import model.Purchase;
 import model.Review;
 
+/**
+ * @author Ghada This class handles all the connections with the database
+ *         (Updating data and retrieving data)
+ */
 public class DataAccess implements DataInterface {
 
 	public static Connection conn;
 
+	/**
+	 * 
+	 * @throws NamingException
+	 * @throws SQLException
+	 *             creating derby connection through this constructor
+	 */
 	public DataAccess() throws NamingException, SQLException {
 		Logger logger = Logger.getLogger(DataAccess.class.getName());
 		logger.log(Level.INFO, "DataAccess c'tor: attempting connection...");
@@ -44,6 +56,9 @@ public class DataAccess implements DataInterface {
 		}
 	}
 
+	/**
+	 * close the derby connection
+	 */
 	@Override
 	public void closeConnection() throws SQLException {
 		DBUtils.closeConnection();
@@ -618,30 +633,42 @@ public class DataAccess implements DataInterface {
 
 	@Override
 	public boolean validatePurchase(Purchase purchase) {
-		if(purchase.getUsername()==null||purchase.getTitle()==null){
+		if (purchase.getUsername() == null || purchase.getTitle() == null) {
 			return false;
 		}
-		
-			if(purchase.getFullName()==null ||purchase.getFullName().equals("")){
-				return false;
-			}
-			if(purchase.getCvv().length()>4){
-				return false;
-			}
-			if(!purchase.getCreditCardCompany().equals("amex")&&!purchase.getCreditCardCompany().equals("visa")){
-				return false;
-			}
-			if(purchase.getCreditCardNumber().length()>16){
-				return false;
-			}
-			if(purchase.getExpiry().length()>5){
-				return false;
-			}		
-		
+
+		if (purchase.getFullName() == null || purchase.getFullName().isEmpty()) {
+			return false;
+		}
+		if (purchase.getCvv().length() > 4) {
+			return false;
+		}
+		if (purchase.getCreditCardCompany() == null) {
+			return false;
+		}
+		if (!purchase.getCreditCardCompany().equals("amex") && !purchase.getCreditCardCompany().equals("visa")) {
+			return false;
+		}
+		if (purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15
+				&& purchase.getCreditCardNumber().startsWith("34") && purchase.getCvv().length() == 4)) {
+			return false;
+		}
+		if (purchase.getCreditCardCompany().equals("visa") && !(purchase.getCreditCardNumber().length() == 16
+				&& purchase.getCreditCardNumber().startsWith("4") && purchase.getCvv().length() == 3)) {
+			return false;
+		}
+
+		if (purchase.getExpiry() == null || purchase.getExpiry().isEmpty()) {
+			return false;
+		}
+		if (purchase.getExpiry().length() > 5) {
+			return false;
+		}
+
 		return true;
-	
+
 	}
-	
+
 	@Override
 	public boolean checkEbookLikedByUser(String username, String title) throws SQLException {
 		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.checkIfLiked);
@@ -653,8 +680,9 @@ public class DataAccess implements DataInterface {
 		}
 		return false;
 	}
+
 	@Override
-	public ArrayList<EbookUser> getUserBynickname(String nickname) throws SQLException{
+	public ArrayList<EbookUser> getUserBynickname(String nickname) throws SQLException {
 		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.Get_UserByNickname);
 		stm.setString(1, nickname);
 		ResultSet rs = stm.executeQuery();
@@ -679,7 +707,7 @@ public class DataAccess implements DataInterface {
 		}
 		return User;
 	}
-	
+
 	@Override
 	public boolean ignoreReview(Review review) throws SQLException {
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.ignoreReview);
@@ -694,9 +722,9 @@ public class DataAccess implements DataInterface {
 		System.out.println("ignored");
 		return true;
 	}
-	
+
 	@Override
-	public boolean updateScrollPosition(float pos,String username,String title) throws SQLException {
+	public boolean updateScrollPosition(float pos, String username, String title) throws SQLException {
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.updateScrollPosition);
 		stmt1.setFloat(1, pos);
 		stmt1.setString(2, title);
@@ -707,15 +735,15 @@ public class DataAccess implements DataInterface {
 		System.out.println("updated");
 		return true;
 	}
-	
+
 	@Override
-	public float getScrollPosition(String username,String title) throws SQLException {
-		float pos=0;
+	public float getScrollPosition(String username, String title) throws SQLException {
+		float pos = 0;
 		PreparedStatement stmt1 = DBUtils.conn.prepareStatement(SQLStatements.getScrollPosition);
 		stmt1.setString(1, title);
 		stmt1.setString(2, username);
 		ResultSet rs = stmt1.executeQuery();
-		if(rs.next()){
+		if (rs.next()) {
 			pos = rs.getFloat("scrollPos");
 		}
 		DBUtils.conn.commit();
@@ -723,8 +751,53 @@ public class DataAccess implements DataInterface {
 		System.out.println("updated");
 		return pos;
 	}
-	
-	
-	
-	
+
+	@Override
+	public boolean validateSignUp(EbookUser user) {
+		if (user.getUsername().isEmpty() || user.getUsername().length() > 10) {
+			return false;
+		}
+		if (user.getNickname().isEmpty() || user.getNickname().length() > 20) {
+			return false;
+		}
+		if (user.getPassword().isEmpty() || user.getPassword().length() > 8) {
+			return false;
+		}
+
+		if ((user.getCity().length() <= 3 || (!user.getCity().matches("^.{3,}[A-Za-z ]")))) {
+			return false;
+		}
+		if ((user.getStreet().length() <= 3 || (!user.getStreet().matches("^.{3,}[A-Za-z ]")))) {
+			return false;
+		}
+		if (user.getPostalCode() == null || user.getPostalCode().isEmpty()
+				|| (!user.getPostalCode().matches("^\\d{7}"))) {
+			return false;
+		}
+		if (user.getApartment() <= 0) {
+			return false;
+		}
+
+		if (user.getTelephoneNumber().startsWith("05") && user.getTelephoneNumber().matches("^\\d{10}")) {
+			return true;
+		}
+		if (user.getTelephoneNumber().matches("^\\d{9}") && (user.getTelephoneNumber().startsWith("02")
+				|| user.getTelephoneNumber().startsWith("03") || user.getTelephoneNumber().startsWith("04")
+				|| user.getTelephoneNumber().startsWith("08") || user.getTelephoneNumber().startsWith("09"))) {
+			return true;
+		}
+		if (user.getEmail() == null || user.getEmail().isEmpty()) {
+			return false;
+		}
+		String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+		Pattern p = java.util.regex.Pattern.compile(ePattern);
+		Matcher m = p.matcher(user.getEmail());
+		if (m.matches()) {
+			return true;
+		}
+
+		return true;
+
+	}
+
 }

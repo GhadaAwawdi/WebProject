@@ -45,51 +45,56 @@ public class AddNewEbookPurchase extends HttpServlet {
 		BufferedReader reader = request.getReader();
 		while ((line = reader.readLine()) != null)
 			jsonFileContent.append(line);
-		
-		
+
 		System.out.println(jsonFileContent);
 		Gson gson = new Gson();
 		Purchase purchase = gson.fromJson(jsonFileContent.toString(), Purchase.class);
 		boolean res = false;
 		DataAccess da = null;
-		String username = purchase.getUsername(),ccnum = purchase.getCreditCardNumber(),exp=purchase.getExpiry();
-		String cvv = purchase.getCvv(),name= purchase.getFullName(),ccCom=purchase.getCreditCardCompany();
-		//int date=Integer.parseInt(exp);
-		//int cnum=Integer.parseInt(ccnum);
-		if (username!=null&& ccnum!=null && exp!=null&&cvv!=null&& name!=null&& ccCom!=null) {
-			//if(cvv.length()==3 &&(ccnum.length()==15 || ccnum.length()==16) && exp.length()==4 ) {
-				//if(date/100 >= 18 && date%100 <=12 && date%100 >=1) {
-					//if((ccnum.substring(0, 1)=="4") && (ccnum.substring(1, 2)=="5" && ccCom=="0" &&ccnum.length()==16)||
-							//( ccCom=="1" &&ccnum.length()==15)) {
-						Purchase p = new Purchase(purchase.getUsername(), purchase.getTitle(), purchase.getCreditCardNumber(),
-								purchase.getExpiry(), purchase.getCvv(), purchase.getFullName(), purchase.getCreditCardCompany());
-						try {
-							da = new DataAccess();
-							res = da.addNewPurchase(p);
-							da.closeConnection();
-						} catch (NamingException e) {
-							e.printStackTrace();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-						PrintWriter out = response.getWriter();
-						out.println(res);
-					//}
-				//	else {
-				//		//status 4 invalid visa number
-				//	}
-			//	}
-			//	else {
-					//status 3 invalid expiry
-			//	}
-		//	}
-		//	else {
-			//	//send Status 1 invalid length 
-			//}
-		}
-		else {
-			//send status 0 some fields are null
-			
+		String username = purchase.getUsername(), ccnum = purchase.getCreditCardNumber(), exp = purchase.getExpiry();
+		String cvv = purchase.getCvv(), name = purchase.getFullName(), ccCom = purchase.getCreditCardCompany();
+		// int date=Integer.parseInt(exp);
+		// int cnum=Integer.parseInt(ccnum);
+		if (username != null && ccnum != null && exp != null && cvv != null && name != null && ccCom != null) {
+			// if(cvv.length()==3 &&(ccnum.length()==15 || ccnum.length()==16)
+			// && exp.length()==4 ) {
+			// if(date/100 >= 18 && date%100 <=12 && date%100 >=1) {
+			// if((ccnum.substring(0, 1)=="4") && (ccnum.substring(1, 2)=="5" &&
+			// ccCom=="0" &&ccnum.length()==16)||
+			// ( ccCom=="1" &&ccnum.length()==15)) {
+
+			Purchase p = new Purchase(purchase.getUsername(), purchase.getTitle(), purchase.getCreditCardNumber(),
+					purchase.getExpiry(), purchase.getCvv(), purchase.getFullName(), purchase.getCreditCardCompany());
+			try {
+				da = new DataAccess();
+				if (da.validatePurchase(purchase)) {
+					res = da.addNewPurchase(p);
+				} else {
+					 response.setStatus(0);
+				}
+				da.closeConnection();
+			} catch (NamingException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			PrintWriter out = response.getWriter();
+			out.println(res);
+			// }
+			// else {
+			// //status 4 invalid visa number
+			// }
+			// }
+			// else {
+			// status 3 invalid expiry
+			// }
+			// }
+			// else {
+			// //send Status 1 invalid length
+			// }
+		} else {
+			// send status 0 some fields are null
+
 		}
 	}
 

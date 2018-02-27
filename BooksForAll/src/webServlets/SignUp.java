@@ -50,12 +50,23 @@ public class SignUp extends HttpServlet {
 		if (user.getUsername()!=null&& user.getEmail()!=null &&
 		user.getStreet()!=null&& user.getCity()!=null&& user.getPostalCode()!=null&& user.getTelephoneNumber()!=null
 				
-		&&user.getPassword()!=null&&user.getNickname()!=null&&user.getShortDescription()!=null&&user.getPhoto()!=null) {
+		&&user.getPassword()!=null&&user.getNickname()!=null) {
 
+			if(user.getPhoto()==null || user.getPhoto().isEmpty()){
+				user.setPhoto("/username3.jpg");
+			}
+			
 			try {
 				da = new DataAccess();
+				boolean valid = da.validateSignUp(user);
+				if(valid){
 				res = da.addEbookUser(user);
 				da.closeConnection();
+
+				}
+				else{
+					response.sendError(400);
+				}
 			} catch (NamingException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
