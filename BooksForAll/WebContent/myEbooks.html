@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-onunload="finishReading()" data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+<html data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <head>
 <meta charset="UTF-8">
 
@@ -81,6 +81,8 @@
 // 	});
 </script>
 <script>
+var x;
+	var test=0;
 	var app = angular.module('myApp', []);
 	app.directive('errSrc', function() {
 		  return {
@@ -296,6 +298,7 @@
 		    	    modal.style.display = "none";
 		    	}
 		}
+		
 		$scope.openBookFunc = function(ebook,title){
 		 //   document.getElementById('selectedTarget').style.visibility='hidden';
 		    document.getElementById('back_btn').style.visibility='visible';
@@ -346,8 +349,10 @@
 		//    var x = document.getElementById("selectedTarget");
 
 		    $scope.openBook=true;
+		    test=1;
 			$scope.ebookContent  =ebook;
 			$scope.theBookTitle = title;
+			x=title;
 			console.log($scope.openBook)
 			console.log(ebook)
 // 			$('#selectedTarget').load(ebook,function(data){
@@ -390,7 +395,7 @@
 				//	alert(data);
 	     //           window.location.href='myEbooks.html';
 					$scope.openBook=false;
-					
+					test=0;
 					})
 					.error(function(data,status,headers,config){
 						//alert("failed");
@@ -417,15 +422,37 @@
 
 
 			}
+			test=0;
 			$scope.openBook=false;
 		}
 		
+		
 	});
+
+
+function savePosition(){
+	if(test){
+		console.log("save");
+		var tempScrollTop = $(window).scrollTop();
+		var allcookies = document.cookie;
+		cookiearray = allcookies.split(';');
+		name = cookiearray[0].split('=')[0];
+		value = cookiearray[0].split('=')[1];
+		var temp = {
+				scrollPos: tempScrollTop,
+				username:value,
+				title : x
+		};
+		var position = JSON.stringify(temp);
+		$.post('UpdateScrollPosition', position).done(function(response) {
+			
+			});
+	}
+}
 </script>
 
-
 </head>
-<body   data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-err-src="http://google.com/favicon.ico">
+<body onscroll="savePosition()"  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-err-src="http://google.com/favicon.ico">
  <nav  class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
