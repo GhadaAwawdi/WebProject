@@ -189,7 +189,7 @@ public interface DataInterface {
 	 * @return true if info provided at submitting a purchase request are with the right format, else return false
 	 * this function validates input formats
 	 */
-	boolean validatePurchase(Purchase purchase);
+	String validatePurchase(Purchase purchase);
 	/**
 	 * 
 	 * @param username the name of the logged in user
