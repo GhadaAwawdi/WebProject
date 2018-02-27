@@ -632,40 +632,61 @@ public class DataAccess implements DataInterface {
 	}
 
 	@Override
-	public boolean validatePurchase(Purchase purchase) {
+	public String validatePurchase(Purchase purchase) {
 		if (purchase.getUsername() == null || purchase.getTitle() == null) {
-			return false;
+			return null;
 		}
 
 		if (purchase.getFullName() == null || purchase.getFullName().isEmpty()) {
-			return false;
+			return null;
 		}
-		if (purchase.getCvv().length() > 4) {
-			return false;
-		}
+
 		if (purchase.getCreditCardCompany() == null) {
-			return false;
+			return null;
 		}
 		if (!purchase.getCreditCardCompany().equals("amex") && !purchase.getCreditCardCompany().equals("visa")) {
-			return false;
+			return null;
 		}
-		if (purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15
-				&& purchase.getCreditCardNumber().startsWith("34") && purchase.getCvv().length() == 4)) {
-			return false;
+//		if (purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15
+//				&& purchase.getCreditCardNumber().startsWith("34") && purchase.getCvv().length() == 4)) {
+//			return false;
+//		}
+		
+		if((purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15))){
+			return "Credit card number should be of length 15";
 		}
-		if (purchase.getCreditCardCompany().equals("visa") && !(purchase.getCreditCardNumber().length() == 16
-				&& purchase.getCreditCardNumber().startsWith("4") && purchase.getCvv().length() == 3)) {
-			return false;
+		if((purchase.getCreditCardCompany().equals("visa") && !(purchase.getCreditCardNumber().length() == 16))){
+			return "Credit card number should be of length 16";
 		}
+		if((purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().startsWith("34")))){
+			return "Card number number should start with 34";
+		}
+		if((purchase.getCreditCardCompany().equals("visa") && !(purchase.getCreditCardNumber().startsWith("4")))){
+			return "Card number number should start with 4";
+		}
+		if((purchase.getCreditCardCompany().equals("amex") && !(purchase.getCvv().length() == 4))){
+			return "CVV should be of length 4";
+		}
+		if((purchase.getCreditCardCompany().equals("visa") && !(purchase.getCvv().length() == 3))){
+			return "CVV should be of length 3";
+		}
+//		if (purchase.getCreditCardCompany().equals("amex") && !(purchase.getCreditCardNumber().length() == 15
+//				&& purchase.getCreditCardNumber().startsWith("34") && purchase.getCvv().length() == 4)) {
+//			return false;
+//		}
+//		if (purchase.getCreditCardCompany().equals("visa") && !(purchase.getCreditCardNumber().length() == 16
+//				&& purchase.getCreditCardNumber().startsWith("4") && purchase.getCvv().length() == 3)) {
+//			return false;
+//		}
 
 		if (purchase.getExpiry() == null || purchase.getExpiry().isEmpty()) {
-			return false;
+			return null;
 		}
-		if (purchase.getExpiry().length() > 5) {
+		if (purchase.getExpiry().matches("^[A-Za-z]")) {
 			return false;
 		}
 
-		return true;
+		return "true";
 
 	}
 
