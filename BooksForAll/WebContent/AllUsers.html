@@ -37,12 +37,14 @@
 		                       window.location.href='homeUser.html';
 		                   }
 		                   else{
-		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
-
-		        		});
-						$scope.myVar = true;
-		                  // alert('suuu')
+				           		$http.get('GetAllEbooks').success(function(data, status, headers,config) {
+				           			$scope.allEbooks = data;
+								})
+								.error(function(data, status, headers,config) {
+		
+				        		});
+								$scope.myVar = true;
+				                  // alert('suuu')
 		                   }
 		            }
 		        });
@@ -51,9 +53,12 @@
 		    console.log("ajaaax")
 		    timerhandler = setInterval($scope.CheckNow,50000);
 					
-			$http.get('GetAllEbookUsers').then(function(response) {
-				$scope.users = response.data;
-				$scope.statuscode = response.status;
+			$http.get('GetAllEbookUsers').success(function(data, status, headers,config) {
+				$scope.users = data;
+				$scope.statuscode = status;
+			})
+			.error(function(data, status, headers,config){
+				
 			});
 			
 			$scope.RemoveUser = function(username,button) {
@@ -69,10 +74,12 @@
 						//Call the services
 						var jsonData = JSON.stringify(data);
 				    //Logic to delete the item
-				    $http.post('RemoveEbookUser',jsonData).then(function(response) {
-				$scope.users = response.data;
-				$scope.statuscode = response.status;
-			});
+				    $http.post('RemoveEbookUser',jsonData).success(function(data, status, headers,config) {
+						$scope.users = data;
+						$scope.statuscode = status;
+					}).error(function(data, status, headers,config){
+						
+					});
 				    location.reload();
 					 
 		//			document.getElementById("selectedUser").innerHTML = id;
@@ -83,10 +90,12 @@
 			}
 			
 			$scope.logout = function(){
-				$http.get("Logout").then(function(response){
-					//alert(response);
+				$http.get("Logout").success(function(data, status, headers,config){
                     window.location.href='index.html';
 
+				})
+				.error(function(data, status, headers,config){
+					
 				});
 			}
 	});

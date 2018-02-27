@@ -53,7 +53,7 @@ public class SignUp extends HttpServlet {
 		&&user.getPassword()!=null&&user.getNickname()!=null) {
 
 			if(user.getPhoto()==null || user.getPhoto().isEmpty()){
-				user.setPhoto("/username3.jpg");
+				user.setPhoto("https://cdn3.iconfinder.com/data/icons/black-easy/512/538474-user_512x512.png");
 			}
 			
 			try {

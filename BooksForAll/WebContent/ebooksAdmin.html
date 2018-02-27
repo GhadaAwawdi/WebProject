@@ -68,9 +68,12 @@
 		                       window.location.href='homeUser.html';
 		                   }
 		                   else{
-		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
+		           		$http.get('GetAllEbooks')..success(function(data, status, headers,config) {
+		        			$scope.allEbooks = data;
 
+		        		})
+		        		.error(function(data, status, headers,config){
+		        			
 		        		});
 						$scope.myVar = true;
 		                  // alert('suuu')
@@ -82,10 +85,12 @@
 		    console.log("ajaaax")
 		    timerhandler = setInterval($scope.CheckNow,50000);
 		    
-			$http.get('GetAllEbooks').then(function(response) {
-				$scope.myData = response.data;
-				$scope.im=null;
-				$scope.statuscode = response.status;
+			$http.get('GetAllEbooks')..success(function(data, status, headers,config) {
+				$scope.myData = data;
+				$scope.statuscode = status;
+			})
+			.error(function(data, status, headers,config){
+				
 			});
 		    
 	
@@ -103,10 +108,13 @@
        }
 
 
-		$scope.logout = function(){
-			$http.get("Logout").then(function(response){
-				//alert(response);
-				 window.location.href='index.html';
+       $scope.logout = function(){
+			$http.get("Logout").success(function(data, status, headers,config){
+               window.location.href='index.html';
+
+			})
+			.error(function(data, status, headers,config){
+				
 			});
 		}
 // 		$scope.showLikes = function (id){
@@ -137,9 +145,12 @@
 				params:{title: title}
 			};
 			console.log(jsonId)
-			$http.get('GetAllReviewsByTitle',pars).then(function(response) {
+			$http.get('GetAllReviewsByTitle',pars).success(function(data, status, headers,config){
 				$scope.reviews = response.data;
 				$scope.statusCode = response.status;
+			})
+			.error(function(data, status, headers,config){
+				
 			});
 		}
 		
