@@ -29,7 +29,15 @@ public class LoginFilter implements Filter {
         //boolean check = loginURI.equals("/BooksForAll/index.html");
         boolean isStaticResource = request.getRequestURI().startsWith("/resources/");
 
-        if (loggedIn || loginRequest || isStaticResource ) {
+        if(loggedIn && loginRequest){
+        	if(session.getAttribute("type").equals("admin")){
+        		response.sendRedirect(request.getContextPath() + "/homeAdmin.html"); 
+        	}
+        	if(session.getAttribute("type").equals("user")){
+        		response.sendRedirect(request.getContextPath() + "/homeUser.html"); 
+        	}
+        }
+        else if (loggedIn || loginRequest || isStaticResource ) {
             chain.doFilter(request, response);
         } else {
         	System.out.println("i'm here");

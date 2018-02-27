@@ -701,6 +701,7 @@ public class DataAccess implements DataInterface {
 		}
 		return false;
 	}
+	
 
 	@Override
 	public ArrayList<EbookUser> getUserBynickname(String nickname) throws SQLException {
@@ -819,6 +820,16 @@ public class DataAccess implements DataInterface {
 
 		return true;
 
+	}
+	
+	@Override
+	public void decreaselikesNumByusername(String username) throws SQLException {
+		PreparedStatement stm = DBUtils.conn.prepareStatement(SQLStatements.GET_EBOOKS_STMT);
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			decreaseNumOfEbookLikes(rs.getString("title"));
+		}
+		rs.close();
 	}
 
 }

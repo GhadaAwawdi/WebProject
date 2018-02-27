@@ -251,6 +251,12 @@ public interface DataInterface {
  * @return
  */
 	boolean validateSignUp(EbookUser user);
+	/**
+	 * 
+	 * @param username
+	 * @throws SQLException
+	 */
+void decreaselikesNumByusername(String username) throws SQLException;
 
 
 }
