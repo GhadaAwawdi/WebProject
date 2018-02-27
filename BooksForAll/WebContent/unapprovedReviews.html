@@ -62,7 +62,8 @@
 						var jsonData = JSON.stringify(data);
 				    //Logic to delete the item
 				    $http.post('ApproveEbookReview',jsonData).success(function(data,status,headers,config) {
-				    	alert("approve");
+				    	//alert("approve");
+				    	console.log("approved");
 					    location.reload();
 				    	//var row = btn.parentNode.parentNode;
 						 // row.parentNode.removeChild(row);
@@ -70,7 +71,8 @@
 						//$scope.statuscode = response.status;
 					})
 					.error(function(data,status,headers,config){
-						alert("failed");
+						//alert("failed");
+						console.log("failed");
 					});
 					  
 			}
@@ -86,7 +88,8 @@
 				    //Logic to delete the item
 
 				    $http.post('IgnoreEbookReview',jsonData).success(function(data,status,headers,config) {
-				    	alert("ignored");
+				    	//alert("ignored");
+				    	console.log("ignored");
 					    location.reload();
 
 				    	//var row = btn.parentNode.parentNode;
@@ -95,7 +98,8 @@
 						//$scope.statuscode = response.status;
 					})
 					.error(function(data,status,headers,config){
-						alert("failed");
+						//alert("failed");
+						console.log("failed");
 					});
 				 
 			}
@@ -165,11 +169,11 @@
 					<td>{{x.title}}</td>
 					<td>{{x.nickname}}</td>
 					<td>{{x.review}}</td>
-					<td><a id="{{x.username}}" style="background-color: green;"
-						class="btn btn-block btn-primary"
+					<td><a id="{{x.username}}"
+						class="btn btn-block btn-success"
 						data-ng-click="ApproveReview(x.username,x.nickname,x.title,x.review)"> Approve </a></td>
-					<td><a id="{{x.nickname}}" style="background-color: red;"
-						class="btn btn-block btn-primary"
+					<td><a id="{{x.nickname}}" 
+						class="btn btn-block btn-danger"
 						data-ng-click="IgnoreReview(x.username,x.nickname,x.title,x.review)"> Ignore </a></td>
 				</tr>
 			</tbody>

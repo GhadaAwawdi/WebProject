@@ -1,4 +1,7 @@
-
+body{
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif  !important;
+	font-size: 14px;
+}
 #tables
 {
  width: 200px;
@@ -8,6 +11,10 @@
 .scrollit {
     overflow:scroll !important;
     height: 565px !important;
+}
+.scrollitmyebooks {
+    overflow:scroll !important;
+    height: 630px !important;
 }
 .modal-body{
 	max-height: 500px;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+<html data-ng-onunload="finishReading()" data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <head>
 <meta charset="UTF-8">
 
@@ -96,11 +96,11 @@
 	app.controller('ebooksCtrl', function($scope, $http,$window) {		
 			var isReading=0;
 			var timerhandler;
-
+			
 		    $scope.CheckNow = function()
 		    {
 //	        	alert('success');
-
+				$scope.openBook=false;
 		        $.ajax(
 		        {
 		            type: 'GET',
@@ -141,7 +141,8 @@
 		        });
 
 		    }
-		    console.log("ajaaax")
+	
+		
 		    timerhandler = setInterval($scope.CheckNow,50000);
 					
         var allcookies = document.cookie;
@@ -166,8 +167,11 @@
 // 		});
 		
 		$scope.logout = function(){
+			if($scope.openBook){
+				$scope.finishReading();
+			}
 			$http.get("Logout").then(function(response){
-				alert(response);
+				//alert(response);
                window.location.href='index.html';
 
 			});
@@ -194,22 +198,22 @@
 			formData = JSON.stringify(formData);
 			console.log(formData);
 			$http.post('AddEbookReview', formData).success(function(data,status,headers,config) {
-				alert(data);
+				//alert(data);
 				document.getElementById("review").value = null;
 				$('#addReviewModal').modal('toggle');
 				document.getElementById("selectedBook").innerHTML = "";
 
 				})
 				.error(function(data,status,headers,config){
-					alert("failed");
+					console.log("failed");
 				});
 		}
 		
 		
 		
 		$scope.AddReview = function(title) {
-			document.getElementById("selectedBook").innerHTML = title;
-			document.getElementById("selectedBook").style.visibility = " none";
+			document.getElementById('selectedBook').innerHTML = title;
+			document.getElementById('selectedBook').style.visibility = 'hidden';
 		}
 		$scope.AddNewLike =function (title){
 // 			var pars = {
@@ -225,11 +229,12 @@
 			var jsonTitle = JSON.stringify(temp);
 			console.log(jsonTitle);
 			$http.post('AddNewEbookLike',jsonTitle).success(function(data,status,headers,config) {
-				alert('like added successfully');
+				//alert('like added successfully');
 				location.reload();
 			})
 			.error(function(data,status,headers,config){
-				alert("failed");
+				//alert("failed");
+				console.log("failed");
 			});
 		}
 		
@@ -248,7 +253,7 @@
 			var jsonTitle = JSON.stringify(temp);
 			console.log(jsonTitle);
 			$http.post('UnlikeEbook',jsonTitle).then(function(response) {
-				alert('unlike done');
+				//alert('unlike done');
 				location.reload();
 			});
 		}
@@ -268,27 +273,7 @@
 				$scope.statusCode = response.status;
 			});
 		}
-		$scope.showLikes = function(id) {
-			var pars = {
-				params : {
-					id : id
-				}
-			};
-			$http.get('GetAllNicknamesByEbookLikes', pars).then(
-					function(response) {
-						$scope.likes = response.data;
-						$scope.likeStatusCode = response.status;
-					});
-
-			console.log($scope.likes);
-			document.getElementById("allLikes").setAttribute("title",
-					$scope.likes);
-
-		}
-		$scope.hideLikes = function() {
-			//$scope.likes=null;
-			document.getElementById("allLikes").setAttribute("title", "");
-		}
+		
 
 	
 		$scope.openImg = function(imgId,source,alter){
@@ -311,8 +296,9 @@
 		    	    modal.style.display = "none";
 		    	}
 		}
-		$scope.openBook = function(ebook,title){
-		    document.getElementById('selectedTarget').style.visibility='hidden';
+		$scope.openBookFunc = function(ebook,title){
+		 //   document.getElementById('selectedTarget').style.visibility='hidden';
+		    document.getElementById('back_btn').style.visibility='visible';
 
 		//	var tempScrollTop = $(window).scrollTop();
 		//var tempScrollTop =   document.getElementById('theBook');
@@ -330,20 +316,24 @@
 				$http.get('GetScrollPosition', pars).then(
 						function(response) {
 							$scope.lastPostition = response.data;
-							console.log($scope.lastPostition);						
-							var result = confirm(username+", "+ "want to go to where you last stopped reading?" );
-							if(result){
-							//	console.log("to scroll")
-							
-								function updatePos(){
+							console.log($scope.lastPostition);	
+							if($scope.lastPostition > 0){
 								
-									$(window).scrollTop($scope.lastPostition);
+								var result = confirm(username+", "+ "want to go to where you last stopped reading?" );
+								if(result){
+								//	console.log("to scroll")
+								
+									function updatePos(){
+									
+										$(window).scrollTop($scope.lastPostition);
+									}
+									setTimeout(updatePos,200);
+									
+								//	$(document).scrollTop($scope.lastPosition);
+	
 								}
-								setTimeout(updatePos,200);
-								
-							//	$(document).scrollTop($scope.lastPosition);
 
-							}
+						}
 							
 						});
 				
@@ -379,6 +369,9 @@
 		
 		$scope.finishReading = function(id){
 			if($scope.openBook){
+				alert("here");
+				//document.getElementById('selectedTarget').style.visibility='visible';
+			    document.getElementById('back_btn').style.visibility='hidden';
 				//var tempScrollTop = $(window).scrollTop();
 				//var tempScrollTop =   document.getElementById('theBook');
 				//var t=tempScrollTop.scrolltop;
@@ -394,13 +387,14 @@
 				};
 				var position = JSON.stringify(temp);
 				$http.post('UpdateScrollPosition', position).success(function(data,status,headers,config) {
-					alert(data);
+				//	alert(data);
 	     //           window.location.href='myEbooks.html';
 					$scope.openBook=false;
 					
 					})
 					.error(function(data,status,headers,config){
-						alert("failed");
+						//alert("failed");
+						console.log("failed");
 					});
 				if(id=="home"){
 	                window.location.href='homeUser.html';
@@ -410,10 +404,12 @@
 				}
 				if(id=="myEbooks"){
 	                window.location.href='myEbooks.html';
+	                location.reload();
 				}
 				if(id=="booksForAll"){
 	                window.location.href='homeUser.html';
 				}
+
 			 //   document.getElementById(id).href="xyz.php"; 
 		//	    document.getElementById("ebooks").href="ebooksUser"; 
 		//	    document.getElementById("myEbooks").href="myEbooks.html"; 
@@ -429,7 +425,7 @@
 
 
 </head>
-<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-err-src="http://google.com/favicon.ico">
+<body   data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl" data-ng-err-src="http://google.com/favicon.ico">
  <nav  class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -445,24 +441,26 @@
 					<li><a href="homeUser.html" id="home" data-ng-click="finishReading()">Home</a></li>
 					<li><a href="ebooksUser.html" id="ebooks" data-ng-click="finishReading()">E-Books</a></li>
 					<li class="active"><a href="myEbooks.html" id="myEbooks" data-ng-click="finishReading()">My E-Books</a></li>
+					<li ><a id="back_btn" style="visibility: hidden;" data-ng-click="finishReading()"><i class="glyphicon glyphicon-arrow-left"></i></a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="index.html" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a href="index.html"  data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
 <div data-ng-if="openBook" id="theBook">
-<a  class="btn btn-block btn-primary" data-ng-click="finishReading(ebookContent)" >Back</a>
-<div  data-ng-include="ebookContent" id="displayEbook">
+
+<div data-ng-include="ebookContent" id="displayEbook">
 </div>
 </div>
 
 
-	<div class="container" id="selectedTarget">
+	<div data-ng-if="openBook!=true" class="container" id="selectedTarget">
 		<div  id="selectedBook" style="color: white; visibility: none;"></div>
-		<div class="scrollit"><
+		<div class="scrollitmyebooks">
+		<div style="height:60px;"></div>
 		<table  class="table table-striped">
 			<thead data-ng-cloak>
 				<tr data-ng-cloak>
@@ -488,10 +486,10 @@
 			 		Reviews
     				</a></td>
     				<td >
-    				<a  data-ng-if="x.liked" class="btn btn-block btn-primary" data-ng-click="removeLike(x.title)" >
+    				<a  data-ng-if="x.liked" class="btn btn-block btn-warning" data-ng-click="removeLike(x.title)" >
 			 		Unlike
     				</a>
-    				<a  data-ng-if="!x.liked" class="btn btn-block btn-primary" data-ng-click="AddNewLike(x.title)" >
+    				<a  data-ng-if="!x.liked" class="btn btn-block btn-success" data-ng-click="AddNewLike(x.title)" >
 			 		Like
     				</a>
 					</td>
@@ -499,7 +497,7 @@
 			 		Add Review
     				</a></td>
 				
-				<td>    <a   class="btn btn-block btn-primary"  data-ng-click="openBook(x.location,x.title)">Read Me</a>
+				<td>    <a   class="btn btn-block btn-primary"  data-ng-click="openBookFunc(x.location,x.title)">Read</a>
 					</td>
 
 				</tr>

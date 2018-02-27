@@ -25,7 +25,7 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
 	    console.log(loginData);
 		
 		$http.post('Login',loginData).success(function(data,status,headers,config){
-			alert("success");
+			//alert("success");
 			var allcookies = document.cookie;
 
     		cookiearray = allcookies.split(';');   
@@ -35,16 +35,17 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
    			if(type=="admin"){
    				window.location.href = 'homeAdmin.html';
    				console.log($location)
-   				alert("admin");
+   				//alert("admin");
    			}
    			if(type=="user"){
    				window.location.href = 'homeUser.html';
-   				alert("user");
+   				//alert("user");
    			}
 		})
 		
 		.error(function(data,status,headers,config){
-			alert("failed");
+			//alert("failed");
+			console.log("failed");
 			//$window.location.href = '/index.html';
 		});
 	};
@@ -73,10 +74,11 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
 //    			else{
 //    				//$location.replace = '/books.html';
 //    			}
-			alert("success");
+//			alert("success");
 		})
 		.error(function(data,status,headers,config){
-			alert("failed");
+			//alert("failed");
+			console.log("failed");
 			//$window.location.href = '/index.html';
 		});
 	};
@@ -120,10 +122,10 @@ app.controller('ebooksCtrl', function($scope, $http, $window,$location) {
 			<h3>Login to your account</h3>
 			<form class="login-form" id="loginForm">
 			<label>Username</label>
-            <input type="text" name="username" id="ex">
+            <input type="text" name="username" id="ex" autofocus required>            
            	
             <label>Password</label>
-            <input type="password" name="password">
+            <input type="password" name="password" required>
             
             <input type="submit" data-ng-click="submitLogin()" value="Sign In"/>
 

@@ -47,13 +47,13 @@
 	            			$scope.statuscode = response.status;
 	            		});
 						$scope.myVar = true;
-		                   alert('suuu')
+		             //      alert('suuu')
 		                   }
 		            }
 		        });
 
 		    }
-		    console.log("ajaaax")
+		    //console.log("ajaaax")
 		    timerhandler = setInterval($scope.CheckNow,50000);
 					
 
@@ -99,7 +99,7 @@
 			
 			$scope.logout = function(){
 				$http.get("Logout").then(function(response){
-					alert(response);
+					//alert(response);
                     window.location.href='index.html';
 
 				});

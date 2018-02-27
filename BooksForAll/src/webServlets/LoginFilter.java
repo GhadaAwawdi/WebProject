@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = { "/index.html","/homeUser.html","/homeAdmin.html","/ebooksUser.html","/ebooksAdmin.html","/myEbooks.html","/AllUsers.html","/unapprovedReviews.html","/purchaseHistory.html"})
+@WebFilter(urlPatterns = { "/index.html","/homeUser.html","/homeAdmin.html","/ebooksUser.html","/ebooksAdmin.html","/myEbooks.html","/AllUsers.html","/unapprovedReviews.html","/purchaseHistory.html","/profile.html"})
 public class LoginFilter implements Filter {
 
     @Override

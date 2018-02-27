@@ -78,13 +78,13 @@
 		//			document.getElementById("selectedUser").innerHTML = id;
 			//		document.getElementById("selectedUser").style.visibility = " none";
 				}
-
+		
 				
 			}
 			
 			$scope.logout = function(){
 				$http.get("Logout").then(function(response){
-					alert(response);
+					//alert(response);
                     window.location.href='index.html';
 
 				});
@@ -143,10 +143,9 @@
 			<tbody>
 				<tr data-ng-repeat="x in users | filter: searchKeyword">
 					<td>{{x.username}}</td>
-					<td><a data-ng-target="_blank" data-ng-href="{{x.photo}}">
-							<img data-ng-src="{{x.photo}}" data-ng-alt="Forest"
-							style="width: 100px; height: 100px">
-					</a></td>
+					<td>
+					<img data-ng-src="{{x.photo}}" style="width: 100px; height: 100px">
+					</td>
 					<td>{{x.email}}</td>
 					<td>{{x.street}}</td>
 					<td>{{x.apartment}}</td>
@@ -156,8 +155,8 @@
 					<td>{{x.password}}</td>
 					<td>{{x.nickname}}</td>
 					<td>{{x.shortDescription}}</td>
-					<td><a id="{{x.username}}" style="background-color: red;"
-						class="btn btn-block btn-primary"
+					<td><a id="{{x.username}}" 
+						class="btn btn-block btn-danger"
 						data-ng-click="RemoveUser(x.username,x.username)"> Remove </a></td>
 
 				</tr>

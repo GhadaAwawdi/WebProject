@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html  data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
 <head>
 <meta charset="UTF-8">
 
@@ -9,7 +9,11 @@
 <link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
-
+<style>
+.test{
+	font-size: 17px;
+}
+</style>
 <script>
 var app = angular.module('myApp', []);
 app.controller('ebooksCtrl', function($scope, $http,$window) {
@@ -41,15 +45,18 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
                    if(type=="user"){
                        window.location.href='homeUser.html';
                    }
-                   else{
+                   else if(type==admin){
 //            		$http.get('GetEbookUserByNickname',pars).then(function(response) {
 //         			$scope.userDetails = response.data;
         			console.log("dfdd");
 
         		//});
-				$scope.myVar = true;
+					$scope.myVar = true;
                   // alert('suuu')
-                }
+                	}
+                   else{
+                	   window.location.href='index.html';
+                   }
             }
         });
 
@@ -67,7 +74,8 @@ app.controller('ebooksCtrl', function($scope, $http,$window) {
 		//alert("success");
 	})
 	.error(function(data,status,headers,config){
-			alert("failed");
+			//alert("failed");
+		console.log(failed);
 	});
 });
 
@@ -99,13 +107,13 @@ function goBack() {
 					<li><a href="unapprovedReviews.html">Unapproved Reviews</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="index.html" data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+					<li><a data-ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<div class="container" data-ng-repeat="x in userDetails">
+	<div class="container test" data-ng-repeat="x in userDetails">
 
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
@@ -118,7 +126,7 @@ function goBack() {
                     <div class="col-sm-6 col-md-8">
                         <h2>username: {{x.username}}</h2>
                         <br>
-                        <i></i>(nickname: {{x.nickname}})
+                        nickname: {{x.nickname}}
                         <br>
                        
                        
@@ -138,7 +146,7 @@ function goBack() {
                             <i class="glyphicon glyphicon-earphone"></i>&nbsp;{{x.telephoneNumber}}
                            
                         <div>
-                        {{x.shortDescription}}
+                        <i class="glyphicon glyphicon-info-sign"></i>&nbsp;{{x.shortDescription}}
                         </div>
                        
                     </div>
