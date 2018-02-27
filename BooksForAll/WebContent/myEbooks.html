@@ -12,6 +12,33 @@
 <link rel="stylesheet" href="cssMyebooks.css">
 <title>My Ebooks</title>
 
+<style>
+.hadil {
+    position: relative;
+    display: inline-block;
+}
+
+.hadil .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+	top: 100%;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    margin-left: -50px;
+}
+
+.hadil:hover .tooltiptext {
+    visibility: visible;
+}
+
+</style>
+
 <script>
 // var timerhandler;
 
@@ -240,7 +267,16 @@ var x;
 			});
 		}
 		
-		
+		$scope.myFunction = function(bookTitle) {
+			console.log(bookTitle);
+			var pars = {
+					params:{title: bookTitle}
+				};
+				$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
+					$scope.booklikes = response.data;
+					$scope.likeStatusCode = response.status;
+				});
+		}
 		$scope.removeLike =function (title){
 // 			var pars = {
 // 				params:{title: title}
@@ -508,7 +544,18 @@ function savePosition(){
  				 <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
 					</td>					
 				<td>{{x.shortDescription}}</td>
-				<td>{{x.likesNum}}</td>
+				<td>
+					<div id="allLikes" class="hadil" data-toggle="tooltip" data-ng-mouseover="myFunction(x.title)" >{{x.likesNum}}
+			  <span  class="tooltiptext">
+				<span   data-ng-repeat="f in booklikes">
+				<span style="color:white;">
+			        {{f}}
+			        </span>
+			        <br>
+			        </span>
+			        </span>
+			        </div>
+					</td>
 				<td><a class="btn btn-block btn-primary" data-ng-click="getReviews(x.id,x.title)" data-toggle="modal" data-target="#myModal" >
 			 		Reviews
     				</a></td>
