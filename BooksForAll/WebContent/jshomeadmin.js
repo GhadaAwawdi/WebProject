@@ -22,9 +22,12 @@
 		                       window.location.href='homeUser.html';
 		                   }
 		                   else{
- 		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
+ 		           		$http.get('GetAllEbooks').success(function(data, status, headers,config) {
+		        			$scope.allEbooks = data;
 
+		        		})
+		        		.error(function(data, status, headers,config){
+		        			console.log(data);
 		        		}); 
 						$scope.myVar = true;
 		        //           alert('suuu')
@@ -35,7 +38,6 @@
 		    }
 		    console.log("ajaaax")
 		    timerhandler = setInterval($scope.CheckNow,60000);
-		    
 		    $scope.logout = function(){
 				$http.get("Logout").success(function(data, status, headers,config){
 	               window.location.href='index.html';

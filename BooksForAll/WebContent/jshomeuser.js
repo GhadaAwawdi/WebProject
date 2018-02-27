@@ -17,15 +17,19 @@
 		                cookiearray = allcookies.split(';');
 		                  // username = cookiearray[0].split('=')[1]; 
 		                   type = cookiearray[1].split('=')[1];  
-		                   console.log(type)
+		                   //console.log(type);
 		                   if(type=="admin"){
 		                       window.location.href='homeAdmin.html';
 		                   }
 		                   else{
- 		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
-
-		        		}); 
+		                	   $http.get('GetAllEbooks').success(function(data, status, headers,config) {
+				        			$scope.allEbooks = data;
+				        			document.getElementById("user").innerHTML = "Welcome "+cookiearray[0].split('=')[1];
+				        			
+				        		})
+				        		.error(function(data, status, headers,config){
+				        			console.log(data);
+				        		}); 
 						$scope.myVar = true;
 		        //           alert('suuu')
 		                   }
@@ -37,6 +41,8 @@
 		    
 		    console.log("ajaaax")
 		    timerhandler = setInterval($scope.CheckNow,60000);
+		    
+		   
 		    
 		    $scope.logout = function(){
 				$http.get("Logout").success(function(data, status, headers,config){
