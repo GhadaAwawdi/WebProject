@@ -11,7 +11,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <title>Home Page</title>
-<style>
+<!-- <style>
 img {
     border-radius: 5px;
     cursor: pointer;
@@ -98,7 +98,7 @@ img:hover {opacity: 0.7;}
     }
 }
 
-</style>
+</style> -->
 <script>
 	var app = angular.module('myApp', []);
 	app.controller('ebooksCtrl', function($scope, $http,$window) {		
@@ -115,7 +115,7 @@ img:hover {opacity: 0.7;}
 		            url: 'GetAllLikesNumOrdered',
 		            success: function(data) 
 		            {
-		            	alert('success');
+		            	//alert('success');
 		                var allcookies = document.cookie;
 		                cookiearray = allcookies.split(';');
 		                  // username = cookiearray[0].split('=')[1]; 
@@ -141,7 +141,7 @@ img:hover {opacity: 0.7;}
 		    
 			$scope.logout = function(){
 				$http.get("Logout").then(function(response){
-					alert(response);
+					//alert(response);
                     window.location.href='index.html';
 
 				});

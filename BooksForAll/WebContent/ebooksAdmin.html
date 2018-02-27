@@ -105,7 +105,8 @@
 
 		$scope.logout = function(){
 			$http.get("Logout").then(function(response){
-				alert(response);
+				//alert(response);
+				 window.location.href='index.html';
 			});
 		}
 // 		$scope.showLikes = function (id){

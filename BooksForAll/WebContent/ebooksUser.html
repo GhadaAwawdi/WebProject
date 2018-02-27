@@ -11,6 +11,32 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <title> Ebooks</title>
+<style>
+.hadil {
+    position: relative;
+    display: inline-block;
+}
+
+.hadil .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+	top: 100%;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    margin-left: -50px;
+}
+
+.hadil:hover .tooltiptext {
+    visibility: visible;
+}
+
+</style>
 
 <script>
 	var app = angular.module('myApp', []);
@@ -41,7 +67,7 @@
 
 		        		});
 						$scope.myVar = true;
-		                   alert('suuu')
+		                  // alert('suuu')
 		                   }
 		            }
 		        });
@@ -55,7 +81,16 @@
 				$scope.im = null;
 				$scope.statuscode = response.status;
 			});
-			
+			$scope.myFunction = function(bookTitle) {
+					console.log(bookTitle);
+					var pars = {
+							params:{title: bookTitle}
+						};
+						$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
+							$scope.booklikes = response.data;
+							$scope.likeStatusCode = response.status;
+						});
+				}
 			
 			$scope.submitPayment=function() {
 				//var formData = $("#payment-form").serializeArray();
@@ -85,14 +120,15 @@
 				console.log(formData);
 				formData = JSON.stringify(formData);
 				$http.post('AddNewEbookPurchase', formData).success(function(data,status,headers,config) {
-					alert(data);
+					//alert(data);
 					$('#payModal').modal('toggle');
 					document.getElementById("selectedBook").innerHTML = "";
 					//$('#payModal').dialog("close")
 					//$.modal.close();
 				})
 				.error(function(data,status,headers,config){
-					alert("failed");
+					//alert("failed");
+					console.log("failed");
 				});
 			}
 			
@@ -103,7 +139,7 @@
 
 			$scope.logout = function(){
 				$http.get("Logout").then(function(response){
-					alert(response);
+					//alert(response);
                     window.location.href='index.html';
 
 				});
@@ -212,9 +248,9 @@
 				<tr>
 					<th>Title</th>
 					<th>Image</th>
-					<th>Price</th>
-					<th>Short Description</th>
 					<th>Likes' Number</th>
+					<th>Short Description</th>
+					<th>Price</th>
 					<th>Reviews</th>
 					<th>Buy</th>
 				</tr>
@@ -225,17 +261,29 @@
 					<td>
   <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
 </td>
-					<td>{{x.price}}</td>
-					<td>{{x.shortDescription}}</td>
-					<td><a id="allLikes" data-toggle="tooltip"
-						data-ng-mouseover="showLikes(x.id)"
-						data-ng-mouseleave="hideLikes()">{{x.likesNum}}</a> <!-- aria-describedby="tooltip177649" 	<div class="tooltip fade top in" role="tooltip" id="tooltip177649" ></div> -->
+					
+					<td>
+					<div id="allLikes" class="hadil" data-toggle="tooltip" data-ng-mouseover="myFunction(x.title)" >{{x.likesNum}}
+			  <span  class="tooltiptext">
+				<span   data-ng-repeat="f in booklikes">
+				<span style="color:white;">
+			        {{f}}
+			        </span>
+			        <br>
+			        </span>
+			        </span>
+			        </div>
 					</td>
+					
+					
+					<td>{{x.shortDescription}}</td>
+					
+					<td>{{x.price}}€</td>
 					<td><a class="btn btn-block btn-primary"
 						data-ng-click="getReviews(x.id,x.title)" data-toggle="modal"
 						data-target="#myModal"> Reviews </a></td>
-					<td><a style="background-color: green;"
-						class="btn btn-block btn-primary"
+						
+					<td><a class="btn btn-block btn-success"
 						data-ng-click="BuyEbook(x.title)" data-toggle="modal"
 						data-target="#payModal"> Buy </a></td>
 				</tr>
@@ -330,8 +378,8 @@
 																<div class="input-group">
 																	<select name="creditCardCompany"
 																		class="form-control selectpicker" id="method">
-																		<option value="0">Visa</option>
-																		<option value="1">Amex</option>
+																		<option value="visa">Visa</option>
+																		<option value="amex">Amex</option>
 
 																	</select>
 																</div>

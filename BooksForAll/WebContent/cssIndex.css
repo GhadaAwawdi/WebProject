@@ -14,7 +14,6 @@ body {
 	
 }
 
-
 .form-body {
 	background: #fff !important;
 	padding: 20px;
@@ -107,14 +106,13 @@ body {
 }
 
 #ex{
-	background: #fff !important;
-	overflow-y: scroll font-size:13px;
 	padding: 10px;
 	border: 1px solid #ccc;
 	outline: none;
 	width: 100%;
 	margin: 8px 0;
 }
+
 .sa-innate-form input[type=text], input[type=password], input[type=url], input[type=email],input[type=number]
 	textarea, select, email {
 	background: #fff !important;
