@@ -1,221 +1,253 @@
 <!DOCTYPE html>
-<html data-ng-init = "CheckNow()" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+<html data-ng-init="CheckNow()" data-ng-app="myApp"
+	data-ng-controller="ebooksCtrl">
 <head>
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="lib/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet" href="cssEbooks.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<title> Ebooks</title>
+<title>Ebooks</title>
 <style>
 .hadil {
-    position: relative;
-    display: inline-block;
+	position: relative;
+	display: inline-block;
 }
 
 .hadil .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
 	top: 100%;
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    margin-left: -50px;
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+	margin-left: -50px;
 }
 
 .hadil:hover .tooltiptext {
-    visibility: visible;
+	visibility: visible;
 }
-
 </style>
 
 <script>
 	var app = angular.module('myApp', []);
-	app.controller('ebooksCtrl', function($scope, $http,$window) {		
-		
-			var timerhandler;
+	app
+			.controller(
+					'ebooksCtrl',
+					function($scope, $http, $window) {
 
-		    $scope.CheckNow = function()
-		    {
-		        $.ajax(
-		        {
-		            type: 'GET',
-		            url: 'GetAllLikesNumOrdered',
-		            success: function(data) 
-		            {
-		     //       	alert('success');
-		                var allcookies = document.cookie;
-		                cookiearray = allcookies.split(';');
-		                  // username = cookiearray[0].split('=')[1]; 
-		                   type = cookiearray[1].split('=')[1];  
-		                   console.log(type)
-		                   if(type=="admin"){
-		                       window.location.href='homeAdmin.html';
-		                   }
-		                   else{
-		           		$http.get('GetAllEbooks').then(function(response) {
-		        			$scope.allEbooks = response.data;
+						var timerhandler;
 
-		        		});
-						$scope.myVar = true;
-		                  // alert('suuu')
-		                   }
-		            }
-		        });
+						$scope.CheckNow = function() {
+							$
+									.ajax({
+										type : 'GET',
+										url : 'GetAllLikesNumOrdered',
+										success : function(data) {
+											//       	alert('success');
+											var allcookies = document.cookie;
+											cookiearray = allcookies.split(';');
+											// username = cookiearray[0].split('=')[1]; 
+											type = cookiearray[1].split('=')[1];
+											console.log(type)
+											if (type == "admin") {
+												window.location.href = 'homeAdmin.html';
+											} else {
+												$http
+														.get('GetAllEbooks')
+														.then(
+																function(
+																		response) {
+																	$scope.allEbooks = response.data;
 
-		    }
-		    console.log("ajaaax")
-		    timerhandler = setInterval($scope.CheckNow,50000);
-					
-			$http.get('GetAllEbooks').then(function(response) {
-				$scope.myData = response.data;
-				$scope.im = null;
-				$scope.statuscode = response.status;
-			});
-			$scope.myFunction = function(bookTitle) {
-					console.log(bookTitle);
-					var pars = {
-							params:{title: bookTitle}
-						};
-						$http.get('GetAllNicknamesByEbookLikes',pars).then(function(response) {
-							$scope.booklikes = response.data;
-							$scope.likeStatusCode = response.status;
+																});
+												$scope.myVar = true;
+												// alert('suuu')
+											}
+										}
+									});
+
+						}
+						console.log("ajaaax")
+						timerhandler = setInterval($scope.CheckNow, 50000);
+
+						$http.get('GetAllEbooks').then(function(response) {
+							$scope.myData = response.data;
+							$scope.im = null;
+							$scope.statuscode = response.status;
 						});
-				}
-			
-			$scope.submitPayment=function() {
-				//var formData = $("#payment-form").serializeArray();
-				//formData=JSON.stringify(formData);
-				var formData = {};
-				var title = document.getElementById("selectedBook").innerHTML;
-				formData["title"] = title;
-				var allcookies = document.cookie;
-				cookiearray = allcookies.split(';');
-				name = cookiearray[0].split('=')[0];
-				value = cookiearray[0].split('=')[1];
-				formData[name] = value;
+						$scope.myFunction = function(bookTitle) {
+							console.log(bookTitle);
+							var pars = {
+								params : {
+									title : bookTitle
+								}
+							};
+							$http
+									.get('GetAllNicknamesByEbookLikes', pars)
+									.then(
+											function(response) {
+												$scope.booklikes = response.data;
+												$scope.likeStatusCode = response.status;
+											});
+						}
 
-				$("#payment-form").find("input[name]").each(function(index, node) {
-					formData[node.name] = node.value;
-				});
-				$("#payment-form").find("select[name]").each(function(index, node) {
-					formData[node.name] = node.value;
-				});
-				//if(!(formData["id"]!=null&&formData["username"]!=null&&formData["fullName"]!=null&&formData["expiry"]!=null&&formData["cvv"]!=null&&formData["creditCardNumber"]!=null&&formData["creditCardComapany"]!=null)){
-				//return false;
-				//	}
+						$scope.submitPayment = function() {
+							//var formData = $("#payment-form").serializeArray();
+							//formData=JSON.stringify(formData);
+							var formData = {};
+							var title = document.getElementById("selectedBook").innerHTML;
+							formData["title"] = title;
+							var allcookies = document.cookie;
+							cookiearray = allcookies.split(';');
+							name = cookiearray[0].split('=')[0];
+							value = cookiearray[0].split('=')[1];
+							formData[name] = value;
 
-				//d=JSON.stringify(formData["creditCardNumber"]);
-				//console.log(d.replace(/\s/g, ''));  // ##A#B##C###D#EF#
-				//e=JSON.stringify(formData["expiry"]);
-				console.log(formData);
-				formData = JSON.stringify(formData);
-				$http.post('AddNewEbookPurchase', formData).success(function(data,status,headers,config) {
-					//alert(data);
-					$('#payModal').modal('toggle');
-					document.getElementById("selectedBook").innerHTML = "";
-					//$('#payModal').dialog("close")
-					//$.modal.close();
-				})
-				.error(function(data,status,headers,config){
-					//alert("failed");
-					console.log("failed");
-				});
-			}
-			
-		//	$http.get('GetAllLikesNumOrdered').then(function(response) {
-		//		$scope.likes = response.data;
-		//		$scope.statuscode = response.status;
-		//	});
+							$("#payment-form").find("input[name]").each(
+									function(index, node) {
+										formData[node.name] = node.value;
+									});
+							$("#payment-form").find("select[name]").each(
+									function(index, node) {
+										formData[node.name] = node.value;
+									});
+							//if(!(formData["id"]!=null&&formData["username"]!=null&&formData["fullName"]!=null&&formData["expiry"]!=null&&formData["cvv"]!=null&&formData["creditCardNumber"]!=null&&formData["creditCardComapany"]!=null)){
+							//return false;
+							//	}
 
-			$scope.logout = function(){
-				$http.get("Logout").then(function(response){
-					//alert(response);
-                    window.location.href='index.html';
+							//d=JSON.stringify(formData["creditCardNumber"]);
+							//console.log(d.replace(/\s/g, ''));  // ##A#B##C###D#EF#
+							//e=JSON.stringify(formData["expiry"]);
+							console.log(formData);
+							formData = JSON.stringify(formData);
+							$http
+									.post('AddNewEbookPurchase', formData)
+									.success(function(data, status, headers,config) {
+												$scope.x=headers('message');
+												console.log("l"+$scope.x+"");
+												if ($scope.x == "true") {
+													//alert("sssss");
+													$('#payModal').modal('toggle');
+													document.getElementById("selectedBook").innerHTML = "";
+												} else {
+													document.getElementById('msg').innerHTML = $scope.x;
+													//alert(data);
+												}
+												//$('#payModal').dialog("close")
+												//$.modal.close();
+											}).error(
+											function(data, status, headers,
+													config) {
+												//alert("failed");
+												 alert(data); 
+												console.log("failed");
+											});
+						}
 
-				});
-			}
-			$scope.showLikes = function(id) {
-				var pars = {
-					params : {
-						id : id
-					}
-				};
-				$http.get('GetAllNicknamesByEbookLikes', pars).then(
-						function(response) {
-							$scope.likes = response.data;
-							$scope.likeStatusCode = response.status;
+						//	$http.get('GetAllLikesNumOrdered').then(function(response) {
+						//		$scope.likes = response.data;
+						//		$scope.statuscode = response.status;
+						//	});
+
+						$scope.logout = function() {
+							$http.get("Logout").then(function(response) {
+								//alert(response);
+								window.location.href = 'index.html';
+
+							});
+						}
+						$scope.showLikes = function(id) {
+							var pars = {
+								params : {
+									id : id
+								}
+							};
+							$http
+									.get('GetAllNicknamesByEbookLikes', pars)
+									.then(
+											function(response) {
+												$scope.likes = response.data;
+												$scope.likeStatusCode = response.status;
+											});
+
+							console.log($scope.likes);
+							document.getElementById("allLikes").setAttribute(
+									"title", $scope.likes);
+
+						}
+						$scope.hideLikes = function() {
+							//$scope.likes=null;
+							document.getElementById("allLikes").setAttribute(
+									"title", "");
+						}
+
+						$scope.BuyEbook = function(title) {
+							document.getElementById("BuyEbookName").innerHTML = "paying for: "
+									+ title;
+							document.getElementById("selectedBook").innerHTML = title;
+							document.getElementById("selectedBook").style.visibility = " none";
+						}
+						$scope.getReviews = function(id, title) {
+							document.getElementById('ebookName').innerHTML = title;
+							var temp = {
+								title : title
+							};
+							var jsonId = JSON.stringify(temp);
+							var pars = {
+								params : {
+									title : title
+								}
+							};
+							console.log(jsonId)
+							$http.get('GetAllReviewsByTitle', pars).then(
+									function(response) {
+										$scope.reviews = response.data;
+										$scope.statusCode = response.status;
+									});
+						}
+
+						$scope.openImg = function(imgId, source, alter) {
+							var modal = document.getElementById('ghadaModal');
+
+							// Get the image and insert it inside the modal - use its "alt" text as a caption
+							var img = document.getElementById(imgId);
+							var modalImg = document.getElementById("img01");
+							var captionText = document
+									.getElementById("caption");
+							modal.style.display = "block";
+							modalImg.src = source;
+							captionText.innerHTML = alter;
+							// Get the <span> element that closes the modal
+							var span = document.getElementsByClassName("close")[0];
+
+							// When the user clicks on <span> (x), close the modal
+							span.onclick = function() {
+								modal.style.display = "none";
+							}
+						}
+
+						$(document).ready(function() {
+							$('[data-toggle="tooltip"]').tooltip();
 						});
-
-				console.log($scope.likes);
-				document.getElementById("allLikes").setAttribute("title",
-						$scope.likes);
-
-			}
-			$scope.hideLikes = function() {
-				//$scope.likes=null;
-				document.getElementById("allLikes").setAttribute("title", "");
-			}
-
-			$scope.BuyEbook = function(title) {
-				document.getElementById("BuyEbookName").innerHTML = "paying for: "
-						+ title;
-				document.getElementById("selectedBook").innerHTML = title;
-				document.getElementById("selectedBook").style.visibility = " none";
-			}
-			$scope.getReviews =function (id,title){
-				document.getElementById('ebookName').innerHTML =  title;
-				var temp = {
-					title: title
-				};
-				var jsonId = JSON.stringify(temp);
-				var pars = {
-					params:{title: title}
-				};
-				console.log(jsonId)
-				$http.get('GetAllReviewsByTitle',pars).then(function(response) {
-					$scope.reviews = response.data;
-					$scope.statusCode = response.status;
-				});
-			}
-		
-			$scope.openImg = function(imgId,source,alter){
-		    	var modal = document.getElementById('ghadaModal');
-
-		    	// Get the image and insert it inside the modal - use its "alt" text as a caption
-		    	var img = document.getElementById(imgId);
-		    	var modalImg = document.getElementById("img01");
-		    	var captionText = document.getElementById("caption");
-		    	    modal.style.display = "block";
-		    	    modalImg.src = source;
-		    	    captionText.innerHTML = alter;
-		    	// Get the <span> element that closes the modal
-		    	var span = document.getElementsByClassName("close")[0];
-
-		    	// When the user clicks on <span> (x), close the modal
-		    	span.onclick = function() { 
-		    	    modal.style.display = "none";
-		    	}
-		}
-			
-			
-			$(document).ready(function() {
-				$('[data-toggle="tooltip"]').tooltip();
-			});
-	});
+					});
 </script>
 
 </head>
-<body  data-ng-if="myVar" data-ng-app="myApp" data-ng-controller="ebooksCtrl">
+<body data-ng-if="myVar" data-ng-app="myApp"
+	data-ng-controller="ebooksCtrl">
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -239,63 +271,61 @@
 			</div>
 		</div>
 	</nav>
-	
-<div class="container">
+
+	<div class="container">
 		<div id="selectedBook" style="color: white; visibility: none;"></div>
-		<div  class="scrollit">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Title</th>
-					<th>Image</th>
-					<th>Likes' Number</th>
-					<th>Short Description</th>
-					<th>Price</th>
-					<th>Reviews</th>
-					<th>Buy</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr data-ng-repeat="x in myData">
-					<td>{{x.title}}</td>
-					<td>
-  <img id="{{x.image}}" data-ng-src="{{x.image}}" style="width:150px" data-ng-click="openImg(x.image,x.image,x.title)">
-</td>
-					
-					<td>
-					<div id="allLikes" class="hadil" data-toggle="tooltip" data-ng-mouseover="myFunction(x.title)" >{{x.likesNum}}
-			  <span  class="tooltiptext">
-				<span   data-ng-repeat="f in booklikes">
-				<span style="color:white;">
-			        {{f}}
-			        </span>
-			        <br>
-			        </span>
-			        </span>
-			        </div>
-					</td>
-					
-					
-					<td>{{x.shortDescription}}</td>
-					
-					<td>{{x.price}}€</td>
-					<td><a class="btn btn-block btn-primary"
-						data-ng-click="getReviews(x.id,x.title)" data-toggle="modal"
-						data-target="#myModal"> Reviews </a></td>
-						
-					<td><a class="btn btn-block btn-success"
-						data-ng-click="BuyEbook(x.title)" data-toggle="modal"
-						data-target="#payModal"> Buy </a></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="scrollit">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Image</th>
+						<th>Likes' Number</th>
+						<th>Short Description</th>
+						<th>Price</th>
+						<th>Reviews</th>
+						<th>Buy</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="x in myData">
+						<td>{{x.title}}</td>
+						<td><img id="{{x.image}}" data-ng-src="{{x.image}}"
+							style="width: 150px"
+							data-ng-click="openImg(x.image,x.image,x.title)"></td>
+
+						<td>
+							<div id="allLikes" class="hadil" data-toggle="tooltip"
+								data-ng-mouseover="myFunction(x.title)">
+								{{x.likesNum}} <span class="tooltiptext"> <span
+									data-ng-repeat="f in booklikes"> <span
+										style="color: white;"> {{f}} </span> <br>
+								</span>
+								</span>
+							</div>
+						</td>
+
+
+						<td>{{x.shortDescription}}</td>
+
+						<td>{{x.price}}€</td>
+						<td><a class="btn btn-block btn-primary"
+							data-ng-click="getReviews(x.id,x.title)" data-toggle="modal"
+							data-target="#myModal"> Reviews </a></td>
+
+						<td><a class="btn btn-block btn-success"
+							data-ng-click="BuyEbook(x.title)" data-toggle="modal"
+							data-target="#payModal"> Buy </a></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		
+
 		<div id="ghadaModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01">
-  <div id="caption"></div>
-</div>
+			<span class="close">&times;</span> <img class="modal-content"
+				id="img01">
+			<div id="caption"></div>
+		</div>
 
 
 		<div class="container">
@@ -315,7 +345,7 @@
 								<div class="row">
 									<div data-ng-repeat="y in reviews">
 										<!-- data-ng-repeat="y in reviews" -->
-										<div class="block-text rel zmin" style="width:420px;">
+										<div class="block-text rel zmin" style="width: 420px;">
 											<h1>{{y.nickname}}</h1>
 											<p>{{y.review}}</p>
 										</div>
@@ -353,7 +383,8 @@
 											style="display: inline-block;">
 
 											<div class="panel-body">
-												<form role="form" name="payForm" id="payment-form" data-ng-submit="submitPayment()">
+												<form role="form" name="payForm" id="payment-form"
+													data-ng-submit="submitPayment()">
 													<!--                     action="AddNewEbookPurchase" method="post" -->
 													<div class="row">
 														<div class="col-xs-12">
@@ -390,7 +421,8 @@
 																<label for="cardNumber">CARD NUMBER</label> <input
 																	type="tel" class="form-control" name="creditCardNumber"
 																	placeholder="Valid Card Number"
-																	autocomplete="cc-number" pattern=".{15,}" required maxlength="16" />
+																	autocomplete="cc-number" pattern=".{15,}" required
+																	maxlength="16" />
 
 															</div>
 														</div>
@@ -406,7 +438,7 @@
 																<label for="cardExpiry"><span class="hidden-xs">EXPIRATION</span><span
 																	class="visible-xs-inline">EXP</span> DATE</label> <input
 																	type="tel" class="form-control" name="expiry"
-																	placeholder="MM / YY" autocomplete="cc-exp" required
+																	placeholder="MM - YY" autocomplete="cc-exp" required
 																	pattern=".{5,}" maxlength="5" />
 															</div>
 														</div>
@@ -415,16 +447,20 @@
 																<label for="cardCVV">CVV CODE</label> <input type="tel"
 																	class="form-control" name="cvv" placeholder="CVV"
 																	autocomplete="cc-csc" required pattern=".{3,}"
-																	maxlength="3" />
+																	maxlength="4" />
 															</div>
 														</div>
 													</div>
 
 													<div class="row">
 														<div class="col-xs-12">
-															<input type="submit" 
-																value="Confirm And Pay" />
+															<input type="submit" value="Confirm And Pay" />
 														</div>
+														<div class="col-xs-12">
+														<br>
+														<p id="msg" style="color: red;"></p>
+														</div>
+											
 													</div>
 													<div class="row" style="display: none;">
 														<div class="col-xs-12">
@@ -444,6 +480,6 @@
 			</div>
 		</div>
 	</div>
-	
+
 </body>
 </html>

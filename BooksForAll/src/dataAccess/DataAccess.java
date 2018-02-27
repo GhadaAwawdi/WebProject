@@ -682,8 +682,8 @@ public class DataAccess implements DataInterface {
 		if (purchase.getExpiry() == null || purchase.getExpiry().isEmpty()) {
 			return null;
 		}
-		if (purchase.getExpiry().matches("^[A-Za-z]")) {
-			return false;
+		if (!purchase.getExpiry().matches("\\d{2}-\\d{2}")) {
+			return "Format of data in the expiry field is not correct";
 		}
 
 		return "true";
